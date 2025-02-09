@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "label": "Pinterest",
+    "link": "https://in.pinterest.com/thusharavarghese"
+  },
+  {
+    "id": 2,
+    "label": "Linkedln",
+    "link": "https://www.linkedin.com/in/thushara-v"
+  },
+  {
+    "id": 3,
+    "label": "Behance",
+    "link": "https://www.behance.net/thusharavarghese"
+  },
+  {
+    "id": 4,
+    "label": "Email",
+    "link": "mailto:thusharavarghese9@gmail.com"
+  }
+]

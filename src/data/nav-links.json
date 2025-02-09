@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "label": "Case Studies",
+    "link": "/#case-studies"
+  },
+  {
+    "id": 2,
+    "label": "About me",
+    "link": "/#about"
+  },
+  {
+    "id": 3,
+    "label": "Contact",
+    "link": "/#contact"
+  }
+]
