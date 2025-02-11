@@ -3,13 +3,28 @@ import smile from "./icons/smile.svg";
 import currency from "./icons/currency.svg";
 import { cn } from "../../lib/utils";
 import React from "react";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 export const CaseStudy1 = () => {
   return (
-    // <div className="absolute w-full text-sm space-y-12 mt-9 text-dark">
-    <div className="mx-auto w-full max-w-7xl text-sm space-y-12 mt-9 text-dark">
+    // <div className="absolute w-full text-base dd space-y-12 mt-9 text-dark">
+    <div className="mx-auto w-full max-w-7xl text-base dd space-y-12 mt-9 text-dark">
       <div className="mx-auto max-w-4xl space-y-12">
-        <img src="/images/gistly/image-1.png" alt="iPad Mockup 1.png" className="object-contain even:object-none even:w-full h-full" />
+        {/* <img src="/images/gistly/image-1-1.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" /> */}
+        <Carousel orientation="horizontal" plugins={[Autoplay({ delay: 4000 })]}>
+          <CarouselContent>
+            <CarouselItem>
+              <img src="/images/gistly/image-1-1.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+            </CarouselItem>
+            <CarouselItem>
+              <img src="/images/gistly/image-1-2.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+            </CarouselItem>
+            <CarouselItem>
+              <img src="/images/gistly/image-1-3.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+            </CarouselItem>
+          </CarouselContent>
+        </Carousel>
         <div className="space-y-3">
           <h1 className="text-2xl font-bold">The problem</h1>
           <p>
@@ -41,7 +56,7 @@ export const CaseStudy1 = () => {
         </div>
       </div>
       <div className="w-full space-y-3">
-        <img src="/images/gistly/image-2.png" alt="iPad Mockup 1.png" className="object-contain even:object-none even:w-full h-full" />
+        <img src="/images/gistly/image-2.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
         <span className="block text-center italic">Diagrammatic Representation of Gistly's UX Process</span>
       </div>
       <div className="mx-auto max-w-4xl space-y-6">
@@ -75,9 +90,9 @@ export const CaseStudy1 = () => {
           </p>
         </div>
         <div className="w-full space-y-12">
-          <img src="/images/gistly/image-3.png" alt="iPad Mockup 1.png" className="object-contain even:object-none even:w-full h-full" />
+          <img src="/images/gistly/image-3.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
           <div className="w-full space-y-3">
-            <img src="/images/gistly/image-4.png" alt="iPad Mockup 1.png" className="object-contain even:object-none even:w-full h-full" />
+            <img src="/images/gistly/image-4.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
             <span className="block text-center italic">User journey map and task analysis</span>
           </div>
         </div>
@@ -89,7 +104,7 @@ export const CaseStudy1 = () => {
         </div>
         <div className="w-full space-y-12">
           <div className="w-full space-y-3">
-            <img src="/images/gistly/image-5.png" alt="iPad Mockup 1.png" className="object-contain even:object-none even:w-full h-full" />
+            <img src="/images/gistly/image-5.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
             <span className="block text-center italic">User-flow diagram</span>
           </div>
         </div>
@@ -111,7 +126,7 @@ export const CaseStudy1 = () => {
               </div>
               <div className="md:w-1/2 space-y-3">
                 <img src={item.image.src} alt="iPad Mockup 1.png" className={cn("w-full", item.id === 2 ? "object-none object-left" : "object-contain")} />
-                {item.image.label && <span className="text-sm italic">{item.image.label}</span>}
+                {item.image.label && <span className="text-base dd italic">{item.image.label}</span>}
               </div>
             </div>
           ))}
@@ -142,7 +157,7 @@ export const CaseStudy1 = () => {
             <React.Fragment key={item.id}>
               <div className="mx-auto max-w-4xl">
                 <h3 className="mb-3 ml-1 font-bold">{`${item.id}. ${item.title}`}</h3>
-                <p className="text-sm font-normal">{item.description}</p>
+                <p className="text-base dd font-normal">{item.description}</p>
               </div>
               {item.images.map((image) => (
                 <div className="w-full mb-14">
@@ -155,7 +170,7 @@ export const CaseStudy1 = () => {
         <div className="mt-16 mx-auto max-w-4xl w-full">
           <video loop muted autoPlay src="/images/gistly/video-2.mp4" poster="/images/gistly/image-1.png" title="High Fidelity prototype" className="w-full h-full" />
         </div>
-        <div className="text-sm space-y-3 mx-auto max-w-4xl">
+        <div className="text-base dd space-y-3 mx-auto max-w-4xl">
           <p>The improvements resulted in a 24% reduction in time on task metrics and significantly decreased the probability of errors.</p>
           <p>
             <span className="font-bold">Accessibility Considerations:</span> In addition to utilizing ShadCN's built-in accessibility features, we've made sure that the color contrasts throughout the design meet at least AA compliance
@@ -169,8 +184,7 @@ export const CaseStudy1 = () => {
           This project helped me understand how good design is basically invisible to the users and the amount of research and empathy it takes to create something that naturally blends with users' day-to-day tasks. A bad design can leave a
           lasting impression on a user, while a good design may not be even noticeable. Although concepts like the Aesthetic Usability Effect do play a part in it, they cannot save a bad design.Natural observation of users can be invaluable
           when designing a solution. Understanding the background and context of a design problem is important. In this case, understanding what managers' daily lives look like, what software they use, and their goals and frustrations
-          greatly helped me create designs that resonate with them. <br />
-          Collaborating regularly with the team significantly saved time by preventing the pursuit of infeasible ideas.
+          greatly helped me create designs that resonate with them. Collaborating regularly with the team significantly saved time by preventing the pursuit of infeasible ideas.
         </p>
       </div>
     </div>

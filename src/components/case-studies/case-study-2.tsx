@@ -3,7 +3,7 @@ import mindMap from "/images/serenity/icons/mind-map.svg";
 
 export const CaseStudy2 = () => {
   return (
-    <div className="text-sm w-full mt-9 text-dark space-y-12">
+    <div className="text-base dd w-full mt-9 text-dark space-y-12">
       <div className="mx-auto max-w-4xl space-y-12">
         <div className="flex w-full flex-col space-y-6 sm:flex-row justify-between">
           <div className="sm:w-2/3 flex flex-col space-y-12">

@@ -3,17 +3,18 @@
 // const buttonShimmer = `bg-gradient-to-r from-slate-800 to-slate-900 bg-[length:200%_100%] animate-shimmer`;
 
 import * as React from "react";
+import { cn } from "../../lib/utils";
 
 const buttonVariants = {
   primary: `bg-dark text-white border border-dark hover:bg-dark/80`,
   secondary: `bg-white text-dark border border-dark hover:bg-gray-100`,
-  outline: `bg-transparent text-dark border border-dark hover:bg-gray-50`,
+  outline: `bg-transparent text-dark border border-dark hover:bg-dark hover:text-white`,
 };
 
 const sizes = {
   xs: `h-8 px-4`,
   sm: `h-10 px-5`,
-  md: `h-12 px-6`,
+  md: `h-10 px-6`,
   lg: `h-14 px-7`,
 };
 
@@ -23,7 +24,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, size = "md", variant = "primary", ...props }, ref) => {
-  return <button ref={ref} className={`inline-flex w-fit items-center cursor-pointer justify-center gap-x-3 rounded-md font-medium transition-colors focus:outline-none ${sizes[size]} ${buttonVariants[variant]} ${className}`} {...props} />;
+  return <button ref={ref} className={cn("inline-flex w-fit items-center cursor-pointer justify-center gap-x-3 rounded-sm font-medium transition-colors focus:outline-none", sizes[size], buttonVariants[variant], className)} {...props} />;
 });
 Button.displayName = "Button";
 

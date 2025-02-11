@@ -5,12 +5,18 @@ import arrowRight from "../assets/arrow-right.svg";
 import image from "../assets/image.png";
 import linkedin from "../assets/linkedin.svg";
 import mail from "../assets/mail.svg";
-import Menu from "../assets/menu";
+import Menu from "./menu";
 import close from "../assets/close.svg";
+import heroBG1 from "../assets/hero-bg-1.svg";
+import heroBG2 from "../assets/hero-bg-2.svg";
 import Logo from "./logo";
+import ArrowRight from "./arrow-right";
 
 export {
-  // arrowRight,
+  // ArrowRight,
+  ArrowRight,
+  heroBG1,
+  heroBG2,
   Logo,
   arrowDown,
   arrowDownToLine,

@@ -22,8 +22,7 @@ const caseStudies = [
     slug: "serenity",
     tagline: "ARTIST BIO APP",
     tags: ["UX Design", "Mobile app", "Visual Design", "User research"],
-    description:
-      "Serenity is a Google UX course project created specifically for an art gallery. This peer-reviewed project allowed me to apply Google-recommended design frameworks and UX methodologies, while conducting user research with volunteer participants.",
+    description: "Serenity is a Google UX course project created specifically for an art gallery. This peer-reviewed project allowed me to apply Google-recommended design frameworks and UX methodologies.",
     extendedDescription:
       "SerenityConnect is an Artist Bio app specifically designed for an art gallery.  People often find breathtaking artworks in various art galleries but spend hours getting enough info on the artist of the artwork, especially if they are new artists. This app has all the verified info on the artist including a biography, details on other works, social media accounts, personal websites, and info on events and exhibitions.",
     image: "case-study-2.png",

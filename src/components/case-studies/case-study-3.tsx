@@ -35,7 +35,7 @@ export const CaseStudy3 = () => {
       </div>
       <div className="w-full space-y-3">
         <img src="/images/gistly/image-2.png" alt="iPad Mockup 1.png" className="object-cover w-full h-full rounded-lg" />
-        <span className="block text-center text-sm font-light italic">Diagrammatic Representation of Gistly's UX Process</span>
+        <span className="block text-center text-base dd font-light italic">Diagrammatic Representation of Gistly's UX Process</span>
       </div>
       <div className="space-y-3">
         <h1 className="text-2xl font-bold">The problem</h1>

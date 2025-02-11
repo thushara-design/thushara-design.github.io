@@ -31,7 +31,7 @@ export const Header = ({ className }: { className?: string }) => {
 
   return (
     <header className={cn("bg-transparent/30 backdrop-blur-lg fixed top-0 left-0 w-full z-40", className)}>
-      <div className="container mx-auto flex items-center justify-between p-5">
+      <div className="flex items-center justify-between p-5">
         {/* Logo */}
         <a href="/#" className="flex items-center font-title font-medium">
           <Logo className="size-10" />
@@ -50,7 +50,7 @@ export const Header = ({ className }: { className?: string }) => {
 
         {/* Mobile Navigation Menu */}
         <div
-          className={cn("fixed z-50 top-0 left-0 w-full bg-white text-dark shadow transition-transform duration-300 ease-in-out md:hidden", isOpen ? "translate-y-0" : "-translate-y-full")}
+          className={cn("fixed z-50 top-0 left-0 w-full bg-accent-primary text-dark shadow transition-transform duration-300 ease-in-out md:hidden", isOpen ? "translate-y-0" : "-translate-y-full")}
           style={{ height: "30vh" }} // Half screen height
         >
           <div className="flex justify-between p-5">
@@ -83,7 +83,7 @@ export const Header = ({ className }: { className?: string }) => {
           className={`hidden flex-wrap items-center justify-center gap-x-10 text-base md:ml-auto md:flex lg:gap-x-20`} // Show on desktop only
         >
           {navLinks.map((link) => (
-            <a key={link.id} href={link.link} className="hover:text-gray-90 [&.active]:text-gray-90">
+            <a key={link.id} href={link.link} className="hover:text-gray-90 underline-offset-8 hover:underline [&.active]:underline">
               {link.label}
             </a>
           ))}
