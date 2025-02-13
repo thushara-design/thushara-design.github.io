@@ -46,12 +46,12 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
       {/* <Header className={scrollPosition > 1030 ? "bg-white/30 text-dark" : "bg-dark/30 text-white"} /> */}
       <Header className={CASE_STUDIES_WITH_DARK_BG.includes(id) ? (scrollPosition > 660 ? "bg-white/30 text-dark" : "bg-transparent/30 text-white") : undefined} />
       {/* <section className="container mx-auto max-w-4xl space-y-8 p-6 md:p-5 md:py-40"> */}
-      <section className={cn("w-full space-y-8 p-6 pt-24 md:pt-40", CASE_STUDIES_WITH_DARK_BG.includes(id) ? "text-white" : "text-dark")}>
+      <section className={cn("mx-auto max-w-4xl w-full space-y-8 p-6 pt-24 md:pt-40", CASE_STUDIES_WITH_DARK_BG.includes(id) ? "text-white" : "text-dark")}>
         <div className="space-y-3 mx-auto max-w-4xl">
           <h1 className="text-3xl font-medium">{title}</h1>
           <h2 className="text-lg uppercase">{tagline}</h2>
         </div>
-        <div className="relative space-y-3 text-base dd">
+        <div className="relative space-y-3 text-base">
           <p className="mx-auto max-w-4xl">{description}</p>
           <div className="mx-auto max-w-4xl grid md:grid-cols-2 gap-y-6 gap-x-48 grid-cols-1">
             <div>
@@ -82,7 +82,7 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
           <Component />
         </div>
       </section>
-      <div className="mt-16 flex justify-between mx-auto max-w-4xl">
+      <div className="mt-16 flex flex-col gap-4 sm:flex-row justify-between items-center mx-auto max-w-4xl">
         <Button
           variant="outline"
           onClick={() => {
@@ -90,7 +90,7 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
             const prevSlug = caseStudiesData[prevIndex].slug;
             navigate({ search: `?ref=${prevSlug}` });
           }}
-          className="flex items-center gap-2 text-sm">
+          className="w-52 flex items-center gap-2 text-sm">
           <span className="font-bold">←</span> Previous Case Study
         </Button>
         <Button
@@ -100,7 +100,7 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
             const nextSlug = caseStudiesData[nextIndex].slug;
             navigate({ search: `?ref=${nextSlug}` });
           }}
-          className="flex items-center gap-2 text-sm">
+          className="w-52 flex items-center gap-2 text-sm">
           Next Case Study <span className="font-bold">→</span>
         </Button>
       </div>

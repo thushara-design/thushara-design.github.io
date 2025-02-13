@@ -44,6 +44,7 @@ const caseStudies = [
     tools: ["Figma"],
     responsibilities: [],
     Component: CaseStudy3,
+    externalLink: "https://thushara-design.super.site/projects/brushd",
   },
 ];
 

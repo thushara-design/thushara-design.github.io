@@ -104,7 +104,7 @@ export const CaseStudy1 = () => {
         </div>
         <div className="w-full space-y-12">
           <div className="w-full space-y-3">
-            <img src="/images/gistly/image-5.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+            <img src="/images/gistly/image-5.svg" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
             <span className="block text-center italic">User-flow diagram</span>
           </div>
         </div>
@@ -241,7 +241,7 @@ const data3 = [
     title: "Exploration 2",
     description: "The real-life template is usually in a spreadsheet format, so users can upload it as a CSV file and select the columns for parameters, weightage, and response types. This is a common user flow on the platform.",
     image: {
-      src: "/images/gistly/image-7.png",
+      src: "/images/gistly/image-7.svg",
     },
     points: ["Not all users may have the template in CSV format.", "Technical feasibility considerations.", "There should still be an option to manually add templates."],
   },
@@ -269,7 +269,7 @@ const data4 = [
       "It was realized that modal windows take the user away from the task context, making the process feel overcomplicated. The initial solution to avoid modals was to allow direct editing and manipulation within the table, but this proved technically unfeasible. As a result, we decided to split the screen and display the parameter settings on the right.",
     images: [
       {
-        src: "/images/gistly/image-9.png",
+        src: "/images/gistly/image-9.svg",
         alt: "iPad Mockup 1.png",
       },
     ],
@@ -297,7 +297,7 @@ const data4 = [
         alt: "iPad Mockup 1.png",
       },
       {
-        src: "/images/gistly/image-12.png",
+        src: "/images/gistly/image-12.svg",
         alt: "iPad Mockup 1.png",
       },
     ],

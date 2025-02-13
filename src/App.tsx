@@ -24,10 +24,6 @@ function App() {
     }
   }, [location]);
 
-  // const handleBack = () => {
-  //   setSelectedSlug(null);
-  // };
-
   if (selectedSlug && caseStudiesData.find((caseStudy) => caseStudy.slug === selectedSlug)) {
     return <CaseStudyDat slug={selectedSlug} />;
   }

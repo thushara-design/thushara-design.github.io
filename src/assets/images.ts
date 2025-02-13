@@ -2,7 +2,8 @@ import arrowDownToLine from "../assets/arrow-down-to-line.svg";
 import flower from "../assets/flower.svg";
 import arrowDown from "../assets/arrow-down.svg";
 import arrowRight from "../assets/arrow-right.svg";
-import image from "../assets/image.png";
+import profile from "../assets/profile.png";
+// import profile from "../assets/image.png";
 import linkedin from "../assets/linkedin.svg";
 import mail from "../assets/mail.svg";
 import Menu from "./menu";
@@ -23,7 +24,7 @@ export {
   arrowRight,
   close,
   flower,
-  image,
+  profile,
   linkedin,
   mail,
   Menu,

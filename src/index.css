@@ -27,7 +27,13 @@
   /* box-shadow: 0px 4px 13px 0px #667EFF14 */
   --shadow-custom: 0px 4px 13px 0px rgba(102, 126, 255, 0.08);
 
-  /* Border */
+  /* border border-solid*/
   /* --border-light: rgba(0, 0, 0, 0.2); */
   --color-border: rgba(0, 0, 0, 0.2);
+
+  /* animation */
+
+  --animate-spin-slow: "spin 8s linear infinite";
+
+  /* @keyframes spin */
 }

@@ -20,7 +20,7 @@ export const Skills = () => {
   const renderSkills = (skills: string[]) => {
     if (!skills) return null;
     return skills.map((skill) => (
-      <li key={skill} className="rounded-sm border border-border px-4 py-3">
+      <li key={skill} className="rounded-sm border border-solid border-border px-4 py-3">
         {skill}
       </li>
     ));

@@ -33,7 +33,7 @@ export const CaseStudy2 = () => {
           <ol className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
             {data.map((item, index) => (
               <li key={index} className="bg-accent-quaternary flex flex-col gap-5 rounded-4xl p-5">
-                <span className="size-7 flex justify-center items-center font-bold rounded-full border">{item.id}</span>
+                <span className="size-7 flex justify-center items-center font-bold rounded-full border border-solid">{item.id}</span>
                 <p className="font-normal">{item.description}</p>
               </li>
             ))}
@@ -126,7 +126,7 @@ export const CaseStudy2 = () => {
           <ol className="grid sm:grid-cols-3 gap-6">
             {data2.map((item, index) => (
               <li key={index} className="bg-accent-quinary flex flex-col gap-5 rounded-4xl p-5">
-                <span className="size-7 flex justify-center items-center font-bold rounded-full border">{item.id}</span>
+                <span className="size-7 flex justify-center items-center font-bold rounded-full border border-solid">{item.id}</span>
                 <p className="font-normal">{item.description}</p>
               </li>
             ))}
