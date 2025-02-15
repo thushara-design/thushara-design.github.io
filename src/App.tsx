@@ -7,7 +7,7 @@ import { Footer } from "./components/footer";
 import { Header } from "./components/header";
 import { Hero } from "./components/hero";
 import { Skills } from "./components/skills";
-import { CaseStudyDat } from "./components/case-study-data";
+import { CaseStudyDat } from "./components/case-study-details";
 import { caseStudiesData } from "./data";
 
 function App() {
@@ -31,11 +31,8 @@ function App() {
   return (
     <div className="font-sans text-dark">
       <Header />
-      {/* <img src={heroBG1} alt="" className="absolute -z-50 bottom-20 w-full" />
-      <img src={heroBG2} alt="" className="absolute -z-40 bottom-20 w-full" /> */}
       <main className="container mx-auto max-w-6xl space-y-12 p-6">
         <Hero />
-        {/* <CaseStudy onSlugChange={setSelectedSlug} /> */}
         <CaseStudy />
         <About />
         <Skills />

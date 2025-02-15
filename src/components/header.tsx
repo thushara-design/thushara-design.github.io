@@ -32,16 +32,16 @@ export const Header = ({ className }: { className?: string }) => {
   }, [isOpen]);
 
   return (
-    <header className={cn("bg-transparent/30 backdrop-blur-lg fixed top-0 left-0 w-full z-40", className)}>
+    <header className={cn("backdrop-blur-lg bg-white/10 fixed top-0 left-0 w-full z-40", className)}>
       <div className="flex items-center justify-between p-5 2xl:px-20">
         {/* Logo */}
         <a href="/" className="flex items-center font-title font-medium">
-          <Logo className={cn({ hidden: isOpen })} />
+          <Logo className={cn("size-8 md:size-10", { hidden: isOpen })} />
         </a>
 
         {/* Mobile Menu Button */}
-        <button onClick={toggleMenu} aria-label="Toggle Navigation Menu" aria-expanded={isOpen} aria-controls="mobile-menu" className="sm:hidden flex cursor-pointer flex-col items-center justify-center gap-1">
-          {isOpen ? <img src={close} alt="Close Menu" /> : <Menu />}
+        <button onClick={toggleMenu} aria-label="Toggle Navigation Menu" aria-expanded={isOpen} aria-controls="mobile-menu" className={cn("sm:hidden flex cursor-pointer flex-col items-center justify-center gap-1", { hidden: isOpen })}>
+          <Menu />
         </button>
 
         {/* Mobile Navigation Menu */}
@@ -52,7 +52,7 @@ export const Header = ({ className }: { className?: string }) => {
           <div className="flex justify-between p-5">
             {/* Logo */}
             <a href="/" className="flex items-center font-title font-medium">
-              <Logo />
+              <Logo className="size-8 md:size-10" />
             </a>
 
             {/* Close Button */}

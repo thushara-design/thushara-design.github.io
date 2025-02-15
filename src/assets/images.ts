@@ -4,8 +4,8 @@ import arrowDown from "../assets/arrow-down.svg";
 import arrowRight from "../assets/arrow-right.svg";
 import profile from "../assets/profile.png";
 // import profile from "../assets/image.png";
-import linkedin from "../assets/linkedin.svg";
-import mail from "../assets/mail.svg";
+import Linkedin from "../assets/linkedin";
+import Mail from "../assets/mail";
 import Menu from "./menu";
 import close from "../assets/close.svg";
 import heroBG1 from "../assets/hero-bg-1.svg";
@@ -25,7 +25,7 @@ export {
   close,
   flower,
   profile,
-  linkedin,
-  mail,
+  Linkedin,
+  Mail,
   Menu,
 };

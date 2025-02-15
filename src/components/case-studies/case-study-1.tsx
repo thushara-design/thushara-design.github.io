@@ -5,6 +5,7 @@ import { cn } from "../../lib/utils";
 import React from "react";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { ScrollFade } from "../ui/scroll-fade";
 
 export const CaseStudy1 = () => {
   return (
@@ -25,7 +26,7 @@ export const CaseStudy1 = () => {
             </CarouselItem>
           </CarouselContent>
         </Carousel>
-        <div className="space-y-3">
+        <ScrollFade className="space-y-3">
           <h1 className="text-2xl font-bold">The problem</h1>
           <p>
             <strong className="text-base font-bold italic">
@@ -38,28 +39,28 @@ export const CaseStudy1 = () => {
             the template within the platform. The parameters are grouped into categories, and each parameter has a weight. There is also an overall weight for each category. Each parameter needs to be configured individually, which can make
             the process complex.
           </p>
-        </div>
-        <div className="space-y-3">
+        </ScrollFade>
+        <ScrollFade className="space-y-3">
           <h1 className="text-2xl font-bold">The solution</h1>
           <p className="mt-2">
             The issue was addressed by conducting UX research, performing task analysis, and genuinely empathizing with the users in order to simplify the process and make it more intuitive. The users' technological expertise, the context
             of the task, and their experience with similar applications such as spreadsheets were taken into account. The tasks were grouped based on their priority.
           </p>
-        </div>
-        <div className="space-y-3">
+        </ScrollFade>
+        <ScrollFade className="space-y-3">
           <h1 className="text-2xl font-bold">Now the design process!</h1>
           <p className="mt-2">
             Thee design process at Gistly is influenced by Agile and Lean UX methodologies. It combines the iterative, feedback-driven approach of Agile with the focus on delivering minimal, high-value solutions quickly and efficiently, as
             seen in Lean UX, to ensure continuous improvement and user-centered design. The focus of this process is on delivering a working user-friendly product quickly and iteratively, with regular stakeholder input, and adapting based
             on feedback.
           </p>
-        </div>
+        </ScrollFade>
       </div>
-      <div className="w-full space-y-3">
+      <ScrollFade className="w-full space-y-3">
         <img src="/images/gistly/image-2.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
         <span className="block text-center italic">Diagrammatic Representation of Gistly's UX Process</span>
-      </div>
-      <div className="mx-auto max-w-4xl space-y-6">
+      </ScrollFade>
+      <ScrollFade className="mx-auto max-w-4xl space-y-6">
         <h1 className="text-2xl font-bold">Understanding the users</h1>
         <div className="flex items-center justify-between space-y-1.5 flex-wrap">
           {data2.map((item) => (
@@ -81,8 +82,8 @@ export const CaseStudy1 = () => {
             </li>
           ))}
         </ol>
-      </div>
-      <div className="mx-auto max-w-4xl space-y-6">
+      </ScrollFade>
+      <ScrollFade className="mx-auto max-w-4xl space-y-6">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold">Overview of the task</h1>
           <p>
@@ -96,8 +97,8 @@ export const CaseStudy1 = () => {
             <span className="block text-center italic">User journey map and task analysis</span>
           </div>
         </div>
-      </div>
-      <div className="mx-auto max-w-4xl space-y-6">
+      </ScrollFade>
+      <ScrollFade className="mx-auto max-w-4xl space-y-6">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold">Userflow</h1>
           <p className="text-base font-semibold">Goal : Create a template</p>
@@ -108,8 +109,8 @@ export const CaseStudy1 = () => {
             <span className="block text-center italic">User-flow diagram</span>
           </div>
         </div>
-      </div>
-      <div className="mx-auto max-w-4xl space-y-6">
+      </ScrollFade>
+      <ScrollFade className="mx-auto max-w-4xl space-y-6">
         <h1 className="text-2xl font-bold">Exploring alternative solutions</h1>
         <div className="space-y-12">
           {data3.map((item) => (
@@ -131,8 +132,8 @@ export const CaseStudy1 = () => {
             </div>
           ))}
         </div>
-      </div>
-      <div className="mx-auto max-w-4xl text-base space-y-6">
+      </ScrollFade>
+      <ScrollFade className="mx-auto max-w-4xl text-base space-y-6">
         <h1 className="mb-0 text-2xl font-bold">Low Fidelity prototype</h1>
         <p className="font-medium">
           I used Axure to create a low-fidelity prototype because I wanted to assess key metrics such as time on task, as there is a lot of typing involved, which is not possible in Figma. I aimed to evaluate at what point users experience
@@ -149,8 +150,8 @@ export const CaseStudy1 = () => {
             <li>The modal window distracted from the main task.</li>
           </ul>
         </div>
-      </div>
-      <div className="text-base space-y-3">
+      </ScrollFade>
+      <ScrollFade className="text-base space-y-3">
         <h1 className="mx-auto max-w-4xl text-2xl font-bold">Improvements</h1>
         <div className="mx-auto max-w-7xl space-y-12">
           {data4.map((item) => (
@@ -177,8 +178,8 @@ export const CaseStudy1 = () => {
             according to WCAG (Web Content Accessibility Guidelines). This was verified using the A11y plugin, ensuring that all elements are clear and legible for users with low vision or color blindness
           </p>
         </div>
-      </div>
-      <div className="mx-auto max-w-4xl space-y-3">
+      </ScrollFade>
+      <ScrollFade className="mx-auto max-w-4xl space-y-3">
         <h1 className="text-2xl font-bold">Reflection</h1>
         <p>
           This project helped me understand how good design is basically invisible to the users and the amount of research and empathy it takes to create something that naturally blends with users' day-to-day tasks. A bad design can leave a
@@ -186,7 +187,7 @@ export const CaseStudy1 = () => {
           when designing a solution. Understanding the background and context of a design problem is important. In this case, understanding what managers' daily lives look like, what software they use, and their goals and frustrations
           greatly helped me create designs that resonate with them. Collaborating regularly with the team significantly saved time by preventing the pursuit of infeasible ideas.
         </p>
-      </div>
+      </ScrollFade>
     </div>
   );
 };

@@ -1,3 +1,5 @@
+import { ScrollFade } from "./ui/scroll-fade";
+
 const skills = [
   "UI/UX design",
   "Web accessibility",
@@ -27,9 +29,9 @@ export const Skills = () => {
   };
 
   return (
-    <section className="space-y-6">
+    <ScrollFade className="space-y-6">
       <h2 className="text-2xl font-bold text-dark">Skills and expertise</h2>
       <ul className="flex flex-wrap gap-2.5">{renderSkills(skills)}</ul>
-    </section>
+    </ScrollFade>
   );
 };
