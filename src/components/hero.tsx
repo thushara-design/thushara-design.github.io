@@ -1,9 +1,10 @@
 import { Button } from "./ui/button";
+import { ScrollFade } from "./ui/scroll-fade";
 
 export const Hero = () => {
   return (
     // <section className="font-body flex flex-col items-center md:flex-row md:py-24 min-h-screen">
-    <section className="font-body flex flex-col items-center md:flex-row md:py-16">
+    <ScrollFade className="font-body flex flex-col items-center md:flex-row md:py-16">
       <div className="mb-16 mt-28 flex flex-col md:mb-0 md:w-full">
         <h1 className="font-title text-5xl font-medium leading-20 sm:text-6xl">Hi, I&apos;m Thushara.</h1>
         <p className="my-8 font-title text-3xl leading-10">
@@ -13,6 +14,6 @@ export const Hero = () => {
           <Button variant="outline">Resume</Button>
         </a>
       </div>
-    </section>
+    </ScrollFade>
   );
 };

@@ -1,4 +1,4 @@
-import { CaseStudy1, CaseStudy2, CaseStudy3 } from "../components/case-studies";
+import { CaseStudy1, CaseStudy2 } from "../components/case-studies";
 
 const caseStudies = [
   {
@@ -43,7 +43,6 @@ const caseStudies = [
     timeframes: "",
     tools: ["Figma"],
     responsibilities: [],
-    Component: CaseStudy3,
     externalLink: "https://thushara-design.super.site/projects/brushd",
   },
 ];

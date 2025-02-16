@@ -2,38 +2,6 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"); */
 /* @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"); */
 
-@import "tailwindcss";
-
-@theme {
-  /* --font-sans: "Lato", "sans-serif"; */
-  --font-sans: "Nunito", "sans-serif";
-  --font-body: "Nunito", "sans-serif";
-  --font-title: "Instrument Serif", "sans-serif";
-
-  /* --color-dark: #333333; */
-  --color-dark: #131312;
-  --color-primary: #ff6363;
-  --color-secondary-100: #e2e2d5;
-  --color-secondary-200: #888883;
-  --color-accent-primary: #eaf7fa;
-  /* --color-accent-primary: rgba(246, 249, 254, 1); */
-  --color-accent-secondary: #fdebe7;
-  /* --color-accent-secondary: rgba(254, 246, 253, 1); */
-  --color-accent-tertiary: #f6eac27d;
-  --color-accent-quaternary: #faf7f7;
-  --color-accent-quinary: #f1f7f3;
-
-  /* Box Shadow */
-  /* box-shadow: 0px 4px 13px 0px #667EFF14 */
-  --shadow-custom: 0px 4px 13px 0px rgba(102, 126, 255, 0.08);
-
-  /* border border-solid*/
-  /* --border-light: rgba(0, 0, 0, 0.2); */
-  --color-border: rgba(0, 0, 0, 0.2);
-
-  /* animation */
-
-  --animate-spin-slow: "spin 8s linear infinite";
-
-  /* @keyframes spin */
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
