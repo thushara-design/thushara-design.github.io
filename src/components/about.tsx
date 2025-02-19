@@ -1,12 +1,11 @@
 import { profile, Linkedin, Mail } from "../assets/images";
 import { socialLinks, TestimonialData, testimonialData } from "../data";
 import { Button } from "./ui/button";
-import { ScrollFade } from "./ui/scroll-fade";
 
 export const About = () => {
   const renderTestimonial = (testimonials: TestimonialData[]) =>
     testimonials.map(({ id, quote, author, contact }) => (
-      <div key={id} className="font-title flex min-h-96 flex-col justify-between gap-y-3 rounded-2xl border-dark px-8 py-6 odd:bg-accent-primary even:bg-accent-secondary first-of-type:border border-solid first-of-type:bg-white">
+      <div key={id} className="flex min-h-96 flex-col justify-between gap-y-3 rounded-2xl border-solid border-dark px-8 py-6 font-title odd:bg-accent-primary even:bg-accent-secondary first-of-type:border first-of-type:bg-white">
         <p>"{quote}"</p>
         <div className="space-y-3 text-right">
           <h3>{author}</h3>
@@ -16,15 +15,15 @@ export const About = () => {
     ));
 
   return (
-    <ScrollFade id="about">
+    <section id="about">
       <h2 className="mb-16 text-2xl font-bold md:mb-6">About me</h2>
       <div className="mb-6 flex flex-col gap-20 md:mb-20 md:flex-row-reverse">
         <div className="relative size-48 md:size-full">
           {/* Outer Ring */}
-          <div className="absolute -inset-4 rounded-full ring-1 ring-dark animate-spin-slow">
+          <div className="absolute -inset-4 animate-spin-slow rounded-full ring-1 ring-dark">
             {/* Rotating Dots */}
-            <div className="absolute -top-2 left-1/2 -translate-x-1/2 size-3.5 bg-accent-primary border border-black/5 rounded-full" />
-            <div className="absolute top-1/3 left-1 -translate-x-1/2 size-3.5 bg-accent-secondary border border-black/5 rounded-full" />
+            <div className="absolute -top-2 left-1/2 size-3.5 -translate-x-1/2 rounded-full border border-black/5 bg-accent-primary" />
+            <div className="absolute left-1 top-1/3 size-3.5 -translate-x-1/2 rounded-full border border-black/5 bg-accent-secondary" />
           </div>
 
           {/* Profile Image */}
@@ -55,6 +54,6 @@ export const About = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-4 text-xl text-dark md:grid-cols-2 lg:grid-cols-3">{renderTestimonial(testimonialData)}</div>
-    </ScrollFade>
+    </section>
   );
 };

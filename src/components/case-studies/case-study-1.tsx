@@ -5,28 +5,27 @@ import { cn } from "../../lib/utils";
 import React from "react";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import { ScrollFade } from "../ui/scroll-fade";
 
 export const CaseStudy1 = () => {
   return (
-    // <div className="absolute w-full text-base dd space-y-12 mt-9 text-dark">
-    <div className="mx-auto w-full max-w-7xl text-base dd space-y-12 mt-9 text-dark">
+    // <div className="absolute mt-9 w-full space-y-12 text-base text-dark">
+    <div className="mx-auto mt-9 w-full max-w-7xl space-y-12 text-base text-dark">
       <div className="mx-auto max-w-4xl space-y-12">
-        {/* <img src="/images/gistly/image-1-1.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" /> */}
+        {/* <img src="/images/gistly/image-1-1.png" alt="iPad Mockup 1.png" className="h-full w-full object-contain even:object-none" /> */}
         <Carousel orientation="horizontal" plugins={[Autoplay({ delay: 4000 })]}>
           <CarouselContent>
             <CarouselItem>
-              <img src="/images/gistly/image-1-1.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+              <img src="/images/gistly/image-1-1.png" alt="iPad Mockup 1.png" className="h-full w-full object-contain even:object-none" />
             </CarouselItem>
             <CarouselItem>
-              <img src="/images/gistly/image-1-2.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+              <img src="/images/gistly/image-1-2.png" alt="iPad Mockup 1.png" className="h-full w-full object-contain even:object-none" />
             </CarouselItem>
             <CarouselItem>
-              <img src="/images/gistly/image-1-3.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+              <img src="/images/gistly/image-1-3.png" alt="iPad Mockup 1.png" className="h-full w-full object-contain even:object-none" />
             </CarouselItem>
           </CarouselContent>
         </Carousel>
-        <ScrollFade className="space-y-3">
+        <section className="space-y-3">
           <h1 className="text-2xl font-bold">The problem</h1>
           <p>
             <strong className="text-base font-bold italic">
@@ -39,33 +38,33 @@ export const CaseStudy1 = () => {
             the template within the platform. The parameters are grouped into categories, and each parameter has a weight. There is also an overall weight for each category. Each parameter needs to be configured individually, which can make
             the process complex.
           </p>
-        </ScrollFade>
-        <ScrollFade className="space-y-3">
+        </section>
+        <section className="space-y-3">
           <h1 className="text-2xl font-bold">The solution</h1>
           <p className="mt-2">
             The issue was addressed by conducting UX research, performing task analysis, and genuinely empathizing with the users in order to simplify the process and make it more intuitive. The users' technological expertise, the context
             of the task, and their experience with similar applications such as spreadsheets were taken into account. The tasks were grouped based on their priority.
           </p>
-        </ScrollFade>
-        <ScrollFade className="space-y-3">
+        </section>
+        <section className="space-y-3">
           <h1 className="text-2xl font-bold">Now the design process!</h1>
           <p className="mt-2">
             Thee design process at Gistly is influenced by Agile and Lean UX methodologies. It combines the iterative, feedback-driven approach of Agile with the focus on delivering minimal, high-value solutions quickly and efficiently, as
             seen in Lean UX, to ensure continuous improvement and user-centered design. The focus of this process is on delivering a working user-friendly product quickly and iteratively, with regular stakeholder input, and adapting based
             on feedback.
           </p>
-        </ScrollFade>
+        </section>
       </div>
-      <ScrollFade className="w-full space-y-3">
-        <img src="/images/gistly/image-2.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+      <section className="w-full space-y-3">
+        <img src="/images/gistly/image-2.png" alt="iPad Mockup 1.png" className="h-full w-full object-contain even:object-none" />
         <span className="block text-center italic">Diagrammatic Representation of Gistly's UX Process</span>
-      </ScrollFade>
-      <ScrollFade className="mx-auto max-w-4xl space-y-6">
+      </section>
+      <section className="mx-auto max-w-4xl space-y-6">
         <h1 className="text-2xl font-bold">Understanding the users</h1>
-        <div className="flex items-center justify-between space-y-1.5 flex-wrap">
+        <div className="flex flex-wrap items-center justify-between space-y-1.5">
           {data2.map((item) => (
             <div key={item.id} className="flex items-center space-x-6">
-              <div className="bg-accent-tertiary rounded-full size-12 flex items-center justify-center">
+              <div className="flex size-12 items-center justify-center rounded-full bg-accent-tertiary">
                 <img src={item.icon} alt={item.label} />
               </div>
               <span className="font-bold">{item.label}</span>
@@ -74,7 +73,7 @@ export const CaseStudy1 = () => {
         </div>
 
         <p>Here are some of the key insights gathered from user interviews:</p>
-        <ol className="space-y-6 list-decimal list-inside">
+        <ol className="list-inside list-decimal space-y-6">
           {data.map((item, index) => (
             <li key={index} className="font-bold">
               {item.title}
@@ -82,8 +81,8 @@ export const CaseStudy1 = () => {
             </li>
           ))}
         </ol>
-      </ScrollFade>
-      <ScrollFade className="mx-auto max-w-4xl space-y-6">
+      </section>
+      <section className="mx-auto max-w-4xl space-y-6">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold">Overview of the task</h1>
           <p>
@@ -91,95 +90,95 @@ export const CaseStudy1 = () => {
           </p>
         </div>
         <div className="w-full space-y-12">
-          <img src="/images/gistly/image-3.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+          <img src="/images/gistly/image-3.png" alt="iPad Mockup 1.png" className="h-full w-full object-contain even:object-none" />
           <div className="w-full space-y-3">
-            <img src="/images/gistly/image-4.png" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+            <img src="/images/gistly/image-4.png" alt="iPad Mockup 1.png" className="h-full w-full object-contain even:object-none" />
             <span className="block text-center italic">User journey map and task analysis</span>
           </div>
         </div>
-      </ScrollFade>
-      <ScrollFade className="mx-auto max-w-4xl space-y-6">
+      </section>
+      <section className="mx-auto max-w-4xl space-y-6">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold">Userflow</h1>
           <p className="text-base font-semibold">Goal : Create a template</p>
         </div>
         <div className="w-full space-y-12">
           <div className="w-full space-y-3">
-            <img src="/images/gistly/image-5.svg" alt="iPad Mockup 1.png" className="object-contain even:object-none w-full h-full" />
+            <img src="/images/gistly/image-5.svg" alt="iPad Mockup 1.png" className="h-full w-full object-contain even:object-none" />
             <span className="block text-center italic">User-flow diagram</span>
           </div>
         </div>
-      </ScrollFade>
-      <ScrollFade className="mx-auto max-w-4xl space-y-6">
+      </section>
+      <section className="mx-auto max-w-4xl space-y-6">
         <h1 className="text-2xl font-bold">Exploring alternative solutions</h1>
         <div className="space-y-12">
           {data3.map((item) => (
-            <div key={item.id} className="w-full text-base flex flex-col gap-6 md:items-center md:odd:flex-row md:even:flex-row-reverse">
+            <div key={item.id} className="flex w-full flex-col gap-6 text-base md:items-center md:odd:flex-row md:even:flex-row-reverse">
               <div className="md:w-1/2">
                 <h2 className="mb-3 font-bold">{item.title}</h2>
                 <p className="mb-6">{item.description}</p>
                 <span>Key Points:</span>
-                <ol className="list-disc list-inside">
+                <ol className="list-inside list-disc">
                   {item.points.map((point, index) => (
                     <li key={index}>{point}</li>
                   ))}
                 </ol>
               </div>
-              <div className="md:w-1/2 space-y-3">
+              <div className="space-y-3 md:w-1/2">
                 <img src={item.image.src} alt="iPad Mockup 1.png" className={cn("w-full", item.id === 2 ? "object-none object-left" : "object-contain")} />
-                {item.image.label && <span className="text-base dd italic">{item.image.label}</span>}
+                {item.image.label && <span className="text-base italic">{item.image.label}</span>}
               </div>
             </div>
           ))}
         </div>
-      </ScrollFade>
-      <ScrollFade className="mx-auto max-w-4xl text-base space-y-6">
+      </section>
+      <section className="mx-auto max-w-4xl space-y-6 text-base">
         <h1 className="mb-0 text-2xl font-bold">Low Fidelity prototype</h1>
         <p className="font-medium">
           I used Axure to create a low-fidelity prototype because I wanted to assess key metrics such as time on task, as there is a lot of typing involved, which is not possible in Figma. I aimed to evaluate at what point users experience
           exhaustion or overwhelm
         </p>
         <div className="space-y-12">
-          <video loop muted autoPlay src="/images/gistly/video-1.mp4" poster="/images/gistly/image-1.png" title="Low Fidelity prototype" className="w-full h-full" />
+          <video loop muted autoPlay src="/images/gistly/video-1.mp4" poster="/images/gistly/image-1.png" title="Low Fidelity prototype" className="h-full w-full" />
         </div>
-        <div className="md:w-1/2 space-y-3">
+        <div className="space-y-3 md:w-1/2">
           <h3 className="font-bold">Usability Issues</h3>
-          <ul className="list-disc list-inside">
+          <ul className="list-inside list-disc">
             <li>Drag functionality and direct editing were not technically possible at the moment.</li>
             <li>The icons for adding descriptions to parameters were confusing.</li>
             <li>The modal window distracted from the main task.</li>
           </ul>
         </div>
-      </ScrollFade>
-      <ScrollFade className="text-base space-y-3">
+      </section>
+      <section className="space-y-3 text-base">
         <h1 className="mx-auto max-w-4xl text-2xl font-bold">Improvements</h1>
         <div className="mx-auto max-w-7xl space-y-12">
           {data4.map((item) => (
             <React.Fragment key={item.id}>
               <div className="mx-auto max-w-4xl">
                 <h3 className="mb-3 ml-1 font-bold">{`${item.id}. ${item.title}`}</h3>
-                <p className="text-base dd font-normal">{item.description}</p>
+                <p className="text-base font-normal">{item.description}</p>
               </div>
               {item.images.map((image) => (
-                <div className="w-full mb-14">
-                  <img src={image.src} alt={image.alt} className="object-contain w-full h-full" />
+                <div className="mb-14 w-full">
+                  <img src={image.src} alt={image.alt} className="h-full w-full object-contain" />
                 </div>
               ))}
             </React.Fragment>
           ))}
         </div>
-        <div className="mt-16 mx-auto max-w-4xl w-full">
-          <video loop muted autoPlay src="/images/gistly/video-2.mp4" poster="/images/gistly/image-1.png" title="High Fidelity prototype" className="w-full h-full" />
+        <div className="mx-auto mt-16 w-full max-w-4xl">
+          <video loop muted autoPlay src="/images/gistly/video-2.mp4" poster="/images/gistly/image-1.png" title="High Fidelity prototype" className="h-full w-full" />
         </div>
-        <div className="text-base dd space-y-3 mx-auto max-w-4xl">
+        <div className="mx-auto max-w-4xl space-y-3 text-base">
           <p>The improvements resulted in a 24% reduction in time on task metrics and significantly decreased the probability of errors.</p>
           <p>
             <span className="font-bold">Accessibility Considerations:</span> In addition to utilizing ShadCN's built-in accessibility features, we've made sure that the color contrasts throughout the design meet at least AA compliance
             according to WCAG (Web Content Accessibility Guidelines). This was verified using the A11y plugin, ensuring that all elements are clear and legible for users with low vision or color blindness
           </p>
         </div>
-      </ScrollFade>
-      <ScrollFade className="mx-auto max-w-4xl space-y-3">
+      </section>
+      <section className="mx-auto max-w-4xl space-y-3">
         <h1 className="text-2xl font-bold">Reflection</h1>
         <p>
           This project helped me understand how good design is basically invisible to the users and the amount of research and empathy it takes to create something that naturally blends with users' day-to-day tasks. A bad design can leave a
@@ -187,7 +186,7 @@ export const CaseStudy1 = () => {
           when designing a solution. Understanding the background and context of a design problem is important. In this case, understanding what managers' daily lives look like, what software they use, and their goals and frustrations
           greatly helped me create designs that resonate with them. Collaborating regularly with the team significantly saved time by preventing the pursuit of infeasible ideas.
         </p>
-      </ScrollFade>
+      </section>
     </div>
   );
 };
@@ -244,7 +243,7 @@ const data3 = [
     image: {
       src: "/images/gistly/image-7.svg",
     },
-    points: ["Not all users may have the template in CSV format.", "Technical feasibility considerations.", "There should still be an option to manually add templates."],
+    points: ["Not all users may have the template in CSV format.", "Technical feasibility considerations.", "There should still be an option to manually atemplates."],
   },
   {
     id: 3,

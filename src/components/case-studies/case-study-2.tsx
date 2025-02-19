@@ -1,4 +1,3 @@
-import { ScrollFade } from "../ui/scroll-fade";
 import goal from "/images/serenity/icons/goal.svg";
 import mindMap from "/images/serenity/icons/mind-map.svg";
 
@@ -6,7 +5,7 @@ export const CaseStudy2 = () => {
   return (
     <div className="text-base dd w-full mt-9 text-dark space-y-12">
       <div className="mx-auto max-w-4xl space-y-12">
-        <ScrollFade className="flex w-full flex-col space-y-6 sm:flex-row justify-between">
+        <section className="flex w-full flex-col space-y-6 sm:flex-row justify-between">
           <div className="sm:w-2/3 flex flex-col space-y-12">
             <div>
               <img src={goal} alt="Goal" />
@@ -22,8 +21,8 @@ export const CaseStudy2 = () => {
           <div>
             <img src="/images/serenity/aif-1.gif" alt="iPad Mockup 1.png" className="object-contain h-[25rem]" />
           </div>
-        </ScrollFade>
-        <ScrollFade className="space-y-3">
+        </section>
+        <section className="space-y-3">
           <h1 className="text-2xl font-bold">Understanding the user</h1>
           <p>
             A primary user group identified through research was art enthusiasts who visited the gallery. I interviewed five art enthusiasts who had visited various art galleries, including individuals from diverse backgrounds. I created
@@ -39,19 +38,19 @@ export const CaseStudy2 = () => {
               </li>
             ))}
           </ol>
-        </ScrollFade>
-        <ScrollFade className="space-y-3">
+        </section>
+        <section className="space-y-3">
           <img src="/images/serenity/image-1.png" alt="Image 1" className="w-full object-contain" />
           <div>
             <h1 className="text-base font-bold">Problem statement:</h1>
             <p>Dana Walter is an English literature student who needs to contact an artist because she needs to organize an event at her university.</p>
           </div>
-        </ScrollFade>
+        </section>
       </div>
-      <ScrollFade className="mx-auto max-w-[950px]">
+      <section className="mx-auto max-w-[950px]">
         <img src="/images/serenity/image-2.png" alt="Image 2" className="w-full object-contain" />
-      </ScrollFade>
-      <ScrollFade className="mx-auto max-w-4xl space-y-12">
+      </section>
+      <section className="mx-auto max-w-4xl space-y-12">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold">Ideation phase</h1>
           <div className="space-y-3">
@@ -110,18 +109,18 @@ export const CaseStudy2 = () => {
           <h1 className="text-2xl font-bold">High-Fidelity Designs</h1>
           <p>After iterating on the low-fidelity prototype, I moved to high-fidelity designs. I chose a calming color palette and the simple, clean font Lato for styling.</p>
         </div>
-      </ScrollFade>
-      <ScrollFade className="mx-auto max-w-7xl">
+      </section>
+      <section className="mx-auto max-w-7xl">
         <img src="/images/serenity/image-8.png" alt="Image 5" className="w-full object-contain" />
-      </ScrollFade>
-      <ScrollFade className="-mx-6 max-w-screen">
+      </section>
+      <section className="-mx-6 max-w-screen">
         <img src="/images/serenity/image-9.svg" alt="Image 5" className="w-full object-contain" />
-      </ScrollFade>
-      <ScrollFade className="mx-auto max-w-sm">
+      </section>
+      <section className="mx-auto max-w-sm">
         <img src="/images/serenity/aif-3.gif" alt="Image 5" className="w-full object-contain" />
         <span className="block text-center italic">High Fidelity Prototype</span>
-      </ScrollFade>
-      <ScrollFade className="mx-auto max-w-4xl space-y-12">
+      </section>
+      <section className="mx-auto max-w-4xl space-y-12">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold">Accessibility considerations</h1>
           <ol className="grid sm:grid-cols-3 gap-6">
@@ -155,7 +154,7 @@ export const CaseStudy2 = () => {
             </p>
           </div>
         </div>
-      </ScrollFade>
+      </section>
     </div>
   );
 };

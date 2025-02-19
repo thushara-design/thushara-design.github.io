@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import { Button } from "./ui/button";
 import { caseStudiesData } from "../data";
 import ArrowRight from "@/assets/arrow-right";
-import { ScrollFade } from "./ui/scroll-fade";
 
 const CaseStudy = () => {
   const navigate = useNavigate();
@@ -16,7 +15,7 @@ const CaseStudy = () => {
   );
 
   return (
-    <ScrollFade id="case-studies" className="space-y-6">
+    <section id="case-studies" className="space-y-6">
       <h2 className="text-2xl font-bold">Case Studies</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
         {caseStudiesData.map(({ image, title, slug, description, tags, externalLink }, index) => (
@@ -53,7 +52,7 @@ const CaseStudy = () => {
           </div>
         ))}
       </div>
-    </ScrollFade>
+    </section>
   );
 };
 

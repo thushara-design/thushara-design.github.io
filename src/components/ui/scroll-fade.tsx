@@ -1,6 +1,6 @@
 import { HTMLMotionProps, motion } from "framer-motion";
 
-const ScrollFade: React.FC<HTMLMotionProps<"section">> = ({ children, ...props }) => {
+const section: React.FC<HTMLMotionProps<"section">> = ({ children, ...props }) => {
   return (
     <motion.section
       initial={{ opacity: 0, filter: "blur(10px)" }}
@@ -27,4 +27,4 @@ const ScrollGlass: React.FC<HTMLMotionProps<"div">> = ({ children, className, ..
   );
 };
 
-export { ScrollFade, ScrollGlass };
+export { section, ScrollGlass };

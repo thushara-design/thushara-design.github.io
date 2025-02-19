@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { socialLinks } from "../data";
 import { Button } from "./ui/button";
-import { ScrollFade } from "./ui/scroll-fade";
 
 const EMAIL = socialLinks.find((link) => link.label === "Email")?.link;
 
@@ -48,7 +47,7 @@ export const Contact = () => {
   };
 
   return (
-    <ScrollFade id="contact" className="space-y-6">
+    <section id="contact" className="space-y-6">
       <h4 className="text-2xl font-bold text-dark">Let&apos;s talk</h4>
       <p className="text-dark">I&apos;d love to hear from you! Whether you&apos;re looking for a UX designer to collaborate with, have questions about my work, or just want to chat about design, feel free to reach out.</p>
       <Button
@@ -64,6 +63,6 @@ export const Contact = () => {
         className="w-72 border border-solid border-border">
         <span className="transition-opacity duration-300">{isCopied ? "Copied!" : isHovered ? "Copy" : emailText}</span>
       </Button>
-    </ScrollFade>
+    </section>
   );
 };
