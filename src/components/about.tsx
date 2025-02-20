@@ -5,8 +5,8 @@ import { Button } from "./ui/button";
 export const About = () => {
   const renderTestimonial = (testimonials: TestimonialData[]) =>
     testimonials.map(({ id, quote, author, contact }) => (
-      <div key={id} className="flex min-h-96 flex-col justify-between gap-y-3 rounded-2xl border-solid border-dark px-8 py-6 font-title odd:bg-accent-primary even:bg-accent-secondary first-of-type:border first-of-type:bg-white">
-        <p className="font-body">"{quote}"</p>
+      <div key={id} className="flex min-h-96 flex-col font-body justify-between gap-y-3 rounded-2xl border-solid border-dark px-8 py-6 odd:bg-accent-primary even:bg-accent-secondary first-of-type:border first-of-type:bg-white">
+        <p>"{quote}"</p>
         <div className="space-y-3 text-right">
           <h3>{author}</h3>
           <p>{contact}</p>
@@ -35,8 +35,8 @@ export const About = () => {
           <h3 className="font-title text-2xl italic">hello there :)</h3>
           <p>
             I am a dedicated designer based in India, and I'm truly passionate about creating intuitive user experiences. Research is my favorite part of the design process. I love connecting with diverse people to understand their goals,
-            needs and pain points to create intuitive and beautiful solutions. I love working on high social impact areas like sustainability, health and wellness and education. I'm resourceful and love approaching challenges creatively,
-            always excited to take on new projects and deliver my best. Outside of design, I enjoy meditating, drawing patterns, or spending time in nature.
+            needs and pain points to create intuitive and beautiful solutions. I'm resourceful and love approaching challenges creatively, always excited to take on new projects and deliver my best. Outside of design, I enjoy meditating,
+            drawing cute patterns, or spending time in nature.
           </p>
           <div className="flex items-center gap-3">
             <a href={socialLinks.find((link) => link.label === "Linkedln")?.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">

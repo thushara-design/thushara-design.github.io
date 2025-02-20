@@ -37,7 +37,7 @@ const caseStudies = [
     slug: "elementry",
     tagline: "",
     tags: ["Banking", "Dashboard", "Visual Design", "User research"],
-    description: "Elementary is another UX course project focused on understanding and improving the user experience of online banking for Indian customers.",
+    description: "Elementry is another UX course project focused on understanding and improving the user experience of online banking for Indian customers.",
     image: "case-study-3.png",
     role: "UI/UX designer",
     timeframe: "",

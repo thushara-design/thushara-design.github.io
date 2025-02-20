@@ -39,7 +39,7 @@ export const Header = ({ className }: { className?: string }) => {
       target={link.link.startsWith("http") ? "_blank" : "_self"}
       rel={link.link.startsWith("http") ? "noopener noreferrer" : ""}
       onClick={() => setIsOpen(false)}
-      className="underline-offset-8 hover:text-gray-900 hover:underline [&.active]:underline">
+      className={cn("underline-offset-8 hover:text-gray-900 hover:underline [&.active]:underline", { "font-bold": link.label === "Resume" })}>
       {link.label}
     </a>
   );

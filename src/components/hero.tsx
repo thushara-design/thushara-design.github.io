@@ -1,3 +1,4 @@
+import { socialLinks } from "@/data";
 import { Button } from "./ui/button";
 
 export const Hero = () => {
@@ -9,7 +10,7 @@ export const Hero = () => {
         <p className="my-8 font-title text-3xl leading-10">
           I'm a <em className="italic">UX/UI Designer</em> passionate about creating intuitive, empathetic design solutions that simplify user tasks while aligning with both user needs and business objectives.
         </p>
-        <a href="/#contact">
+        <a href={socialLinks.find(({ label }) => label === "Email")?.link}>
           <Button variant="outline">Work with me</Button>
         </a>
       </div>
