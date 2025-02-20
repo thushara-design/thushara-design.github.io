@@ -9,6 +9,7 @@ import { Hero } from "./components/hero";
 import { Skills } from "./components/skills";
 import { CaseStudyDat } from "./components/case-study-details";
 import { caseStudiesData } from "./data";
+import { landingLeft, landingRight } from "./assets/images";
 
 function App() {
   const location = useLocation();
@@ -29,7 +30,9 @@ function App() {
   }
 
   return (
-    <div className="font-sans text-dark">
+    <div className="relative font-sans text-dark">
+      <img src={landingRight} alt="Landing Right" className="absolute right-0 top-0 -z-10 hidden xl:block" />
+      <img src={landingLeft} alt="Landing Left" className="absolute left-0 top-7 -z-10 hidden xl:block" />
       <Header />
       <main className="container mx-auto max-w-6xl space-y-12 p-6">
         <Hero />

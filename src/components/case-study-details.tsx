@@ -59,8 +59,8 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
       <section className={cn("mx-auto max-w-4xl w-full space-y-8 p-6 pt-24 md:pt-40", CASE_STUDIES_WITH_DARK_BG.includes(slug) ? "text-white" : "text-dark")}>
         {!CASE_STUDIES_WITH_DARK_BG.includes(slug) && (
           <>
-            <img src={subtractRight} alt="Subtract Right" className="absolute right-0 top-40 z-0 hidden xl:block" />
-            <img src={subtractLeft} alt="Subtract Left" className="absolute left-0 top-80 z-0 hidden xl:block" />
+            <img src={subtractRight} alt="Subtract Right" className="absolute right-0 top-40 -z-10 hidden xl:block" />
+            <img src={subtractLeft} alt="Subtract Left" className="absolute left-0 top-80 -z-10 hidden xl:block" />
           </>
         )}
         <div className="mx-auto max-w-4xl space-y-3">
