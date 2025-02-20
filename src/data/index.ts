@@ -2,6 +2,7 @@ import caseStudies from "./case-studies";
 import navLinks from "./nav-links.json";
 import socialLinks from "./social-links.json";
 import testimonialData from "./testimonials.json";
+import skills from "./skills.json";
 
 // Nav links for header
 export { navLinks };
@@ -16,3 +17,6 @@ export const caseStudiesData = caseStudies;
 // Testimonials
 export type TestimonialData = (typeof testimonialData)[0];
 export { testimonialData };
+
+// Skills
+export { skills };

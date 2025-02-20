@@ -11,6 +11,11 @@
   },
   {
     "id": 3,
+    "label": "Resume",
+    "link": "https://drive.google.com/file/d/1RbgANZcxYaUCyjzAkkZOZkmz2AC2o1ts/view"
+  },
+  {
+    "id": 4,
     "label": "Contact",
     "link": "/#contact"
   }

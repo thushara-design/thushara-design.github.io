@@ -7,6 +7,9 @@ const config = {
         body: ["Nunito", "sans-serif"],
         title: ["Instrument Serif", "serif"],
       },
+      borderRadius: {
+        "4xl": "1.875rem",
+      },
       colors: {
         dark: "#131312",
         primary: "#ff6363",

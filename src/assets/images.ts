@@ -12,20 +12,24 @@ import heroBG1 from "../assets/hero-bg-1.svg";
 import heroBG2 from "../assets/hero-bg-2.svg";
 import Logo from "./logo";
 import ArrowRight from "./arrow-right";
+import subtractLeft from "../assets/subtract-left.svg";
+import subtractRight from "../assets/subtract-right.svg";
 
 export {
   // ArrowRight,
-  ArrowRight,
-  heroBG1,
-  heroBG2,
-  Logo,
   arrowDown,
   arrowDownToLine,
   arrowRight,
+  ArrowRight,
   close,
   flower,
-  profile,
+  heroBG1,
+  heroBG2,
   Linkedin,
+  Logo,
   Mail,
   Menu,
+  profile,
+  subtractLeft,
+  subtractRight,
 };

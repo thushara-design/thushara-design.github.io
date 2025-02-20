@@ -9,7 +9,7 @@ const CaseStudy = () => {
 
   const handleSlugChange = useCallback(
     (slug: string) => {
-      navigate({ search: `?ref=${slug}` });
+      navigate({ search: `?ref=${slug}` }, { preventScrollReset: false });
     },
     [navigate],
   );
@@ -17,7 +17,7 @@ const CaseStudy = () => {
   return (
     <section id="case-studies" className="space-y-6">
       <h2 className="text-2xl font-bold">Case Studies</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1">
         {caseStudiesData.map(({ image, title, slug, description, tags, externalLink }, index) => (
           <div key={slug} className="flex w-full flex-col rounded-sm shadow-custom transition-transform duration-300 lg:flex-row lg:even:flex-row-reverse">
             <img src={`/images/${image}`} alt={title} width={570} height={310} className={`max-lg:rounded-t-sm object-cover lg:w-1/2 ${index % 2 === 0 ? "lg:rounded-l-sm" : "lg:rounded-r-sm"}`} />

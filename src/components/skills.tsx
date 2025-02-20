@@ -1,20 +1,4 @@
-const skills = [
-  "UI/UX design",
-  "Web accessibility",
-  "Research",
-  "Figma",
-  "Procreate",
-  "Responsive design",
-  "Design system",
-  "Usability Testing",
-  "Branding",
-  "Adobe creative suite",
-  "Web design",
-  "Basic HTML and CSS",
-  "Illustration",
-  "Human-Computer Interaction",
-  "Design system",
-];
+import { skills } from "@/data";
 
 export const Skills = () => {
   const renderSkills = (skills: string[]) => {

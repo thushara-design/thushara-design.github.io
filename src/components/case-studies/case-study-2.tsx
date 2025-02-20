@@ -3,23 +3,23 @@ import mindMap from "/images/serenity/icons/mind-map.svg";
 
 export const CaseStudy2 = () => {
   return (
-    <div className="text-base dd w-full mt-9 text-dark space-y-12">
+    <div className="mt-9 w-full space-y-12 text-base text-dark">
       <div className="mx-auto max-w-4xl space-y-12">
-        <section className="flex w-full flex-col space-y-6 sm:flex-row justify-between">
-          <div className="sm:w-2/3 flex flex-col space-y-12">
+        <section className="flex w-full flex-col justify-between space-y-6 sm:flex-row">
+          <div className="flex flex-col space-y-12 sm:w-2/3">
             <div>
-              <img src={goal} alt="Goal" />
+              <img src={mindMap} alt="Mind Map" />
               <h1 className="mt-6 text-2xl font-bold">The problem</h1>
               <p className="mt-3">Gallery visitors having hard time in finding artist info, saving it and keeping up with events.</p>
             </div>
             <div>
-              <img src={mindMap} alt="Mind Map" />
+              <img src={goal} alt="Goal" />
               <h1 className="mt-6 text-2xl font-bold">The Goal</h1>
               <p className="mt-3">Design an app for the gallery where the visitors can quickly scan artwork to know about the artwork and the artists and add them to favorites.</p>
             </div>
           </div>
           <div>
-            <img src="/images/serenity/aif-1.gif" alt="iPad Mockup 1.png" className="object-contain h-[25rem]" />
+            <img src="/images/serenity/aif-1.gif" alt="iPad Mockup 1.png" className="h-[25rem] object-contain" />
           </div>
         </section>
         <section className="space-y-3">
@@ -30,10 +30,10 @@ export const CaseStudy2 = () => {
             to know more about the artworks and artists displayed in the gallery. As a gallery that supports emerging artists, the info available on this is inadequate.
           </p>
 
-          <ol className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <ol className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
             {data.map((item, index) => (
-              <li key={index} className="bg-accent-quaternary flex flex-col gap-5 rounded-4xl p-5">
-                <span className="size-7 flex justify-center items-center font-bold rounded-full border border-solid">{item.id}</span>
+              <li key={index} className="flex flex-col gap-5 rounded-4xl bg-accent-quaternary p-5">
+                <span className="flex size-7 items-center justify-center rounded-full border border-solid font-bold">{item.id}</span>
                 <p className="font-normal">{item.description}</p>
               </li>
             ))}
@@ -90,7 +90,7 @@ export const CaseStudy2 = () => {
               provided at the end of the session. See my UX Research Study Plan here.
               <br />I analyzed various responses from the participants to identify various patterns and derive insights from them.
               <br />I iterated on my designs to solve these usability issues.
-              <ol className="list-decimal list-inside">
+              <ol className="list-inside list-decimal">
                 <li>
                   I decided to include labels for the navigation options, making the scan feature easier to discover from the homepage. To ensure the users are able to find the saved profiles easily, I added a favorites nav button with a
                   clear label.
@@ -113,7 +113,7 @@ export const CaseStudy2 = () => {
       <section className="mx-auto max-w-7xl">
         <img src="/images/serenity/image-8.png" alt="Image 5" className="w-full object-contain" />
       </section>
-      <section className="-mx-6 max-w-screen">
+      <section className="max-w-screen -mx-6">
         <img src="/images/serenity/image-9.svg" alt="Image 5" className="w-full object-contain" />
       </section>
       <section className="mx-auto max-w-sm">
@@ -123,10 +123,10 @@ export const CaseStudy2 = () => {
       <section className="mx-auto max-w-4xl space-y-12">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold">Accessibility considerations</h1>
-          <ol className="grid sm:grid-cols-3 gap-6">
+          <ol className="grid gap-6 sm:grid-cols-3">
             {data2.map((item, index) => (
-              <li key={index} className="bg-accent-quinary flex flex-col gap-5 rounded-4xl p-5">
-                <span className="size-7 flex justify-center items-center font-bold rounded-full border border-solid">{item.id}</span>
+              <li key={index} className="flex flex-col gap-5 rounded-4xl bg-accent-quinary p-5">
+                <span className="flex size-7 items-center justify-center rounded-full border border-solid border-black font-bold">{item.id}</span>
                 <p className="font-normal">{item.description}</p>
               </li>
             ))}

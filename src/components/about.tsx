@@ -6,7 +6,7 @@ export const About = () => {
   const renderTestimonial = (testimonials: TestimonialData[]) =>
     testimonials.map(({ id, quote, author, contact }) => (
       <div key={id} className="flex min-h-96 flex-col justify-between gap-y-3 rounded-2xl border-solid border-dark px-8 py-6 font-title odd:bg-accent-primary even:bg-accent-secondary first-of-type:border first-of-type:bg-white">
-        <p>"{quote}"</p>
+        <p className="font-body">"{quote}"</p>
         <div className="space-y-3 text-right">
           <h3>{author}</h3>
           <p>{contact}</p>

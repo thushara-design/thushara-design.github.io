@@ -9,8 +9,8 @@ export const Hero = () => {
         <p className="my-8 font-title text-3xl leading-10">
           I'm a <em className="italic">UX/UI Designer</em> passionate about creating intuitive, empathetic design solutions that simplify user tasks while aligning with both user needs and business objectives.
         </p>
-        <a href="https://drive.google.com/file/d/1RbgANZcxYaUCyjzAkkZOZkmz2AC2o1ts/view" target="_blank" rel="noreferrer">
-          <Button variant="outline">Resume</Button>
+        <a href="/#contact">
+          <Button variant="outline">Work with me</Button>
         </a>
       </div>
     </section>
