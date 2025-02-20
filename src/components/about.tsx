@@ -28,7 +28,6 @@ export const About = () => {
 
           {/* Profile Image */}
           <img src={profile} alt="Profile" className="size-full rounded-full border-4 border-white" />
-          {/* <img src={profile} alt="Profile" className="size-full rounded-sm border-4 border-white" /> */}
         </div>
 
         <div className="flex flex-col justify-between gap-6 text-dark">

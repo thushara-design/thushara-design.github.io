@@ -54,11 +54,15 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
     <div className="font-sans">
       {CASE_STUDIES_WITH_DARK_BG.includes(slug) && <div className="absolute left-0 top-0 -z-10 h-[52rem] w-full bg-[#0F1523] text-white md:h-[42rem]" />}
 
-      <Header className={CASE_STUDIES_WITH_DARK_BG.includes(slug) ? (scrollPosition > 660 ? "bg-white/30 text-dark" : "bg-transparent/30 text-white") : undefined} />
+      <Header className={CASE_STUDIES_WITH_DARK_BG.includes(slug) && scrollPosition < 660 ? "bg-[#0F1523] text-white" : undefined} />
 
       <section className={cn("mx-auto max-w-4xl w-full space-y-8 p-6 pt-24 md:pt-40", CASE_STUDIES_WITH_DARK_BG.includes(slug) ? "text-white" : "text-dark")}>
-        <img src={subtractRight} alt="Subtract Right" className="absolute right-0 top-40 z-0 hidden xl:block" />
-        <img src={subtractLeft} alt="Subtract Left" className="absolute left-0 top-80 z-0 hidden xl:block" />
+        {!CASE_STUDIES_WITH_DARK_BG.includes(slug) && (
+          <>
+            <img src={subtractRight} alt="Subtract Right" className="absolute right-0 top-40 z-0 hidden xl:block" />
+            <img src={subtractLeft} alt="Subtract Left" className="absolute left-0 top-80 z-0 hidden xl:block" />
+          </>
+        )}
         <div className="mx-auto max-w-4xl space-y-3">
           <h1 className="text-3xl font-medium">{title}</h1>
           <h2 className="text-lg uppercase">{tagline}</h2>
@@ -72,7 +76,7 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
               <p>{role}</p>
             </div>
             <div>
-              <h3 className="mb-3 font-bold">timeframe</h3>
+              <h3 className="mb-3 font-bold">Timeframe</h3>
               <p>{timeframe}</p>
             </div>
             <div>
