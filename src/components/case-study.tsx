@@ -1,3 +1,4 @@
+import { AnimatedSection } from "./animated-section";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "./ui/button";
@@ -15,12 +16,20 @@ const CaseStudy = () => {
   );
 
   return (
-    <section id="case-studies" className="space-y-6">
+    <AnimatedSection id="case-studies" className="space-y-6">
       <h2 className="text-2xl font-bold">Case Studies</h2>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1">
         {caseStudiesData.map(({ image, title, slug, description, tags, externalLink }, index) => (
-          <div key={slug} className="flex w-full flex-col rounded-sm shadow-custom transition-transform duration-300 lg:flex-row lg:even:flex-row-reverse">
-            <img src={`/images/${image}`} alt={title} width={570} height={310} className={`max-lg:rounded-t-sm object-cover lg:w-1/2 ${index % 2 === 0 ? "lg:rounded-l-sm" : "lg:rounded-r-sm"}`} />
+          <div
+            key={slug}
+            className="flex w-full flex-col rounded-sm shadow-custom transition-transform duration-300 lg:flex-row lg:even:flex-row-reverse">
+            <img
+              src={`/images/${image}`}
+              alt={title}
+              width={570}
+              height={310}
+              className={`max-lg:rounded-t-sm object-cover lg:w-1/2 ${index % 2 === 0 ? "lg:rounded-l-sm" : "lg:rounded-r-sm"}`}
+            />
             <div className="flex flex-col justify-between space-y-4 px-2.5 py-4 lg:w-1/2 lg:px-8 lg:py-5">
               <h3 className="text-2xl font-bold">{title}</h3>
               <div className="space-y-3.5">
@@ -52,7 +61,7 @@ const CaseStudy = () => {
           </div>
         ))}
       </div>
-    </section>
+    </AnimatedSection>
   );
 };
 

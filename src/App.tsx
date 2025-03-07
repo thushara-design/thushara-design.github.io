@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { About } from "./components/about";
 import { CaseStudy } from "./components/case-study";
+import { CaseStudyDat } from "./components/case-study-details";
 import { Contact } from "./components/contact";
 import { Footer } from "./components/footer";
 import { Header } from "./components/header";
 import { Hero } from "./components/hero";
 import { Skills } from "./components/skills";
-import { CaseStudyDat } from "./components/case-study-details";
-import { caseStudiesData } from "./data";
 import { landingLeft, landingRight } from "./assets/images";
+import { caseStudiesData } from "./data";
 
 function App() {
   const location = useLocation();
