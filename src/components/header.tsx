@@ -3,7 +3,7 @@ import { navLinks } from "../data";
 import { close, Logo, Menu } from "../assets/images";
 import { cn } from "../lib/utils";
 
-export const Header = ({ className }: { className?: string }) => {
+export const Header: React.FC<React.HTMLProps<HTMLElement>> = ({ className, ...props }: { className?: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +45,7 @@ export const Header = ({ className }: { className?: string }) => {
   );
 
   return (
-    <header className={cn("fixed top-0 left-0 w-full z-40 backdrop-blur-lg bg-white/10", className)}>
+    <header className={cn("fixed top-0 left-0 w-full z-40 backdrop-blur-lg bg-white/10", className)} {...props}>
       <div className="flex items-center justify-between p-5 2xl:px-20">
         {/* Logo */}
         <a href="/" className="flex items-center font-title font-medium">
@@ -53,7 +53,13 @@ export const Header = ({ className }: { className?: string }) => {
         </a>
 
         {/* Mobile Menu Button */}
-        <button onClick={toggleMenu} aria-label="Toggle Navigation Menu" aria-expanded={isOpen} aria-controls="mobile-menu" role="button" className="flex cursor-pointer flex-col items-center justify-center gap-1 sm:hidden">
+        <button
+          type="button"
+          onClick={toggleMenu}
+          aria-label="Toggle Navigation Menu"
+          aria-expanded={isOpen}
+          aria-controls="mobile-menu"
+          className="flex cursor-pointer flex-col items-center justify-center gap-1 sm:hidden">
           <Menu />
         </button>
 
@@ -61,8 +67,10 @@ export const Header = ({ className }: { className?: string }) => {
         <div
           ref={menuRef}
           id="mobile-menu"
-          role="navigation"
-          className={cn("fixed top-0 left-0 z-50 h-[36svh] w-full bg-accent-primary text-dark shadow transition-transform duration-300 ease-in-out sm:hidden", isOpen ? "translate-y-0" : "-translate-y-full")}>
+          className={cn(
+            "fixed top-0 left-0 z-50 h-[36svh] w-full bg-accent-primary text-dark shadow transition-transform duration-300 ease-in-out sm:hidden",
+            isOpen ? "translate-y-0" : "-translate-y-full",
+          )}>
           <div className="flex justify-between p-5">
             {/* Logo */}
             <a href="/" className="flex items-center font-title font-medium">
@@ -70,7 +78,7 @@ export const Header = ({ className }: { className?: string }) => {
             </a>
 
             {/* Close Button */}
-            <button onClick={toggleMenu} aria-label="Close Menu" className="cursor-pointer">
+            <button type="button" onClick={toggleMenu} aria-label="Close Menu" className="cursor-pointer">
               <img src={close} alt="Close" />
             </button>
           </div>
