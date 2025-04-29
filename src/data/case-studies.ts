@@ -47,7 +47,7 @@ const caseStudies = [
   },
   {
     title: "Aria",
-    slug: "Aria",
+    slug: "aria",
     tagline: "PRESENTATION",
     tags: ["Career Pivoters", "Design", "Research"],
     description: "Aria is a collaborative project that aims to help career pivoters find their next career opportunity.",
