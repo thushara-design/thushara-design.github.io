@@ -18,11 +18,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
 
       - name: Set up Git user
         run: |
           git config --global user.name "$GIT_USER_NAME"
           git config --global user.email "$GIT_USER_EMAIL"
+
+      - name: Authenticate with GITHUB_TOKEN
+        run: |
+          echo "https://${{ secrets.GITHUB_TOKEN }}@github.com" > ~/.git-credentials
+          git config --global credential.helper store
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v1
@@ -37,3 +44,4 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: bun run deploy
+        
