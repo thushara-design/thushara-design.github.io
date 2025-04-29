@@ -45,6 +45,19 @@ const caseStudies = [
     responsibilities: [],
     externalLink: "https://thushara-design.super.site/projects/brushd",
   },
+  {
+    title: "Aria",
+    slug: "Aria",
+    tagline: "PRESENTATION",
+    tags: ["Career Pivoters", "Design", "Research"],
+    description: "Aria is a collaborative project that aims to help career pivoters find their next career opportunity.",
+    image: "case-study-4.png",
+    role: "Product Designer",
+    timeframe: "In Progress",
+    tools: ["Figma", "Notion"],
+    responsibilities: ["Research", "Design", "Presentation"],
+    externalLink: "https://www.figma.com/slides/ppzQvkfHpc814mYj9N4ftD/Aria--1stpresentation?node-id=2018-292&t=3485DrHHTXmqyxgl-1",
+  },
 ];
 
 export default caseStudies;
