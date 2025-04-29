@@ -1,5 +1,9 @@
 name: Deploy to GitHub Pages
-
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  run: |
+    git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+    bun run deploy
 on:
   push:
     branches:
