@@ -31,8 +31,16 @@ function App() {
 
   return (
     <div className="relative font-sans text-dark">
-      <img src={landingRight} alt="Landing Right" className="absolute right-0 top-0 -z-10 hidden xl:block" />
-      <img src={landingLeft} alt="Landing Left" className="absolute left-0 top-7 -z-10 hidden xl:block" />
+      <img
+        src={landingRight}
+        alt="Landing Right"
+        className="absolute right-0 top-0 -z-10 w-24 sm:w-32 md:w-40 lg:w-56 xl:w-auto"
+      />
+      <img
+        src={landingLeft}
+        alt="Landing Left"
+        className="absolute left-0 top-7 -z-10 w-24 sm:w-32 md:w-40 lg:w-56 xl:w-auto"
+      />
       <Header />
       <main className="container mx-auto max-w-6xl space-y-12 p-6">
         <Hero />
