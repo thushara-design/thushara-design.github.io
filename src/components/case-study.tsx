@@ -40,7 +40,7 @@ const CaseStudy = () => {
             <div className="flex flex-col gap-6 p-8">
               <h3 className="text-2xl font-bold">{title}</h3>
               <div className="space-y-4">
-                <p className="line-clamp-3 text-secondary-200">{description}</p>
+                <p className="line-clamp-3 text-black">{description}</p>
                 <ul className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
                     <li key={tag} className="px-3 py-1 odd:bg-accent-primary even:bg-accent-secondary">
