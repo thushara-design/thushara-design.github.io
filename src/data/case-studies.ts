@@ -23,7 +23,7 @@ const caseStudies = [
     tagline: "PRESENTATION",
     tags: ["Career Pivoters", "Design", "Research"],
     description: "Aria is a collaborative project that aims to help career pivoters find their next career opportunity.",
-    image: "case-study-1.png",
+    image: "case-study-aria.png",
     role: "Product Designer",
     timeframe: "In Progress",
     tools: ["Figma", "Notion"],
