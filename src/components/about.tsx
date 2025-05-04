@@ -40,7 +40,6 @@ export const About = () => {
 				</div>
 
 				<div className="flex flex-col justify-between gap-6 text-dark">
-					<h3 className="font-title text-2xl italic">hello there :)</h3>
 					<p>
 						I am a dedicated designer based in India, and I'm truly passionate
 						about creating intuitive user experiences. Research is my favorite
