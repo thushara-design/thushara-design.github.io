@@ -2,7 +2,7 @@ import { AnimatedSection } from "./animated-section";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "./ui/button";
-import { caseStudiesData } from "../data";
+import caseStudiesData from "../data/case-studies";
 import ArrowRight from "@/assets/arrow-right";
 
 const CaseStudy = () => {
@@ -17,7 +17,7 @@ const CaseStudy = () => {
 
   return (
     <AnimatedSection id="case-studies" className="space-y-12">
-      <h2 className="text-2xl font-bold">Case Studies</h2>
+      <h2 className="text-2xl font-bold text-dark">Case Studies</h2>
       <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-1">
         {caseStudiesData.map(({ image, title, slug, description, tags, externalLink }, index) => (
           <AnimatedSection
@@ -38,9 +38,9 @@ const CaseStudy = () => {
               className={`max-lg:rounded-t-sm object-cover lg:w-1/2 ${index % 2 === 0 ? "lg:rounded-l-sm" : "lg:rounded-r-sm"}`}
             />
             <div className="flex flex-col gap-6 p-8">
-              <h3 className="text-2xl font-bold">{title}</h3>
+              <h3 className="text-2xl font-bold text-dark">{title}</h3>
               <div className="space-y-4">
-                <p className="line-clamp-3 text-black">{description}</p>
+                <p className="line-clamp-3 text-dark">{description}</p>
                 <ul className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
                     <li key={tag} className="px-3 py-1 odd:bg-accent-primary even:bg-accent-secondary">
