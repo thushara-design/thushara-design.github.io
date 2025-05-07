@@ -6,12 +6,6 @@ const EMAIL = socialLinks.find((link) => link.label === "Email")?.link;
 
 export const Contact = () => {
 	const [isCopied, setIsCopied] = useState(false);
-	const [isMobile, setIsMobile] = useState(false);
-
-	useEffect(() => {
-		// Detect if the user is on a mobile device
-		setIsMobile(/Mobi|Android/i.test(navigator.userAgent));
-	}, []);
 
 	useEffect(() => {
 		if (isCopied) {
