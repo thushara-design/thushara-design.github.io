@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { socialLinks } from "../data";
+import { AnimatedSection } from "./animated-section";
 
 const EMAIL = socialLinks.find((link) => link.label === "Email")?.link;
 
@@ -42,7 +43,7 @@ export const Contact = () => {
 	};
 
 	return (
-		<div id="contact" className="space-y-6">
+		<AnimatedSection id="contact" className="space-y-6">
 			<h4 className="text-2xl font-bold text-dark">Let&apos;s talk</h4>
 			<p className="text-dark">
 				I&apos;d love to hear from you! Whether you&apos;re looking for a UX
@@ -56,6 +57,6 @@ export const Contact = () => {
 			>
 				<span>{isCopied ? "Copied!" : emailText}</span>
 			</Button>
-		</div>
+		</AnimatedSection>
 	);
 };
