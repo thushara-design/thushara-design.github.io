@@ -39,7 +39,7 @@ export const About = () => {
 					/>
 				</div>
 
-				<div className="flex flex-col justify-between gap-3 text-dark">
+				<div className="flex flex-col justify-between gap-4 text-dark">
 					<p>
                         I'm Thushara, a Product designer (UX/UI) focused on creating intuitive digital experiences that feel effortless and meaningful. My approach combines simplicity, clarity, and usability along with accessibility while ensuring that the design not only meets user needs but also supports business goals.
 						<br />
