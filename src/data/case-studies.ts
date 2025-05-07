@@ -23,6 +23,7 @@ const caseStudies = [
     tagline: "PRESENTATION",
     tags: ["Career Pivoters", "Design", "Research"],
     description: "Kite is a collaborative initiative focused on empowering career pivoters to navigate their professional transitions.",
+    image: "case-study-aria.png",
     role: "Product Designer",
     timeframe: "In Progress",
     tools: ["Figma", "Notion"],
