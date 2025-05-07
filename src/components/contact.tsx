@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { AnimatedSection } from "./animated-section";
 import { Button } from "./ui/button";
 import { socialLinks } from "../data";
 
