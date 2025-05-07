@@ -7,7 +7,6 @@ const EMAIL = socialLinks.find((link) => link.label === "Email")?.link;
 
 export const Contact = () => {
 	const [isCopied, setIsCopied] = useState(false);
-	const [isHovered, setIsHovered] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
@@ -50,7 +49,7 @@ export const Contact = () => {
 	};
 
 	return (
-		<AnimatedSection delay={1} id="contact" className="space-y-6">
+		<div id="contact" className="space-y-6">
 			<h4 className="text-2xl font-bold text-dark">Let&apos;s talk</h4>
 			<p className="text-dark">
 				I&apos;d love to hear from you! Whether you&apos;re looking for a UX
@@ -60,19 +59,10 @@ export const Contact = () => {
 			<Button
 				variant="outline"
 				onClick={handleCopy}
-				onMouseEnter={() => !isMobile && setIsHovered(true)}
-				onMouseLeave={() => {
-					if (!isMobile) {
-						setIsHovered(false);
-						setIsCopied(false);
-					}
-				}}
 				className="w-72 border border-solid border-border"
 			>
-				<span className="transition-opacity duration-300">
-					{isCopied ? "Copied!" : isHovered ? "Copy" : emailText}
-				</span>
+				<span>{isCopied ? "Copied!" : emailText}</span>
 			</Button>
-		</AnimatedSection>
+		</div>
 	);
 };
