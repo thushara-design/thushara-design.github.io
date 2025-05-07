@@ -41,11 +41,10 @@ export const About = () => {
 
 				<div className="flex flex-col justify-between gap-3 text-dark">
 					<p>
-						I'm Thushara, a Product designer(UX/UI) focused on creating intuitive digital experiences that feel effortless and meaningful. My approach combines simplicity, clarity, and usability along with accessibility while ensuring that the design not only meets user needs but also supports business goals.
-					</p>
-					<p>
-						With a deep interest in psychology and empathetic design, I enjoy transforming complex ideas into simple, elegant, user-centered solutions. When I'm not designing, you'll find me exploring new ideas with diverse people, illustrating a children's book, or reading new articles in cognitive science and technology.
-					</p>
+                        I'm Thushara, a Product designer (UX/UI) focused on creating intuitive digital experiences that feel effortless and meaningful. My approach combines simplicity, clarity, and usability along with accessibility while ensuring that the design not only meets user needs but also supports business goals.
+						<br />
+                        With a deep interest in psychology and empathetic design, I enjoy transforming complex ideas into simple, elegant, user-centered solutions. When I'm not designing, you'll find me exploring new ideas with diverse people, illustrating a children's book, or reading new articles in cognitive science and technology.
+                    </p>
 					<div className="flex items-center gap-3">
 						<a
 							href={socialLinks.find((link) => link.label === "Linkedln")?.link}
