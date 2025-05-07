@@ -18,7 +18,7 @@ const caseStudies = [
     Component: CaseStudy1,
   },
   {
-    title: "Aria",
+    title: "Project Kite",
     slug: "aria",
     tagline: "PRESENTATION",
     tags: ["Career Pivoters", "Design", "Research"],
