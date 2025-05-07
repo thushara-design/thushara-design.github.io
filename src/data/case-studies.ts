@@ -22,7 +22,7 @@ const caseStudies = [
     slug: "aria",
     tagline: "PRESENTATION",
     tags: ["Career Pivoters", "Design", "Research"],
-    description: "Aria is a collaborative project that aims to help career pivoters find their next career opportunity.",
+    description: "Kite is a collaborative initiative focused on empowering career pivoters to navigate their professional transitions. Through user-centered design and research, we're creating a platform that helps individuals identify, explore, and successfully transition to new career opportunities.",
     image: "case-study-aria.png",
     role: "Product Designer",
     timeframe: "In Progress",
