@@ -28,7 +28,7 @@ const caseStudies = [
     timeframe: "In Progress",
     tools: ["Figma", "Notion"],
     responsibilities: ["Research", "Design", "Presentation"],
-    externalLink: "hhttps://www.figma.com/slides/etqtA0xDUb3XN62Nex3drO/Kite--1stpresentation?node-id=1-83&t=7tw0OwTWHQawN8Dn-1",
+    externalLink: "https://www.figma.com/deck/etqtA0xDUb3XN62Nex3drO/Kite--1stpresentation?node-id=1-83&t=GkB9VEnmtJXTRjii-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1",
   },
   {
     title: "Serenity",
