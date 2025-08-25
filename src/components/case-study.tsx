@@ -17,7 +17,7 @@ const CaseStudy = () => {
 
   return (
     <AnimatedSection id="case-studies" className="space-y-12">
-      <h2 className="text-2xl font-bold text-dark">Case Studies</h2>
+      <h2 className="text-2xl font-light uppercase text-dark">/Case Studies</h2>
       <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-1">
         {caseStudiesData.map(({ image, title, slug, description, tags, externalLink }, index) => (
           <AnimatedSection

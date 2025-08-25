@@ -6,6 +6,7 @@ const config = {
         sans: ["Geist", "sans-serif"],
         body: ["Geist", "sans-serif"],
         title: ["Geist", "sans-serif"],
+        mono: ["Geist Mono", "monospace"],
       },
       borderRadius: {
         "4xl": "1.875rem",
