@@ -3,9 +3,10 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Nunito", "sans-serif"],
-        body: ["Nunito", "sans-serif"],
-        title: ["Instrument Serif", "serif"],
+        sans: ["Geist", "sans-serif"],
+        body: ["Geist", "sans-serif"],
+        title: ["Geist", "sans-serif"],
+        mono: ["Geist Mono", "monospace"],
       },
       borderRadius: {
         "4xl": "1.875rem",
