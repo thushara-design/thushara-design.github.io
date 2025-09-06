@@ -43,9 +43,13 @@ export const Contact = () => {
 	};
 
 	return (
-		<AnimatedSection id="contact" className="space-y-6">
-			<h4 className="text-2xl font-bold text-dark">Let&apos;s talk</h4>
-			<p className="text-dark">
+		<AnimatedSection id="contact" className="space-y-20">
+			<div className="flex items-center gap-4 mb-2">
+				<div className="w-8 h-px bg-gray-300"></div>
+				<h2 className="text-sm font-medium text-gray-600 tracking-widest uppercase">Let's Talk</h2>
+				<div className="flex-1 h-px bg-gray-300"></div>
+			</div>
+			<p className="text-dark text-lg leading-relaxed">
 				I&apos;d love to hear from you! Whether you&apos;re looking for a UX
 				designer to collaborate with, have questions about my work, or just want
 				to chat about design, feel free to reach out.

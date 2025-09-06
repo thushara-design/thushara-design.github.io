@@ -8,7 +8,7 @@ import { Footer } from "./components/footer";
 import { Header } from "./components/header";
 import { Hero } from "./components/hero";
 import { Skills } from "./components/skills";
-import { landingLeft, landingRight } from "./assets/images";
+import { landingLeft } from "./assets/images";
 import { caseStudiesData } from "./data";
 
 function App() {
@@ -36,10 +36,13 @@ function App() {
 
   return (
     <div className="relative font-sans text-dark">
-      <img src={landingRight} alt="Landing Right" className="absolute right-0 top-0 -z-10 hidden xl:block" />
-      <img src={landingLeft} alt="Landing Left" className="absolute left-0 top-7 -z-10 hidden xl:block" />
+      <img 
+        src={landingLeft} 
+        alt="Landing Left" 
+        className="absolute left-0 top-7 -z-10 hidden xl:block animate-spin-very-slow w-70 h-70" 
+      />
       <Header />
-      <main className="container mx-auto max-w-6xl space-y-12 p-6">
+      <main className="container mx-auto max-w-6xl space-y-24 p-6">
         <Hero />
         <CaseStudy />
         <About />

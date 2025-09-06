@@ -3,9 +3,10 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Nunito", "sans-serif"],
-        body: ["Nunito", "sans-serif"],
-        title: ["Instrument Serif", "serif"],
+        sans: ["Geist", "system-ui", "sans-serif"],
+        body: ["Geist", "system-ui", "sans-serif"],
+        title: ["Geist", "system-ui", "sans-serif"],
+        mono: ["Geist Mono", "ui-monospace", "monospace"],
       },
       borderRadius: {
         "4xl": "1.875rem",
@@ -31,6 +32,8 @@ const config = {
       },
       animation: {
         "spin-slow": "spin 5s linear infinite",
+        "spin-reverse": "spin 8s linear infinite reverse",
+        "spin-very-slow": "spin 12s linear infinite",
       },
     },
   },

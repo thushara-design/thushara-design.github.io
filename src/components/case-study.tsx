@@ -3,7 +3,9 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "./ui/button";
 import caseStudiesData from "../data/case-studies";
-import ArrowRight from "@/assets/arrow-right";
+import ArrowRight from "../assets/arrow-right";
+import ExternalLink from "../assets/external-link";
+import { OptimizedImage } from './OptimizedImage';
 
 const CaseStudy = () => {
   const navigate = useNavigate();
@@ -16,10 +18,14 @@ const CaseStudy = () => {
   );
 
   return (
-    <AnimatedSection id="case-studies" className="space-y-12">
-      <h2 className="text-2xl font-bold text-dark">Case Studies</h2>
-      <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-1">
-        {caseStudiesData.map(({ image, title, slug, description, tags, externalLink }, index) => (
+    <AnimatedSection id="case-studies" className="space-y-20">
+      <div className="flex items-center gap-4 mb-2">
+        <div className="w-8 h-px bg-gray-300"></div>
+        <h2 className="text-sm font-medium text-gray-600 tracking-widest uppercase">Case Studies</h2>
+        <div className="flex-1 h-px bg-gray-300"></div>
+      </div>
+      <div className="grid grid-cols-1 gap-20">
+        {caseStudiesData.map(({ image, title, slug, description, tags, externalLink, liveProjectLink }, index) => (
           <AnimatedSection
             as="div"
             delay={index === 0 ? 0 : index * 0.2}
@@ -29,38 +35,53 @@ const CaseStudy = () => {
               whileInView: { opacity: 1, y: 0 },
               viewport: undefined
             } : {})}
-            className="flex w-full flex-col rounded-sm shadow-custom lg:flex-row lg:even:flex-row-reverse">
-            <img
-              src={`/images/${image}`}
-              alt={title}
-              width={570}
-              height={310}
-              className={`max-lg:rounded-t-sm object-cover lg:w-1/2 ${index % 2 === 0 ? "lg:rounded-l-sm" : "lg:rounded-r-sm"}`}
-            />
-            <div className="flex flex-col gap-6 p-8">
-              <h3 className="text-2xl font-bold text-dark">{title}</h3>
-              <div className="space-y-4">
-                <p className="line-clamp-3 text-dark">{description}</p>
-                <ul className="flex flex-wrap gap-2">
-                  {tags.map((tag) => (
-                    <li key={tag} className="px-3 py-1 odd:bg-accent-primary even:bg-accent-secondary">
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
+            className="flex w-full flex-col lg:flex-row lg:even:flex-row-reverse">
+            <div className="lg:w-1/2">
+              <OptimizedImage
+                src={`/images/${image}`}
+                alt={title}
+                className="w-full h-auto object-cover"
+                priority={index === 0}
+              />
+            </div>
+            <div className="flex flex-col justify-center gap-8 p-8 lg:w-1/2">
+              <div className="space-y-2">
+                <h3 className="text-2xl font-semibold text-dark flex items-center gap-2">
+                  {title}
+                  {liveProjectLink && (
+                    <a 
+                      href={liveProjectLink} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="text-gray-400 hover:text-dark transition-colors"
+                      title="View live project"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  )}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">{description}</p>
               </div>
-              <div className="mt-auto">
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span key={tag} className="flex items-center gap-2 px-4 py-2 text-sm font-light bg-[#FAFAFA] rounded-lg text-gray-700 font-geist">
+                    <span className="w-1.5 h-1.5 bg-gray-600 rounded-sm"></span>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-4">
                 {externalLink ? (
                   <a href={externalLink} target="_blank" rel="noreferrer">
                     <Button variant="outline">
                       View case study
-                      <ArrowRight className="transform transition-transform duration-300 group-hover:translate-x-1" />
+                      <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                   </a>
                 ) : (
                   <Button variant="outline" onClick={() => handleSlugChange(slug)}>
                     View case study
-                    <ArrowRight className="transform transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 )}
               </div>

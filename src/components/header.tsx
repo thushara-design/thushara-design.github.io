@@ -88,7 +88,7 @@ export const Header: React.FC<React.HTMLProps<HTMLElement>> = ({ className, ...p
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden flex-wrap items-center justify-center gap-x-10 text-base sm:flex lg:gap-x-20">{navLinks.map(renderNavLink)}</nav>
+        <nav className="hidden flex-wrap items-center justify-center gap-x-10 text-base text-dark sm:flex lg:gap-x-20">{navLinks.map(renderNavLink)}</nav>
       </div>
     </header>
   );
