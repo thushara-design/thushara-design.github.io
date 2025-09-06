@@ -7,6 +7,7 @@ interface OptimizedImageProps {
   width?: number;
   height?: number;
   priority?: boolean;
+  quality?: number; // Add quality prop
 }
 
 export const OptimizedImage: React.FC<OptimizedImageProps> = ({
@@ -15,7 +16,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   className = '',
   width,
   height,
-  priority = false,
+  priority = false, // Higher default quality
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -54,10 +55,20 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
           isLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         style={{
-          imageRendering: 'crisp-edges',
           imageRendering: '-webkit-optimize-contrast',
-          imageRendering: 'pixelated', // For pixel art
-        }}
+          backfaceVisibility: 'hidden',
+          transform: 'translateZ(0)',
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+          filter: 'contrast(1.1) saturate(1.15) brightness(1.02)',
+          WebkitFilter: 'contrast(1.1) saturate(1.15) brightness(1.02)',
+          imageOrientation: 'from-image',
+          willChange: 'transform',
+          WebkitBackfaceVisibility: 'hidden',
+          WebkitTransform: 'translateZ(0)',
+          WebkitImageRendering: '-webkit-optimize-contrast',
+          MozImageRendering: 'auto',
+        } as React.CSSProperties}
       />
     </div>
   );

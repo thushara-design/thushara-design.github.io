@@ -5,7 +5,6 @@ import { Button } from "./ui/button";
 import caseStudiesData from "../data/case-studies";
 import ArrowRight from "../assets/arrow-right";
 import ExternalLink from "../assets/external-link";
-import { OptimizedImage } from './OptimizedImage';
 
 const CaseStudy = () => {
   const navigate = useNavigate();
@@ -37,11 +36,12 @@ const CaseStudy = () => {
             } : {})}
             className="flex w-full flex-col lg:flex-row lg:even:flex-row-reverse">
             <div className="lg:w-1/2">
-              <OptimizedImage
+              <img
                 src={`/images/${image}`}
                 alt={title}
+                width={570}
+                height={310}
                 className="w-full h-auto object-cover"
-                priority={index === 0}
               />
             </div>
             <div className="flex flex-col justify-center gap-8 p-8 lg:w-1/2">
