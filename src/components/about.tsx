@@ -57,7 +57,7 @@ export const About = () => {
 					<p className="text-lg leading-relaxed">
                         I'm Thushara, a Product designer (UX/UI) focused on creating intuitive digital experiences that feel effortless and meaningful. My approach combines simplicity, clarity, and usability along with accessibility while ensuring that the design not only meets user needs but also supports business goals.
 						<br />
-                        With a deep interest in psychology and empathetic design, I enjoy transforming complex ideas into simple, elegant, user-centered solutions.
+                        With a deep interest in psychology and empathetic design, I enjoy transforming complex ideas into simple, user-centered solutions.
                     </p>
 					<div className="flex items-center gap-4">
 						<a
