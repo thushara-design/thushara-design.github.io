@@ -33,7 +33,7 @@ export const About = () => {
 		<AnimatedSection id="about" className="space-y-20 max-w-6xl mx-auto px-4">
 			<div className="flex items-center gap-4 mb-2">
 				<div className="w-8 h-px bg-gray-300"></div>
-				<h2 className="text-sm font-medium text-gray-600 tracking-widest uppercase">About Me</h2>
+				<h2 className="text-sm font-medium text-dark tracking-widest uppercase">About Me</h2>
 				<div className="flex-1 h-px bg-gray-300"></div>
 			</div>
 			<section className="mb-8 flex flex-col items-center gap-12 md:mb-24 md:flex-row md:items-center md:gap-16 md:justify-center">

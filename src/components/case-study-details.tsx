@@ -8,7 +8,7 @@ import { subtractLeft, subtractRight } from "@/assets/images";
 import { AnimatedSection } from "./animated-section";
 
 // Case studies with a dark background
-const CASE_STUDIES_WITH_DARK_BG = ["gistly"];
+const CASE_STUDIES_WITH_DARK_BG: string | string[] = [];
 
 const CaseStudyDat = ({ slug }: { slug: string }) => {
   const headerRef = useRef<HTMLDivElement>(null);

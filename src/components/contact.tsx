@@ -46,7 +46,7 @@ export const Contact = () => {
 		<AnimatedSection id="contact" className="space-y-20">
 			<div className="flex items-center gap-4 mb-2">
 				<div className="w-8 h-px bg-gray-300"></div>
-				<h2 className="text-sm font-medium text-gray-600 tracking-widest uppercase">Let's Talk</h2>
+				<h2 className="text-sm font-medium text-dark tracking-widest uppercase">Let's Talk</h2>
 				<div className="flex-1 h-px bg-gray-300"></div>
 			</div>
 			<p className="text-dark text-lg leading-relaxed">

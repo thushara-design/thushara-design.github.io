@@ -10,17 +10,17 @@ import smile from "./icons/smile.svg";
 export const CaseStudy1 = () => {
 	return (
 		<div className="mx-auto mt-16 w-full max-w-5xl space-y-24 text-base text-black">
-			{/* Hero Metrics - Integrated into dark section */}
+			{/* Hero Metrics - Updated to use black text */}
 			<AnimatedSection className="mx-auto max-w-4xl">
 				<div className="mb-8 py-8">
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						<div className="flex flex-col items-center justify-center space-y-2">
-							<div className="text-3xl font-light text-white">24%</div>
-							<div className="text-xs font-medium text-gray-300 uppercase tracking-widest">Reduction in time on task</div>
+							<div className="text-3xl font-light text-black">24%</div>
+							<div className="text-xs font-medium text-gray-600 uppercase tracking-widest">Reduction in time on task</div>
 						</div>
 						<div className="flex flex-col items-center justify-center space-y-2">
-							<div className="text-3xl font-light text-white">5+</div>
-							<div className="text-xs font-medium text-gray-300 uppercase tracking-widest">User interviews</div>
+							<div className="text-3xl font-light text-black">5+</div>
+							<div className="text-xs font-medium text-gray-600 uppercase tracking-widest">User interviews</div>
 						</div>
 					</div>
 				</div>
@@ -58,7 +58,7 @@ export const CaseStudy1 = () => {
 				</Carousel>
 			</AnimatedSection>
 
-			{/* Problem Section */}
+			{/* Problem Section - Updated to match Gistly.ai style */}
 			<AnimatedSection className="mx-auto max-w-4xl space-y-8">
 				<div className="space-y-4">
 					<h1 className="text-3xl font-light tracking-tight">The Problem</h1>
