@@ -1,6 +1,4 @@
 import { AnimatedSection } from "../animated-section";
-import goal from "/images/serenity/icons/goal.svg";
-import mindMap from "/images/serenity/icons/mind-map.svg";
 
 export const CaseStudy2 = () => {
   return (
@@ -324,36 +322,5 @@ export const CaseStudy2 = () => {
   );
 };
 
-const data = [
-  {
-    id: 1,
-    description: "Users often find artworks that move them, but easily forget about them after they leave the gallery",
-  },
-  {
-    id: 2,
-    description: "Finding verified information about new artists is challenging",
-  },
-  {
-    id: 3,
-    description: "Users find keeping track of the events of their favorite artists difficult",
-  },
-  {
-    id: 4,
-    description: "Users are unable to express their appreciation and connect with others.",
-  },
-];
 
-const data2 = [
-  {
-    id: 1,
-    description: "Added ALT texts for artworks and images",
-  },
-  {
-    id: 2,
-    description: "Followed WCAG guidelines on color contrast",
-  },
-  {
-    id: 3,
-    description: "Added text to bottom navigation options for the screen reading feature.",
-  },
-];
+
