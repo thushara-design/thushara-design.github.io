@@ -6,6 +6,7 @@ import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
 import { subtractLeft, subtractRight } from "@/assets/images";
 import { AnimatedSection } from "./animated-section";
+import { Seo } from "./Seo";
 
 // Case studies with a dark background
 const CASE_STUDIES_WITH_DARK_BG: string | string[] = [];
@@ -45,7 +46,7 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
     return null;
   }
 
-  const { title, tagline, description, Component, externalLink, responsibilities, role, timeframe, tools } = caseStudy;
+  const { title, tagline, description, Component, externalLink, responsibilities, role, timeframe, tools, image } = caseStudy as any;
 
   // Format tools list for better readability
   const formattedTools = Array.isArray(tools) && tools.length > 1 ? `${tools.slice(0, -1).join(", ")} and ${tools.slice(-1)}` : tools;
@@ -54,8 +55,29 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
   const isFirstCaseStudy = caseStudyIndex === 0;
   const isLastCaseStudy = caseStudyIndex === caseStudiesData.length - 1;
 
+  // Build canonical URL using live domain with query param routing
+  const siteUrl = "https://designwiththushara.com";
+  const canonicalUrl = `${siteUrl}/?ref=${slug}`;
+
+  // For Gistly, set noindex to avoid appearing as a separate search result, but allow follow
+  const robots = slug === "gistly" ? "noindex,follow" : undefined;
+
   return (
     <div className="font-sans">
+      <Seo
+        title={`${title} – Case Study | Thushara`}
+        description={typeof description === "string" ? description : `${title} case study`}
+        url={canonicalUrl}
+        image={image ? `${siteUrl}/images/${image}` : undefined}
+        type="article"
+        breadcrumbs={[
+          { name: "Home", url: siteUrl },
+          { name: "Case Studies", url: `${siteUrl}#work` },
+          { name: title, url: canonicalUrl }
+        ]}
+        robots={robots}
+      />
+
       {CASE_STUDIES_WITH_DARK_BG.includes(slug) && (
         <div className="absolute left-0 top-0 -z-10 h-[52rem] w-full bg-[#0f1523] text-white md:h-[42rem]" />
       )}
@@ -115,7 +137,8 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
 
       {/* Navigation Buttons */}
       <div
-        className={cn("mx-auto mt-16 flex max-w-4xl flex-col items-center gap-4 sm:flex-row", isFirstCaseStudy ? "justify-end" : "justify-between")}>
+        className={cn("mx-auto mt-16 flex max-w-4xl flex-col items-center gap-4 sm:flex-row", isFirstCaseStudy ? "justify-end" : "justify-between")}
+      >
         {!isFirstCaseStudy && (
           <a href={`?ref=${caseStudiesData[caseStudyIndex - 1].slug}`}>
             <Button variant="outline" className="flex w-52 items-center gap-2 text-sm">
@@ -132,7 +155,8 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
                 : `?ref=${caseStudiesData[caseStudyIndex + 1].slug}`
             }
             target={caseStudiesData[caseStudyIndex + 1].externalLink ? "_blank" : "_self"}
-            rel={caseStudiesData[caseStudyIndex + 1].externalLink ? "noopener noreferrer" : ""}>
+            rel={caseStudiesData[caseStudyIndex + 1].externalLink ? "noopener noreferrer" : ""}
+          >
             <Button variant="outline" className="flex w-52 items-center gap-2 text-sm">
               Next Case Study <span className="font-bold">→</span>
             </Button>
