@@ -16,6 +16,20 @@ const CaseStudy = () => {
     [navigate],
   );
 
+  const handleCardActivation = useCallback(
+    (externalLink: string | undefined, slug: string) => {
+      if (externalLink) {
+        if (typeof window !== "undefined") {
+          window.open(externalLink, "_blank", "noopener,noreferrer");
+        }
+        return;
+      }
+
+      handleSlugChange(slug);
+    },
+    [handleSlugChange],
+  );
+
   return (
     <AnimatedSection id="case-studies" className="space-y-20">
       <div className="flex items-center gap-4 mb-2">
@@ -34,14 +48,24 @@ const CaseStudy = () => {
               whileInView: { opacity: 1, y: 0 },
               viewport: undefined
             } : {})}
-            className="flex w-full flex-col lg:flex-row lg:even:flex-row-reverse">
-            <div className="lg:w-1/2">
+            className="group flex w-full cursor-pointer flex-col lg:flex-row lg:even:flex-row-reverse"
+            onClick={() => handleCardActivation(externalLink, slug)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                handleCardActivation(externalLink, slug);
+              }
+            }}
+            role={externalLink ? "link" : "button"}
+            tabIndex={0}
+          >
+            <div className="lg:w-1/2 overflow-hidden rounded-2xl">
               <img
                 src={`/images/${image}`}
                 alt={title}
                 width={570}
                 height={310}
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:-translate-y-1"
               />
             </div>
             <div className="flex flex-col justify-center gap-8 p-8 lg:w-1/2">
@@ -49,12 +73,14 @@ const CaseStudy = () => {
                 <h3 className="text-2xl font-semibold text-dark flex items-center gap-2">
                   {title}
                   {liveProjectLink && (
-                    <a 
-                      href={liveProjectLink} 
-                      target="_blank" 
-                      rel="noreferrer" 
+                    <a
+                      href={liveProjectLink}
+                      target="_blank"
+                      rel="noreferrer"
                       className="text-gray-400 hover:text-dark transition-colors"
                       title="View live project"
+                      onClick={(event) => event.stopPropagation()}
+                      onKeyDown={(event) => event.stopPropagation()}
                     >
                       <ExternalLink className="w-4 h-4" />
                     </a>
@@ -72,16 +98,32 @@ const CaseStudy = () => {
               </div>
               <div className="mt-4">
                 {externalLink ? (
-                  <a href={externalLink} target="_blank" rel="noreferrer">
-                    <Button variant="outline">
+                  <a
+                    href={externalLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(event) => event.stopPropagation()}
+                    onKeyDown={(event) => event.stopPropagation()}
+                  >
+                    <Button
+                      variant="outline"
+                      className="border-none bg-transparent px-0 py-0 h-auto text-base font-medium gap-2 hover:bg-transparent hover:text-dark group-hover:font-semibold"
+                    >
                       View case study
-                      <ArrowRight className="ml-2 w-4 h-4" />
+                      <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </Button>
                   </a>
                 ) : (
-                  <Button variant="outline" onClick={() => handleSlugChange(slug)}>
+                  <Button
+                    variant="outline"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleSlugChange(slug);
+                    }}
+                    className="border-none bg-transparent px-0 py-0 h-auto text-base font-medium gap-2 hover:bg-transparent hover:text-dark group-hover:font-semibold"
+                  >
                     View case study
-                    <ArrowRight className="ml-2 w-4 h-4" />
+                    <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Button>
                 )}
               </div>
