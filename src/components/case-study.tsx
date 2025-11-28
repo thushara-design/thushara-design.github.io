@@ -110,7 +110,7 @@ const CaseStudy = () => {
                       className="border-none bg-transparent px-0 py-0 h-auto text-base font-medium gap-2 hover:bg-transparent hover:text-dark group-hover:font-semibold"
                     >
                       View case study
-                      <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                      <ArrowRight className="ml-0.5 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </Button>
                   </a>
                 ) : (

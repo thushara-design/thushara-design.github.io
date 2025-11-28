@@ -13,17 +13,19 @@ export const About = () => {
 				"bg-stone-100 rounded-lg", // Second card: beige background
 				"bg-gray-900 text-white rounded-lg" // Third card: black background
 			];
-			
+
 			return (
 				<AnimatedSection
 					delay={index * 0.2}
 					key={id}
-					className={`flex min-h-96 flex-col justify-between gap-y-3 px-8 py-6 font-body ${cardStyles[index] || cardStyles[0]}`}
+					className="h-full"
 				>
-					<p className="text-base leading-relaxed">"{quote}"</p>
-					<div className="space-y-1 text-right">
-						<h3 className="font-medium">{author}</h3>
-						<p className="text-sm opacity-80">{contact}</p>
+					<div className={`flex min-h-96 flex-col justify-between gap-y-3 px-8 py-6 font-body transition-transform duration-300 ease-out hover:scale-105 cursor-pointer ${cardStyles[index] || cardStyles[0]}`}>
+						<p className="text-base leading-relaxed">"{quote}"</p>
+						<div className="space-y-1 text-right">
+							<h3 className="font-medium">{author}</h3>
+							<p className="text-sm opacity-80">{contact}</p>
+						</div>
 					</div>
 				</AnimatedSection>
 			);
@@ -55,10 +57,10 @@ export const About = () => {
 
 				<div className="flex flex-col gap-6 text-dark max-w-2xl">
 					<p className="text-lg leading-relaxed">
-                        I'm Thushara, a Product designer (UX/UI) focused on creating intuitive digital experiences that feel effortless and meaningful. My approach combines simplicity, clarity, and usability along with accessibility while ensuring that the design not only meets user needs but also supports business goals.
+						I'm Thushara, a Product designer (UX/UI) focused on creating intuitive digital experiences that feel effortless and meaningful. My approach combines simplicity, clarity, and usability along with accessibility while ensuring that the design not only meets user needs but also supports business goals.
 						<br />
-                        With a deep interest in psychology and empathetic design, I enjoy transforming complex ideas into simple, user-centered solutions.
-                    </p>
+						With a deep interest in psychology and empathetic design, I enjoy transforming complex ideas into simple, user-centered solutions.
+					</p>
 					<div className="flex items-center gap-4">
 						<a
 							href={socialLinks.find((link) => link.label === "Linkedln")?.link}
