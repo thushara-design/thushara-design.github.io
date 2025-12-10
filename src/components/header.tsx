@@ -39,7 +39,7 @@ export const Header: React.FC<React.HTMLProps<HTMLElement>> = ({ className, ...p
       target={link.link.startsWith("http") ? "_blank" : "_self"}
       rel={link.link.startsWith("http") ? "noopener noreferrer" : ""}
       onClick={() => setIsOpen(false)}
-      className={cn("underline-offset-8 hover:underline [&.active]:underline", { "font-bold": link.label === "Resume" })}>
+      className={cn("underline-offset-8 hover:underline [&.active]:underline text-ag-dark hover:text-ag-blue transition-colors duration-200", { "font-bold": link.label === "Resume" })}>
       {link.label}
     </a>
   );
@@ -68,7 +68,7 @@ export const Header: React.FC<React.HTMLProps<HTMLElement>> = ({ className, ...p
           ref={menuRef}
           id="mobile-menu"
           className={cn(
-            "fixed top-0 left-0 z-50 h-[36svh] w-full bg-accent-primary text-dark shadow transition-transform duration-300 ease-in-out sm:hidden",
+            "fixed top-0 left-0 z-50 h-[36svh] w-full bg-accent-primary text-ag-dark shadow transition-transform duration-300 ease-in-out sm:hidden",
             isOpen ? "translate-y-0" : "-translate-y-full",
           )}>
           <div className="flex justify-between p-5">
@@ -88,7 +88,7 @@ export const Header: React.FC<React.HTMLProps<HTMLElement>> = ({ className, ...p
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden flex-wrap items-center justify-center gap-x-10 text-base text-dark sm:flex lg:gap-x-20">{navLinks.map(renderNavLink)}</nav>
+        <nav className="hidden flex-wrap items-center justify-center gap-x-10 text-base text-ag-dark sm:flex lg:gap-x-20">{navLinks.map(renderNavLink)}</nav>
       </div>
     </header>
   );

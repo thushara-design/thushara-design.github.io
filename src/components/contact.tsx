@@ -43,13 +43,13 @@ export const Contact = () => {
 	};
 
 	return (
-		<AnimatedSection id="contact" className="space-y-20">
-			<div className="flex items-center gap-4 mb-2">
-				<div className="w-8 h-px bg-gray-300"></div>
-				<h2 className="text-sm font-medium text-dark tracking-widest uppercase">Let's Talk</h2>
-				<div className="flex-1 h-px bg-gray-300"></div>
+		<AnimatedSection id="contact" className="space-y-16">
+			<div className="flex items-center gap-4 mb-8">
+				<div className="w-8 h-px bg-ag-border"></div>
+				<h2 className="text-sm font-medium text-ag-dark tracking-widest uppercase">Let's Talk</h2>
+				<div className="flex-1 h-px bg-ag-border"></div>
 			</div>
-			<p className="text-dark text-lg leading-relaxed">
+			<p className="text-ag-grey text-lg leading-relaxed">
 				I&apos;d love to hear from you! Whether you&apos;re looking for a UX
 				designer to collaborate with, have questions about my work, or just want
 				to chat about design, feel free to reach out.
@@ -57,7 +57,7 @@ export const Contact = () => {
 			<Button
 				variant="outline"
 				onClick={handleCopy}
-				className="w-72 border border-solid border-border"
+				className="w-72 border border-solid border-ag-border hover:border-ag-grey transition-colors duration-200"
 			>
 				<span>{isCopied ? "Copied!" : emailText}</span>
 			</Button>

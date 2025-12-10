@@ -8,6 +8,7 @@ import { Footer } from "./components/footer";
 import { Header } from "./components/header";
 import { Hero } from "./components/hero";
 import { Skills } from "./components/skills";
+import { Testimonials } from "./components/testimonials";
 import { landingLeft } from "./assets/images";
 import { caseStudiesData } from "./data";
 
@@ -36,16 +37,17 @@ function App() {
 
   return (
     <div className="relative font-sans text-dark">
-      <img 
-        src={landingLeft} 
-        alt="Landing Left" 
-        className="absolute left-0 top-7 -z-10 hidden xl:block animate-spin-very-slow w-70 h-70" 
+      <img
+        src={landingLeft}
+        alt="Landing Left"
+        className="absolute left-0 top-7 -z-10 hidden xl:block animate-spin-very-slow w-70 h-70"
       />
       <Header />
       <main className="container mx-auto max-w-6xl space-y-24 p-6">
         <Hero />
         <CaseStudy />
         <About />
+        <Testimonials />
         <Skills />
         <Contact />
       </main>

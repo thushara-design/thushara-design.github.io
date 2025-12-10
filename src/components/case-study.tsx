@@ -31,13 +31,13 @@ const CaseStudy = () => {
   );
 
   return (
-    <AnimatedSection id="case-studies" className="space-y-20">
-      <div className="flex items-center gap-4 mb-2">
-        <div className="w-8 h-px bg-gray-300"></div>
-        <h2 className="text-sm font-medium text-dark tracking-widest uppercase">Case Studies</h2>
-        <div className="flex-1 h-px bg-gray-300"></div>
+    <AnimatedSection id="case-studies" className="space-y-32">
+      <div className="flex items-center gap-4 mb-8">
+        <div className="w-8 h-px bg-ag-border"></div>
+        <h2 className="text-sm font-medium text-ag-dark tracking-widest uppercase">Case Studies</h2>
+        <div className="flex-1 h-px bg-ag-border"></div>
       </div>
-      <div className="grid grid-cols-1 gap-20">
+      <div className="grid grid-cols-1 gap-32">
         {caseStudiesData.map(({ image, title, slug, description, tags, externalLink, liveProjectLink }, index) => (
           <AnimatedSection
             as="div"
@@ -65,19 +65,19 @@ const CaseStudy = () => {
                 alt={title}
                 width={570}
                 height={310}
-                className="w-full h-auto object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:-translate-y-1"
+                className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-105 group-hover:-translate-y-1"
               />
             </div>
-            <div className="flex flex-col justify-center gap-8 p-8 lg:w-1/2">
-              <div className="space-y-2">
-                <h3 className="text-2xl font-semibold text-dark flex items-center gap-2">
+            <div className="flex flex-col justify-center gap-8 p-10 lg:p-12 lg:w-1/2">
+              <div className="space-y-3">
+                <h3 className="text-2xl font-medium text-ag-dark flex items-center gap-2">
                   {title}
                   {liveProjectLink && (
                     <a
                       href={liveProjectLink}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-gray-400 hover:text-dark transition-colors"
+                      className="text-ag-grey hover:text-ag-blue transition-colors duration-200"
                       title="View live project"
                       onClick={(event) => event.stopPropagation()}
                       onKeyDown={(event) => event.stopPropagation()}
@@ -86,12 +86,12 @@ const CaseStudy = () => {
                     </a>
                   )}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">{description}</p>
+                <p className="text-ag-grey leading-relaxed">{description}</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => (
-                  <span key={tag} className="flex items-center gap-2 px-4 py-2 text-sm font-light bg-[#FAFAFA] rounded-lg text-gray-700 font-geist">
-                    <span className="w-1.5 h-1.5 bg-gray-600 rounded-sm"></span>
+                  <span key={tag} className="flex items-center gap-2 px-4 py-2 text-sm font-normal bg-ag-bg-light rounded-lg text-ag-grey">
+                    <span className="w-1.5 h-1.5 bg-ag-grey rounded-sm"></span>
                     {tag}
                   </span>
                 ))}
@@ -107,7 +107,7 @@ const CaseStudy = () => {
                   >
                     <Button
                       variant="outline"
-                      className="border-none bg-transparent px-0 py-0 h-auto text-base font-medium gap-2 hover:bg-transparent hover:text-dark group-hover:font-semibold"
+                      className="border-none bg-transparent px-0 py-0 h-auto text-base font-medium gap-2 hover:bg-transparent text-ag-blue hover:text-ag-dark transition-colors duration-200"
                     >
                       View case study
                       <ArrowRight className="ml-0.5 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -120,7 +120,7 @@ const CaseStudy = () => {
                       event.stopPropagation();
                       handleSlugChange(slug);
                     }}
-                    className="border-none bg-transparent px-0 py-0 h-auto text-base font-medium gap-2 hover:bg-transparent hover:text-dark group-hover:font-semibold"
+                    className="border-none bg-transparent px-0 py-0 h-auto text-base font-medium gap-2 hover:bg-transparent text-ag-blue hover:text-ag-dark transition-colors duration-200"
                   >
                     View case study
                     <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />

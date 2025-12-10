@@ -1,42 +1,16 @@
 import { AnimatedSection } from "./animated-section";
 import { profile } from "../assets/images";
-import { socialLinks, type TestimonialData, testimonialData } from "../data";
+import { socialLinks } from "../data";
 import ElegantLinkedin from "../assets/elegant-linkedin";
 import ElegantMail from "../assets/elegant-mail";
 
 export const About = () => {
-	const renderTestimonial = (testimonials: TestimonialData[]) =>
-		testimonials.map(({ id, quote, author, contact }, index) => {
-			// Define different card styles based on index
-			const cardStyles = [
-				"bg-white border border-gray-200 rounded-lg", // First card: white with border
-				"bg-stone-100 rounded-lg", // Second card: beige background
-				"bg-gray-900 text-white rounded-lg" // Third card: black background
-			];
-
-			return (
-				<AnimatedSection
-					delay={index * 0.2}
-					key={id}
-					className="h-full"
-				>
-					<div className={`flex min-h-96 flex-col justify-between gap-y-3 px-8 py-6 font-body transition-transform duration-300 ease-out hover:scale-105 cursor-pointer ${cardStyles[index] || cardStyles[0]}`}>
-						<p className="text-base leading-relaxed">"{quote}"</p>
-						<div className="space-y-1 text-right">
-							<h3 className="font-medium">{author}</h3>
-							<p className="text-sm opacity-80">{contact}</p>
-						</div>
-					</div>
-				</AnimatedSection>
-			);
-		});
-
 	return (
-		<AnimatedSection id="about" className="space-y-20 max-w-6xl mx-auto px-4">
-			<div className="flex items-center gap-4 mb-2">
-				<div className="w-8 h-px bg-gray-300"></div>
-				<h2 className="text-sm font-medium text-dark tracking-widest uppercase">About Me</h2>
-				<div className="flex-1 h-px bg-gray-300"></div>
+		<AnimatedSection id="about" className="space-y-32 max-w-6xl mx-auto px-4">
+			<div className="flex items-center gap-4 mb-8">
+				<div className="w-8 h-px bg-ag-border"></div>
+				<h2 className="text-sm font-medium text-ag-dark tracking-widest uppercase">About Me</h2>
+				<div className="flex-1 h-px bg-ag-border"></div>
 			</div>
 			<section className="mb-8 flex flex-col items-center gap-12 md:mb-24 md:flex-row md:items-center md:gap-16 md:justify-center">
 				<div className="relative w-64 h-64 md:w-80 md:h-80 flex-shrink-0">
@@ -55,8 +29,8 @@ export const About = () => {
 					/>
 				</div>
 
-				<div className="flex flex-col gap-6 text-dark max-w-2xl">
-					<p className="text-lg leading-relaxed">
+				<div className="flex flex-col gap-6 text-ag-dark max-w-2xl">
+					<p className="text-lg leading-relaxed text-ag-grey">
 						I'm Thushara, a Product designer (UX/UI) focused on creating intuitive digital experiences that feel effortless and meaningful. My approach combines simplicity, clarity, and usability along with accessibility while ensuring that the design not only meets user needs but also supports business goals.
 						<br />
 						With a deep interest in psychology and empathetic design, I enjoy transforming complex ideas into simple, user-centered solutions.
@@ -66,27 +40,23 @@ export const About = () => {
 							href={socialLinks.find((link) => link.label === "Linkedln")?.link}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group flex items-center justify-center w-12 h-12 rounded-full border border-gray-200 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
+							className="group flex items-center justify-center w-12 h-12 rounded-full border border-ag-border hover:border-ag-grey hover:bg-ag-bg-light transition-all duration-200"
 							aria-label="Connect on LinkedIn"
 						>
-							<ElegantLinkedin className="w-5 h-5 text-gray-600 group-hover:text-gray-800 transition-colors duration-200" />
+							<ElegantLinkedin className="w-5 h-5 text-ag-grey group-hover:text-ag-dark transition-colors duration-200" />
 						</a>
 						<a
 							href={socialLinks.find((link) => link.label === "Email")?.link}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group flex items-center justify-center w-12 h-12 rounded-full border border-gray-200 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
+							className="group flex items-center justify-center w-12 h-12 rounded-full border border-ag-border hover:border-ag-grey hover:bg-ag-bg-light transition-all duration-200"
 							aria-label="Send email"
 						>
-							<ElegantMail className="w-5 h-5 text-gray-600 group-hover:text-gray-800 transition-colors duration-200" />
+							<ElegantMail className="w-5 h-5 text-ag-grey group-hover:text-ag-dark transition-colors duration-200" />
 						</a>
 					</div>
 				</div>
 			</section>
-
-			<div className="grid grid-cols-1 gap-6 text-xl text-dark md:grid-cols-2 lg:grid-cols-3">
-				{renderTestimonial(testimonialData)}
-			</div>
 		</AnimatedSection>
 	);
 };

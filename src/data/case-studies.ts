@@ -1,12 +1,12 @@
-import { CaseStudy1, CaseStudy2 } from "../components/case-studies";
+import { CaseStudy1, CaseStudy2, CaseStudy3, CaseStudy4 } from "../components/case-studies";
 
 const caseStudies = [
   {
     title: "Gistly.ai",
     slug: "gistly",
     tagline: "AI POWERED CALL AUDITING",
-    tags: ["AI", "Enterprise CRM", "B2B SaaS", "Data Analytics"],
-    description: "Gistly.ai is an AI-powered platform that aims at streamlining the call auditing process for sales, collections and customer suppport.",
+    tags: ["CRM", "B2B SaaS", "Data Analytics"],
+    description: "Gistly.ai is an AI-powered platform that streamlines the call auditing process for sales, collections and suppport.",
     extendedDescription:
       "Gistly.ai is an AI-powered platform that streaml the call auditing process for sales calls to enhance customer interactions, gain more leads, and assess the calls. In this case study, the process of improving and redesigning the call analysis page is outlined.",
     image: "case-study-1.png",
@@ -21,14 +21,14 @@ const caseStudies = [
     title: "Kite AI",
     slug: "aria",
     tagline: "PRESENTATION",
-    tags: [ "User Research", "Design Systems", "Community Building"],
+    tags: ["Research", "Design Systems", "Community"],
     description: "Kite is a collaborative initiative focused on empowering career pivoters to navigate their professional transitions.",
     image: "case-study-aria.png",
     role: "Product Designer",
     timeframe: "In Progress",
     tools: ["Figma", "Notion"],
     responsibilities: ["Research", "Design", "Presentation"],
-    externalLink: "https://www.figma.com/deck/etqtA0xDUb3XN62Nex3drO/Kite--1stpresentation?node-id=1-83&t=GkB9VEnmtJXTRjii-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1",
+    Component: CaseStudy4,
     liveProjectLink: "https://kite-ai.vercel.app/",
   },
   {
@@ -50,14 +50,14 @@ const caseStudies = [
     title: "Reflect Android App",
     slug: "Reflect",
     tagline: "REFLECT ANDROID APP",
-    tags: [ "Hackathon (7 Days)", "Mental Health", "Android App"],
+    tags: ["Mental Health", "Android App"],
     description: "Reflect is an app that helps users log experiences, detect emotions, and receive personalized coping strategies.",
     image: "case-study-reflect.png",
     role: "Creator and Designer",
     timeframe: "In Progress",
     tools: ["Figma", "Notion"],
     responsibilities: ["Research", "Design", "Presentation"],
-    externalLink: "https://www.youtube.com/watch?v=DCllEdiJu4E",
+    Component: CaseStudy3,
     liveProjectLink: "https://github.com/thushara-design/reflect-app.git",
   },
   {
