@@ -12,16 +12,13 @@ export const CaseStudy1 = () => {
 		<div className="mx-auto mt-16 w-full max-w-5xl space-y-24 text-base text-black">
 			{/* Hero Metrics - Updated to use black text */}
 			<AnimatedSection className="mx-auto max-w-4xl">
-				<div className="mb-8 py-8">
-					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+				<div className="mb-24 py-8">
+					<div className="grid grid-cols-1 gap-8 md:grid-cols-1">
 						<div className="flex flex-col items-center justify-center space-y-2">
 							<div className="text-3xl font-light text-black">24%</div>
 							<div className="text-xs font-medium text-gray-600 uppercase tracking-widest">Reduction in time on task</div>
 						</div>
-						<div className="flex flex-col items-center justify-center space-y-2">
-							<div className="text-3xl font-light text-black">5+</div>
-							<div className="text-xs font-medium text-gray-600 uppercase tracking-widest">User interviews</div>
-						</div>
+
 					</div>
 				</div>
 			</AnimatedSection>
@@ -64,7 +61,7 @@ export const CaseStudy1 = () => {
 					<h1 className="text-3xl font-light tracking-tight">The Problem</h1>
 					<div className="h-px w-16 bg-black"></div>
 				</div>
-				
+
 				<div className="space-y-6">
 					<p className="text-lg font-medium leading-relaxed text-gray-800">
 						Managers need to upload their organization's call auditing templates to Gistly.ai in order to audit agent calls and evaluate whether they meet the quality standards set by the organization.
@@ -118,7 +115,7 @@ export const CaseStudy1 = () => {
 					<h1 className="text-3xl font-light tracking-tight">The Solution</h1>
 					<div className="h-px w-16 bg-black"></div>
 				</div>
-				
+
 				<div className="space-y-6">
 					<p className="text-lg font-medium leading-relaxed text-gray-800">
 						Conducted comprehensive UX research, performed task analysis, and designed an intuitive interface that simplifies the template creation process while maintaining the flexibility users need.
@@ -165,7 +162,7 @@ export const CaseStudy1 = () => {
 					<h1 className="text-3xl font-light tracking-tight">Design Process</h1>
 					<div className="h-px w-16 bg-black"></div>
 				</div>
-				
+
 				<div className="space-y-6">
 					<p className="leading-relaxed text-gray-600">
 						The design process at Gistly is influenced by Agile and Lean UX methodologies. It combines the iterative, feedback-driven approach of Agile with the focus on delivering minimal, high-value solutions quickly and efficiently, as seen in Lean UX, to ensure continuous improvement and user-centered design.
@@ -229,7 +226,7 @@ export const CaseStudy1 = () => {
 					<h1 className="text-3xl font-light tracking-tight">Task Analysis</h1>
 					<div className="h-px w-16 bg-black"></div>
 				</div>
-				
+
 				<div className="space-y-6">
 					<p className="text-lg font-medium leading-relaxed text-gray-800">
 						<strong>The Task:</strong> Create a call quality template in Gistly by manually adding all categories and quality parameters from existing spreadsheets or PDFs so the AI tool can analyze sales calls.
@@ -261,7 +258,7 @@ export const CaseStudy1 = () => {
 					<h1 className="text-3xl font-light tracking-tight">User Flow</h1>
 					<div className="h-px w-16 bg-black"></div>
 				</div>
-				
+
 				<div className="space-y-6">
 					<p className="text-lg font-medium leading-relaxed text-gray-800">
 						<strong>Goal:</strong> Create a template efficiently and accurately
@@ -344,7 +341,7 @@ export const CaseStudy1 = () => {
 					<h1 className="text-3xl font-light tracking-tight">Low Fidelity Prototyping</h1>
 					<div className="h-px w-16 bg-black"></div>
 				</div>
-				
+
 				<div className="space-y-6">
 					<p className="leading-relaxed text-gray-600">
 						<strong>Tool Choice:</strong> Used Axure to create a low-fidelity prototype to assess key metrics like time on task and evaluate when users experience exhaustion or overwhelm.
@@ -363,7 +360,7 @@ export const CaseStudy1 = () => {
 							className="h-full w-full"
 						/>
 					</div>
-					
+
 					<div className="space-y-6">
 						<h3 className="text-lg font-medium">Usability Issues Identified</h3>
 						<ul className="space-y-3">
@@ -433,7 +430,7 @@ export const CaseStudy1 = () => {
 							className="h-full w-full"
 						/>
 					</div>
-					
+
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						<div className="space-y-4">
 							<h3 className="text-lg font-medium">Results</h3>
@@ -457,7 +454,7 @@ export const CaseStudy1 = () => {
 					<h1 className="text-3xl font-light tracking-tight">Key Learnings</h1>
 					<div className="h-px w-16 bg-black"></div>
 				</div>
-				
+
 				<div className="space-y-6">
 					<div className="space-y-4 text-gray-600">
 						<div className="flex items-start space-x-3">

@@ -37,7 +37,7 @@ export const About = () => {
 					</p>
 					<div className="flex items-center gap-4">
 						<a
-							href={socialLinks.find((link) => link.label === "Linkedln")?.link}
+							href={socialLinks.find((link) => link.label === "Linkedin")?.link}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="group flex items-center justify-center w-12 h-12 rounded-full border border-ag-border hover:border-ag-grey hover:bg-ag-bg-light transition-all duration-200"

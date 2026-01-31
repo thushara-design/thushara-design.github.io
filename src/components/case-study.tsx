@@ -59,7 +59,7 @@ const CaseStudy = () => {
             role={externalLink ? "link" : "button"}
             tabIndex={0}
           >
-            <div className="lg:w-1/2 overflow-hidden rounded-2xl">
+            <div className="lg:w-1/2 overflow-hidden">
               <img
                 src={`/images/${image}`}
                 alt={title}

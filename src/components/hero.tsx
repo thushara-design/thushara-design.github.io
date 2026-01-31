@@ -10,7 +10,7 @@ export const Hero = () => {
           I design intuitive digital experiences that bring simplicity, clarity, and ease to users while aligning with business goals.
         </p>
         <a href="https://calendly.com/thusharavarghese9/introduction-discussion" target="_blank" rel="noopener noreferrer">
-          <Button variant="outline">Schedule a call</Button>
+          <Button variant="primary">Schedule a call</Button>
         </a>
       </div>
     </AnimatedSection>

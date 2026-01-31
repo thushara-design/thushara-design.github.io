@@ -1,4 +1,5 @@
 import type { PropsWithChildren, ElementType } from "react";
+import { useMemo } from "react";
 import { type HTMLMotionProps, motion } from "framer-motion";
 
 interface AnimatedSectionProps extends HTMLMotionProps<"section"> {
@@ -9,16 +10,17 @@ interface AnimatedSectionProps extends HTMLMotionProps<"section"> {
   whileInView?: any;
 }
 
-const AnimatedSection: React.FC<PropsWithChildren<AnimatedSectionProps>> = ({ 
-  children, 
-  as: Component = "section", 
-  delay = 0, 
+const AnimatedSection: React.FC<PropsWithChildren<AnimatedSectionProps>> = ({
+  children,
+  as: Component = "section",
+  delay = 0,
   viewport: customViewport,
   initial: customInitial,
   whileInView: customWhileInView,
-  ...props 
+  ...props
 }) => {
-  const MotionComponent = motion(Component);
+  const MotionComponent = useMemo(() => motion(Component), [Component]);
+
   return (
     <MotionComponent
       initial={customInitial ?? { opacity: 0, y: 100 }}

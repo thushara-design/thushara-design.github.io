@@ -101,11 +101,11 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
           <h2 className="text-lg uppercase">{tagline}</h2>
         </AnimatedSection>
 
-        <div className="relative space-y-3 text-base">
+        <div className="relative text-base">
           <AnimatedSection as="div" className="mx-auto max-w-4xl">
             {description}
           </AnimatedSection>
-          <AnimatedSection as="div" className="mx-auto grid max-w-4xl grid-cols-1 gap-x-48 gap-y-6 md:grid-cols-2">
+          <AnimatedSection as="div" className="mx-auto grid max-w-4xl grid-cols-1 gap-16 mt-12 md:grid-cols-2">
             <div>
               <h3 className="mb-3 font-bold">My Role</h3>
               <p>{role}</p>
