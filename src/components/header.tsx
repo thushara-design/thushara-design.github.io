@@ -39,13 +39,13 @@ export const Header: React.FC<React.HTMLProps<HTMLElement>> = ({ className, ...p
       target={link.link.startsWith("http") ? "_blank" : "_self"}
       rel={link.link.startsWith("http") ? "noopener noreferrer" : ""}
       onClick={() => setIsOpen(false)}
-      className={cn("underline-offset-8 hover:underline [&.active]:underline text-ag-dark hover:text-ag-blue transition-colors duration-200", { "font-bold": link.label === "Resume" })}>
+      className={cn("underline-offset-8 hover:underline [&.active]:underline text-inherit hover:opacity-80 transition-all duration-200", { "font-bold": link.label === "Resume" })}>
       {link.label}
     </a>
   );
 
   return (
-    <header className={cn("fixed top-0 left-0 w-full z-40 backdrop-blur-lg bg-white/10", className)} {...props}>
+    <header className={cn("fixed top-0 left-0 w-full z-40 backdrop-blur-lg bg-white/10 text-ag-dark", className)} {...props}>
       <div className="flex items-center justify-between p-5 2xl:px-20">
         {/* Logo */}
         <a href="/" className="flex items-center font-title font-medium">

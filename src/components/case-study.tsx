@@ -1,13 +1,43 @@
-import { AnimatedSection } from "./animated-section";
 import { useCallback } from "react";
+import type { ComponentType, SVGProps } from "react";
 import { useNavigate } from "react-router";
-import { Button } from "./ui/button";
+import { Dribbble, HalfMoon, Linkedin, Mail, Medium, Sparks, SunLight, User, ViewGrid } from "iconoir-react";
+import { Logo } from "../assets/images";
 import caseStudiesData from "../data/case-studies";
-import ArrowRight from "../assets/arrow-right";
-import ExternalLink from "../assets/external-link";
+import featuredImage from "../assets/image 47.png";
+import gistlyUiImage from "../assets/gistly-ui.png";
+import { useTheme } from "../lib/theme";
+
+const prompt =
+  "I am evaluating Thushara Varghese for a B2B product design role. Use these links for context: case studies https://thushara-design.github.io/#case-studies, about page https://thushara-design.github.io/about-me, Medium https://medium.com/@thusharavarghese, Dribbble https://dribbble.com/thusharadesign. Based on her work, what should a B2B founder or hiring manager understand about how she thinks, what kinds of product problems she is strongest at, and what evidence in her portfolio supports that?";
+
+const visualCards = [
+  {
+    title: "Gistly call analysis",
+    badge: "Gistly.ai · B2B audit UX",
+    image: gistlyUiImage,
+    alt: "Gistly call analysis interface",
+  },
+  {
+    title: "Serenity mobile app",
+    badge: "Serenity · Mobile IA",
+    image: "/images/case-study-2.png",
+    alt: "Serenity mobile application screens",
+  },
+];
+
+type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
+
+const socialLinks: Array<{ label: string; href: string; Icon: IconComponent }> = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/thushara-v", Icon: Linkedin },
+  { label: "Medium", href: "https://medium.com/@thusharavarghese", Icon: Medium },
+  { label: "Dribbble", href: "https://dribbble.com/thusharadesign", Icon: Dribbble },
+];
 
 const CaseStudy = () => {
   const navigate = useNavigate();
+  const { theme, toggle } = useTheme();
+  const featuredCaseStudy = caseStudiesData[0];
 
   const handleSlugChange = useCallback(
     (slug: string) => {
@@ -16,122 +46,89 @@ const CaseStudy = () => {
     [navigate],
   );
 
-  const handleCardActivation = useCallback(
-    (externalLink: string | undefined, slug: string) => {
-      if (externalLink) {
-        if (typeof window !== "undefined") {
-          window.open(externalLink, "_blank", "noopener,noreferrer");
-        }
-        return;
-      }
-
-      handleSlugChange(slug);
-    },
-    [handleSlugChange],
-  );
-
   return (
-    <AnimatedSection id="case-studies" className="space-y-32">
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-8 h-px bg-ag-border"></div>
-        <h2 className="text-sm font-medium text-ag-dark tracking-widest uppercase">Case Studies</h2>
-        <div className="flex-1 h-px bg-ag-border"></div>
-      </div>
-      <div className="grid grid-cols-1 gap-32">
-        {caseStudiesData.map(({ image, title, slug, description, tags, externalLink, liveProjectLink }, index) => (
-          <AnimatedSection
-            as="div"
-            delay={index === 0 ? 0 : index * 0.2}
-            key={slug}
-            {...(index === 0 ? {
-              initial: { opacity: 1, y: 0 },
-              whileInView: { opacity: 1, y: 0 },
-              viewport: undefined
-            } : {})}
-            className="group flex w-full cursor-pointer flex-col lg:flex-row lg:even:flex-row-reverse"
-            onClick={() => handleCardActivation(externalLink, slug)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                handleCardActivation(externalLink, slug);
-              }
-            }}
-            role={externalLink ? "link" : "button"}
-            tabIndex={0}
-          >
-            <div className="lg:w-1/2 overflow-hidden">
-              <img
-                src={`/images/${image}`}
-                alt={title}
-                width={570}
-                height={310}
-                className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-105 group-hover:-translate-y-1"
-              />
+    <section id="case-studies" className="work-board-page">
+      <div className="work-board">
+        <aside className="work-social-rail" aria-label="Social links">
+          {socialLinks.map(({ href, Icon, label }) => (
+            <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} title={label}>
+              <Icon aria-hidden="true" strokeWidth={1.5} />
+            </a>
+          ))}
+        </aside>
+        <header className="work-board-header">
+          <a href="/" className="work-logo" aria-label="Thushara home">
+            <Logo aria-hidden="true" />
+          </a>
+          <nav aria-label="Portfolio navigation">
+            <a href="#case-studies">
+              <ViewGrid aria-hidden="true" strokeWidth={1.5} />
+              <span>Case studies</span>
+            </a>
+            <a href="/about-me">
+              <User aria-hidden="true" strokeWidth={1.5} />
+              <span>About me</span>
+            </a>
+            <a href="mailto:thusharavarghese9@gmail.com">
+              <Mail aria-hidden="true" strokeWidth={1.5} />
+              <span>Contact</span>
+            </a>
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={toggle}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              title={theme === "dark" ? "Light mode" : "Dark mode"}
+            >
+              {theme === "dark"
+                ? <SunLight aria-hidden="true" strokeWidth={1.5} />
+                : <HalfMoon aria-hidden="true" strokeWidth={1.5} />}
+            </button>
+          </nav>
+        </header>
+
+        <button type="button" className="featured-work-card hover-card" onClick={() => handleSlugChange(featuredCaseStudy.slug)}>
+          <div className="featured-work-copy">
+            <span className="case-card-badge featured-badge">Gistly.ai · Homepage redesign</span>
+            <h1>How We Redesigned The Homepage Resulting In 136% Increase In Engagement Time Within The First Quarter Post-Launch</h1>
+            <p>Case study on how I used design thinking to increase time on task and make a complex B2B product easier to understand.</p>
+            <div className="work-tags" aria-label="Case study tags">
+              {featuredCaseStudy.tags.map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
             </div>
-            <div className="flex flex-col justify-center gap-8 p-10 lg:p-12 lg:w-1/2">
-              <div className="space-y-3">
-                <h3 className="text-2xl font-medium text-ag-dark flex items-center gap-2">
-                  {title}
-                  {liveProjectLink && (
-                    <a
-                      href={liveProjectLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-ag-grey hover:text-ag-blue transition-colors duration-200"
-                      title="View live project"
-                      onClick={(event) => event.stopPropagation()}
-                      onKeyDown={(event) => event.stopPropagation()}
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  )}
-                </h3>
-                <p className="text-ag-grey leading-relaxed">{description}</p>
+          </div>
+          <div className="featured-work-image">
+            <img src={featuredImage} alt="Gistly homepage redesign preview" />
+          </div>
+        </button>
+
+        <div className="work-card-grid">
+          {visualCards.map((card, index) => (
+            <button
+              key={card.title}
+              type="button"
+              className="visual-work-card hover-card"
+              onClick={() => handleSlugChange(index === 0 ? "gistly" : "serenity")}
+            >
+              <span className="case-card-badge">{card.badge}</span>
+              <img src={card.image} alt={card.alt} />
+              <div className="visual-card-overlay">
+                <span className="visual-card-overlay-badge">{card.badge}</span>
+                <h3 className="visual-card-overlay-title">{card.title}</h3>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                  <span key={tag} className="flex items-center gap-2 px-4 py-2 text-sm font-normal bg-ag-bg-light rounded-lg text-ag-grey">
-                    <span className="w-1.5 h-1.5 bg-ag-grey rounded-sm"></span>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-4">
-                {externalLink ? (
-                  <a
-                    href={externalLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={(event) => event.stopPropagation()}
-                    onKeyDown={(event) => event.stopPropagation()}
-                  >
-                    <Button
-                      variant="outline"
-                      className="border-none bg-transparent px-0 py-0 h-auto text-base font-medium gap-2 hover:bg-transparent text-ag-blue hover:text-ag-dark transition-colors duration-200"
-                    >
-                      View case study
-                      <ArrowRight className="ml-0.5 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Button>
-                  </a>
-                ) : (
-                  <Button
-                    variant="outline"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleSlugChange(slug);
-                    }}
-                    className="border-none bg-transparent px-0 py-0 h-auto text-base font-medium gap-2 hover:bg-transparent text-ag-blue hover:text-ag-dark transition-colors duration-200"
-                  >
-                    View case study
-                    <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Button>
-                )}
-              </div>
-            </div>
-          </AnimatedSection>
-        ))}
+            </button>
+          ))}
+        </div>
+
+        <footer className="work-ai-footer">
+          <a href={`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`} target="_blank" rel="noreferrer">
+            <Sparks aria-hidden="true" strokeWidth={1.5} />
+            <span>Ask AI about my work</span>
+          </a>
+        </footer>
       </div>
-    </AnimatedSection>
+    </section>
   );
 };
 

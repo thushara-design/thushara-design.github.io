@@ -1,4 +1,4 @@
-import { CaseStudy1, CaseStudy2, CaseStudy3, CaseStudy4 } from "../components/case-studies";
+import { CaseStudy1, CaseStudy2 } from "../components/case-studies";
 
 const caseStudies = [
   {
@@ -16,20 +16,7 @@ const caseStudies = [
     responsibilities: ["UX research", "User flows, Paper wireframes, Low-fi and high-fi wireframes and creating prototypes"],
     Component: CaseStudy1,
     liveProjectLink: "https://gistly.ai",
-  },
-  {
-    title: "Kite AI",
-    slug: "aria",
-    tagline: "PRESENTATION",
-    tags: ["Research", "Design Systems", "Community"],
-    description: "Kite is a collaborative initiative focused on empowering career pivoters to navigate their professional transitions.",
-    image: "case-study-aria.png",
-    role: "Product Designer",
-    timeframe: "In Progress",
-    tools: ["Figma", "Notion"],
-    responsibilities: ["Research", "Design", "Presentation"],
-    Component: CaseStudy4,
-    liveProjectLink: "https://kite-ai.vercel.app/",
+    externalLink: undefined,
   },
   {
     title: "Serenity",
@@ -45,33 +32,7 @@ const caseStudies = [
     tools: ["Figma"],
     responsibilities: "Conducting interviews, paper and digital wireframing, low and high-fidelity prototyping, conducting usability studies, accounting for accessibility, and iterating on designs.",
     Component: CaseStudy2,
-  },
-  {
-    title: "Reflect Android App",
-    slug: "Reflect",
-    tagline: "REFLECT ANDROID APP",
-    tags: ["Mental Health", "Android App"],
-    description: "Reflect is an app that helps users log experiences, detect emotions, and receive personalized coping strategies.",
-    image: "case-study-reflect.png",
-    role: "Creator and Designer",
-    timeframe: "In Progress",
-    tools: ["Figma", "Notion"],
-    responsibilities: ["Research", "Design", "Presentation"],
-    Component: CaseStudy3,
-    liveProjectLink: "https://github.com/thushara-design/reflect-app.git",
-  },
-  {
-    title: "Elementry",
-    slug: "elementry",
-    tagline: "",
-    tags: ["FinTech", "Dashboard Design", "Data Visualization"],
-    description: "Elementry is a project focused on understanding and improving the user experience of online banking for Indian customers.",
-    image: "case-study-3.png",
-    role: "UI/UX designer",
-    timeframe: "",
-    tools: ["Figma"],
-    responsibilities: [],
-    externalLink: "https://thushara-design.super.site/projects/brushd",
+    externalLink: undefined,
   },
 ];
 

@@ -1,171 +1,137 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { Dribbble, HalfMoon, Linkedin, Mail, Medium, SunLight, User, ViewGrid } from "iconoir-react";
 import { caseStudiesData } from "../data";
-import { Header } from "./header";
-import { Footer } from "./footer";
-import { cn } from "../lib/utils";
-import { Button } from "./ui/button";
-import { subtractLeft, subtractRight } from "@/assets/images";
-import { AnimatedSection } from "./animated-section";
 import { Seo } from "./Seo";
+import { useTheme } from "../lib/theme";
+import { Logo } from "../assets/images";
 
-// Case studies with a dark background
-const CASE_STUDIES_WITH_DARK_BG: string | string[] = [];
+const socialLinks = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/thushara-v", Icon: Linkedin },
+  { label: "Medium", href: "https://medium.com/@thusharavarghese", Icon: Medium },
+  { label: "Dribbble", href: "https://dribbble.com/thusharadesign", Icon: Dribbble },
+];
 
 const CaseStudyDat = ({ slug }: { slug: string }) => {
-  const headerRef = useRef<HTMLDivElement>(null);
-
-  // Scroll handler that directly manipulates the header’s class list.
-  const handleScroll = () => {
-    if (headerRef.current) {
-      if (CASE_STUDIES_WITH_DARK_BG.includes(slug) && window.scrollY < 660) {
-        headerRef.current.classList.add("bg-[#0f1523]", "text-white");
-      } else {
-        headerRef.current.classList.remove("bg-[#0f1523]", "text-white");
-      }
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    // Call once to initialize header style
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Scroll to top when component mounts
+  const { theme, toggle } = useTheme();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (!slug) {
-    return null;
-  }
-
   const caseStudy = caseStudiesData.find((cs) => cs.slug === slug);
-  if (!caseStudy) {
-    return null;
-  }
-
-  const { title, tagline, description, Component, externalLink, responsibilities, role, timeframe, tools, image } = caseStudy as any;
-
-  // Format tools list for better readability
-  const formattedTools = Array.isArray(tools) && tools.length > 1 ? `${tools.slice(0, -1).join(", ")} and ${tools.slice(-1)}` : tools;
+  if (!caseStudy) return null;
 
   const caseStudyIndex = caseStudiesData.findIndex((cs) => cs.slug === slug);
-  const isFirstCaseStudy = caseStudyIndex === 0;
-  const isLastCaseStudy = caseStudyIndex === caseStudiesData.length - 1;
+  const previousCaseStudy = caseStudiesData[caseStudyIndex - 1];
+  const nextCaseStudy = caseStudiesData[caseStudyIndex + 1];
+  const {
+    title,
+    tagline,
+    description,
+    Component,
+    externalLink,
+    responsibilities,
+    role,
+    timeframe,
+    tools,
+    image,
+  } = caseStudy as any;
 
-  // Build canonical URL using live domain with query param routing
+  const formattedTools = Array.isArray(tools) && tools.length > 1 ? `${tools.slice(0, -1).join(", ")} and ${tools.slice(-1)}` : tools;
+  const formattedResponsibilities = Array.isArray(responsibilities) ? responsibilities.join(", ") : responsibilities;
   const siteUrl = "https://designwiththushara.com";
   const canonicalUrl = `${siteUrl}/?ref=${slug}`;
 
-  // For Gistly, set noindex to avoid appearing as a separate search result, but allow follow
-  const robots = slug === "gistly" ? "noindex,follow" : undefined;
-
   return (
-    <div className="font-sans">
+    <main className="case-detail-page">
       <Seo
-        title={`${title} – Case Study | Thushara`}
+        title={`${title} - Case Study | Thushara`}
         description={typeof description === "string" ? description : `${title} case study`}
         url={canonicalUrl}
         image={image ? `${siteUrl}/images/${image}` : undefined}
         type="article"
         breadcrumbs={[
           { name: "Home", url: siteUrl },
-          { name: "Case Studies", url: `${siteUrl}#work` },
-          { name: title, url: canonicalUrl }
+          { name: "Case Studies", url: `${siteUrl}#case-studies` },
+          { name: title, url: canonicalUrl },
         ]}
-        robots={robots}
+        robots={slug === "gistly" ? "noindex,follow" : undefined}
       />
 
-      {CASE_STUDIES_WITH_DARK_BG.includes(slug) && (
-        <div className="absolute left-0 top-0 -z-10 h-[52rem] w-full bg-[#0f1523] text-white md:h-[42rem]" />
-      )}
-
-      {/* Pass the ref to the Header */}
-      <Header ref={headerRef} />
-
-      <section
-        className={cn(
-          "mx-auto max-w-4xl w-full space-y-8 p-6 pt-24 md:pt-40",
-          CASE_STUDIES_WITH_DARK_BG.includes(slug) ? "text-white" : "text-dark",
-        )}>
-        {!CASE_STUDIES_WITH_DARK_BG.includes(slug) && (
-          <>
-            <img src={subtractRight} alt="Subtract Right" className="absolute right-0 top-40 -z-10 hidden xl:block" />
-            <img src={subtractLeft} alt="Subtract Left" className="absolute left-0 top-80 -z-10 hidden xl:block" />
-          </>
-        )}
-        <AnimatedSection as="div" className="mx-auto max-w-4xl space-y-3">
-          <h1 className="text-3xl font-medium">{title}</h1>
-          <h2 className="text-lg uppercase">{tagline}</h2>
-        </AnimatedSection>
-
-        <div className="relative text-base">
-          <AnimatedSection as="div" className="mx-auto max-w-4xl">
-            {description}
-          </AnimatedSection>
-          <AnimatedSection as="div" className="mx-auto grid max-w-4xl grid-cols-1 gap-16 mt-12 md:grid-cols-2">
-            <div>
-              <h3 className="mb-3 font-bold">My Role</h3>
-              <p>{role}</p>
-            </div>
-            <div>
-              <h3 className="mb-3 font-bold">Timeframe</h3>
-              <p>{timeframe}</p>
-            </div>
-            <div>
-              <h3 className="mb-3 font-bold">Responsibilities</h3>
-              {Array.isArray(responsibilities) && responsibilities.length > 1 ? (
-                <ol className="list-inside list-decimal">
-                  {responsibilities.map((resp) => (
-                    <li key={resp}>{resp}</li>
-                  ))}
-                </ol>
-              ) : (
-                <p>{responsibilities}</p>
-              )}
-            </div>
-            <div>
-              <h3 className="mb-3 font-bold">Tools</h3>
-              <p>{formattedTools}</p>
-            </div>
-          </AnimatedSection>
-          {!Component || externalLink ? null : <Component />}
-        </div>
-      </section>
-
-      {/* Navigation Buttons */}
-      <div
-        className={cn("mx-auto mt-16 flex max-w-4xl flex-col items-center gap-4 sm:flex-row", isFirstCaseStudy ? "justify-end" : "justify-between")}
-      >
-        {!isFirstCaseStudy && (
-          <a href={`?ref=${caseStudiesData[caseStudyIndex - 1].slug}`}>
-            <Button variant="outline" className="flex w-52 items-center gap-2 text-sm">
-              <span className="font-bold">←</span> Previous Case Study
-            </Button>
+      <aside className="work-social-rail" aria-label="Social links">
+        {socialLinks.map(({ href, Icon, label }) => (
+          <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} title={label}>
+            <Icon aria-hidden="true" strokeWidth={1.5} />
           </a>
-        )}
+        ))}
+      </aside>
 
-        {!isLastCaseStudy && (
-          <a
-            href={
-              caseStudiesData[caseStudyIndex + 1].externalLink
-                ? caseStudiesData[caseStudyIndex + 1].externalLink
-                : `?ref=${caseStudiesData[caseStudyIndex + 1].slug}`
-            }
-            target={caseStudiesData[caseStudyIndex + 1].externalLink ? "_blank" : "_self"}
-            rel={caseStudiesData[caseStudyIndex + 1].externalLink ? "noopener noreferrer" : ""}
+      <header className="work-board-header">
+        <a href="/" className="work-logo" aria-label="Thushara home">
+          <Logo aria-hidden="true" />
+        </a>
+        <nav aria-label="Portfolio navigation">
+          <a href="/#case-studies">
+            <ViewGrid aria-hidden="true" strokeWidth={1.5} />
+            <span>Case studies</span>
+          </a>
+          <a href="/about-me">
+            <User aria-hidden="true" strokeWidth={1.5} />
+            <span>About me</span>
+          </a>
+          <a href="mailto:thusharavarghese9@gmail.com">
+            <Mail aria-hidden="true" strokeWidth={1.5} />
+            <span>Contact</span>
+          </a>
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={toggle}
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            title={theme === "dark" ? "Light mode" : "Dark mode"}
           >
-            <Button variant="outline" className="flex w-52 items-center gap-2 text-sm">
-              Next Case Study <span className="font-bold">→</span>
-            </Button>
-          </a>
-        )}
-      </div>
+            {theme === "dark"
+              ? <SunLight aria-hidden="true" strokeWidth={1.5} />
+              : <HalfMoon aria-hidden="true" strokeWidth={1.5} />}
+          </button>
+        </nav>
+      </header>
 
-      <Footer />
-    </div>
+      <section className="case-detail-shell">
+        <header className="case-detail-hero">
+          <div className="case-detail-hero-copy">
+            <p className="case-detail-kicker">{tagline || "Case study"}</p>
+            <h1>{title}</h1>
+            <p className="case-detail-description">{description}</p>
+          </div>
+
+          <dl className="case-detail-meta">
+            <div>
+              <dt>Role</dt>
+              <dd>{role}</dd>
+            </div>
+            <div>
+              <dt>Timeframe</dt>
+              <dd>{timeframe || "Project sprint"}</dd>
+            </div>
+            <div>
+              <dt>Tools</dt>
+              <dd>{formattedTools}</dd>
+            </div>
+            <div>
+              <dt>Responsibilities</dt>
+              <dd>{formattedResponsibilities}</dd>
+            </div>
+          </dl>
+        </header>
+
+        <article className="case-detail-content">{!Component || externalLink ? null : <Component />}</article>
+
+        <nav className="case-detail-pagination" aria-label="Case study pagination">
+          {previousCaseStudy ? <a href={`?ref=${previousCaseStudy.slug}`}>Previous / {previousCaseStudy.title}</a> : <span />}
+          {nextCaseStudy ? <a href={`?ref=${nextCaseStudy.slug}`}>Next / {nextCaseStudy.title}</a> : <span />}
+        </nav>
+      </section>
+    </main>
   );
 };
 
