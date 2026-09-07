@@ -1,13 +1,9 @@
-import { Dribbble, HalfMoon, Linkedin, Mail, Medium, SunLight, User, ViewGrid } from "iconoir-react";
+import { HalfMoon, SunLight } from "iconoir-react";
 import { Seo } from "../components/Seo";
 import { Logo, profile } from "../assets/images";
 import { useTheme } from "../lib/theme";
+import { SocialRail } from "../components/social-rail";
 import { Testimonials } from "../components/testimonials";
-const socialLinks = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/thushara-v", Icon: Linkedin },
-  { label: "Medium", href: "https://medium.com/@thusharavarghese", Icon: Medium },
-  { label: "Dribbble", href: "https://dribbble.com/thusharadesign", Icon: Dribbble },
-];
 
 export const AboutMe = () => {
   const { theme, toggle } = useTheme();
@@ -20,31 +16,16 @@ export const AboutMe = () => {
         robots="noindex"
       />
 
-      <aside className="work-social-rail" aria-label="Social links">
-        {socialLinks.map(({ href, Icon, label }) => (
-          <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} title={label}>
-            <Icon aria-hidden="true" strokeWidth={1.5} />
-          </a>
-        ))}
-      </aside>
+      <SocialRail />
 
       <header className="work-board-header">
         <a href="/" className="work-logo" aria-label="Thushara home">
           <Logo aria-hidden="true" />
         </a>
         <nav aria-label="Portfolio navigation">
-          <a href="/#case-studies">
-            <ViewGrid aria-hidden="true" strokeWidth={1.5} />
-            <span>Case studies</span>
-          </a>
-          <a href="/about-me">
-            <User aria-hidden="true" strokeWidth={1.5} />
-            <span>About me</span>
-          </a>
-          <a href="mailto:thusharavarghese9@gmail.com">
-            <Mail aria-hidden="true" strokeWidth={1.5} />
-            <span>Contact</span>
-          </a>
+          <a href="/#case-studies"><span>Case studies</span></a>
+          <a href="/about-me"><span>About</span></a>
+          <a href="mailto:thusharavarghese9@gmail.com"><span>Contact</span></a>
           <button
             type="button"
             className="theme-toggle"
@@ -60,14 +41,23 @@ export const AboutMe = () => {
       </header>
 
       <section className="about-v3-layout">
-        <figure className="about-v3-photo">
-          <img src={profile} alt="Thushara Varghese" />
-        </figure>
+        <div className="about-v3-head">
+          <p className="about-v3-kicker">Product designer · B2B UX · AI systems</p>
+          <h1>
+            I{" "}
+            <span className="about-v3-inline-photo" aria-hidden="true">
+              <img src={profile} alt="" />
+            </span>{" "}
+            design for the people behind messy workflows.
+          </h1>
+        </div>
+
+        <div className="about-v3-left">
+          <Testimonials />
+        </div>
 
         <div className="about-v3-copy">
-          <Logo className="about-v3-logo" aria-hidden="true" />
-          <p className="about-v3-kicker">Product designer · B2B UX · AI systems</p>
-          <h1>Thushara Varghese</h1>
+          <p className="about-v3-name">Hi, I&apos;m Thushara.</p>
 
           <div className="about-v3-bio">
             <p>
@@ -81,20 +71,16 @@ export const AboutMe = () => {
             </p>
           </div>
 
-          <div className="about-v3-links mt-8">
+          <div className="about-v3-links mt-4">
             <a href="https://medium.com/@thusharavarghese" target="_blank" rel="noreferrer">
               Medium
             </a>
             <a href="mailto:thusharavarghese9@gmail.com">thusharavarghese9@gmail.com</a>
-            <a href="/resume.pdf" target="_blank" rel="noreferrer" className="px-4 py-2 border border-line text-ink hover:border-accent hover:text-accent transition-colors">
+            <a href="/resume.pdf" target="_blank" rel="noreferrer" className="about-v3-resume px-4 py-2 border border-line text-ink hover:border-accent hover:text-accent transition-colors">
               Download Resume
             </a>
           </div>
         </div>
-      </section>
-
-      <section className="py-24">
-        <Testimonials />
       </section>
     </main>
   );

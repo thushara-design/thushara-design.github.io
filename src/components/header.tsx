@@ -68,7 +68,7 @@ export const Header: React.FC<React.HTMLProps<HTMLElement>> = ({ className, ...p
           ref={menuRef}
           id="mobile-menu"
           className={cn(
-            "fixed top-0 left-0 z-50 h-[36svh] w-full bg-accent-primary text-ag-dark shadow transition-transform duration-300 ease-in-out sm:hidden",
+            "fixed top-0 left-0 z-50 h-auto pb-10 w-full bg-accent-primary text-ag-dark shadow transition-transform duration-300 ease-in-out sm:hidden",
             isOpen ? "translate-y-0" : "-translate-y-full",
           )}>
           <div className="flex justify-between p-5">

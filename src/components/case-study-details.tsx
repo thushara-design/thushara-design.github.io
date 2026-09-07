@@ -1,15 +1,11 @@
 import { useEffect } from "react";
-import { Dribbble, HalfMoon, Linkedin, Mail, Medium, SunLight, User, ViewGrid } from "iconoir-react";
+import { HalfMoon, SunLight } from "iconoir-react";
 import { caseStudiesData } from "../data";
 import { Seo } from "./Seo";
+import { SectionNav } from "./section-nav";
+import { SocialRail } from "./social-rail";
 import { useTheme } from "../lib/theme";
 import { Logo } from "../assets/images";
-
-const socialLinks = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/thushara-v", Icon: Linkedin },
-  { label: "Medium", href: "https://medium.com/@thusharavarghese", Icon: Medium },
-  { label: "Dribbble", href: "https://dribbble.com/thusharadesign", Icon: Dribbble },
-];
 
 const CaseStudyDat = ({ slug }: { slug: string }) => {
   const { theme, toggle } = useTheme();
@@ -57,31 +53,16 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
         robots={slug === "gistly" ? "noindex,follow" : undefined}
       />
 
-      <aside className="work-social-rail" aria-label="Social links">
-        {socialLinks.map(({ href, Icon, label }) => (
-          <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} title={label}>
-            <Icon aria-hidden="true" strokeWidth={1.5} />
-          </a>
-        ))}
-      </aside>
+      <SocialRail />
 
       <header className="work-board-header">
         <a href="/" className="work-logo" aria-label="Thushara home">
           <Logo aria-hidden="true" />
         </a>
         <nav aria-label="Portfolio navigation">
-          <a href="/#case-studies">
-            <ViewGrid aria-hidden="true" strokeWidth={1.5} />
-            <span>Case studies</span>
-          </a>
-          <a href="/about-me">
-            <User aria-hidden="true" strokeWidth={1.5} />
-            <span>About me</span>
-          </a>
-          <a href="mailto:thusharavarghese9@gmail.com">
-            <Mail aria-hidden="true" strokeWidth={1.5} />
-            <span>Contact</span>
-          </a>
+          <a href="/#case-studies"><span>Case studies</span></a>
+          <a href="/about-me"><span>About</span></a>
+          <a href="mailto:thusharavarghese9@gmail.com"><span>Contact</span></a>
           <button
             type="button"
             className="theme-toggle"
@@ -125,6 +106,8 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
         </header>
 
         <article className="case-detail-content">{!Component || externalLink ? null : <Component />}</article>
+
+        {Component && !externalLink ? <SectionNav /> : null}
 
         <nav className="case-detail-pagination" aria-label="Case study pagination">
           {previousCaseStudy ? <a href={`?ref=${previousCaseStudy.slug}`}>Previous / {previousCaseStudy.title}</a> : <span />}

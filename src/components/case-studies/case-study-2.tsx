@@ -2,9 +2,9 @@ import { AnimatedSection } from "../animated-section";
 
 export const CaseStudy2 = () => {
   return (
-    <div className="mx-auto mt-16 w-full max-w-5xl space-y-24 text-base text-black">
+    <div className="mt-16 w-full space-y-24 text-base text-black">
       {/* Problem Section */}
-      <AnimatedSection delay={0.1} className="mx-auto max-w-4xl space-y-8 mt-16">
+      <AnimatedSection delay={0.1} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">The Problem</h1>
           <div className="h-px w-16 bg-black"></div>
@@ -21,7 +21,7 @@ export const CaseStudy2 = () => {
       </AnimatedSection>
 
       {/* Goal Section */}
-      <AnimatedSection delay={0.2} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={0.2} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">The Goal</h1>
           <div className="h-px w-16 bg-black"></div>
@@ -34,12 +34,12 @@ export const CaseStudy2 = () => {
         </div>
 
         <div className="mt-8">
-          <img src="/images/serenity/aif-1.gif" alt="iPad Mockup 1.png" className="h-[25rem] object-contain" />
+          <img src="/images/serenity/aif-1.gif" alt="iPad Mockup 1.png" className="h-auto md:h-[25rem] w-full md:w-auto mx-auto block object-contain" style={{ borderRadius: '32px' }} />
         </div>
       </AnimatedSection>
 
       {/* User Research Section */}
-      <AnimatedSection delay={0.3} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={0.3} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">Understanding the Users</h1>
           <div className="h-px w-16 bg-black"></div>
@@ -84,20 +84,20 @@ export const CaseStudy2 = () => {
       </AnimatedSection>
 
       {/* Research Insights */}
-      <AnimatedSection delay={0.4} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={0.4} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">Research Insights</h1>
           <div className="h-px w-16 bg-black"></div>
         </div>
         
         <div className="space-y-6">
-          <img src="/images/serenity/image-1.png" alt="Research Insights" className="w-full object-contain" />
-          <img src="/images/serenity/image-2.png" alt="User Journey" className="w-full object-contain" />
+          <img src="/images/serenity/image-1.png" alt="Research Insights" className="w-full md:w-[65%] mx-auto block object-contain" />
+          <img src="/images/serenity/image-2.png" alt="User Journey" className="w-full md:w-[65%] mx-auto block object-contain" />
         </div>
       </AnimatedSection>
 
       {/* Ideation Phase */}
-      <AnimatedSection delay={0.5} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={0.5} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">Ideation Phase</h1>
           <div className="h-px w-16 bg-black"></div>
@@ -116,8 +116,8 @@ export const CaseStudy2 = () => {
         </div>
 
         <div className="space-y-6 mt-8">
-          <img src="/images/serenity/image-3.png" alt="Storyboards" className="w-full object-contain" />
-          <img src="/images/serenity/image-4.png" alt="User Journey" className="w-full object-contain" />
+          <img src="/images/serenity/image-3.png" alt="Storyboards" className="w-full md:w-[65%] mx-auto block object-contain" />
+          <img src="/images/serenity/image-4.png" alt="User Journey" className="w-full md:w-[65%] mx-auto block object-contain" />
           <span className="block text-center text-sm text-gray-500 italic">
             Big-picture and close-up storyboards
           </span>
@@ -125,7 +125,7 @@ export const CaseStudy2 = () => {
       </AnimatedSection>
 
       {/* Design Process */}
-      <AnimatedSection delay={0.6} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={0.6} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">Design Process</h1>
           <div className="h-px w-16 bg-black"></div>
@@ -138,14 +138,14 @@ export const CaseStudy2 = () => {
         </div>
 
         <div className="space-y-6 mt-8">
-          <img src="/images/serenity/image-5.png" alt="User Flow Diagram" className="w-full object-contain" />
+          <img src="/images/serenity/image-5.png" alt="User Flow Diagram" className="w-full md:w-[65%] mx-auto block object-contain" />
           <span className="block text-center text-sm text-gray-500 italic">
             User-flow diagram
           </span>
         </div>
 
         <div className="space-y-6 mt-8">
-          <img src="/images/serenity/image-6.png" alt="Paper Wireframes" className="w-full object-contain" />
+          <img src="/images/serenity/image-6.png" alt="Paper Wireframes" className="w-full md:w-[65%] mx-auto block object-contain" />
           <span className="block text-center text-sm text-gray-500 italic">
             Paper wireframes
           </span>
@@ -153,7 +153,7 @@ export const CaseStudy2 = () => {
       </AnimatedSection>
 
       {/* Low-Fidelity Prototyping */}
-      <AnimatedSection delay={0.7} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={0.7} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">Low-Fidelity Prototyping</h1>
           <div className="h-px w-16 bg-black"></div>
@@ -166,12 +166,12 @@ export const CaseStudy2 = () => {
         </div>
 
         <div className="mt-8">
-          <img src="/images/serenity/aif-2.gif" alt="Low Fidelity Prototype" className="w-full object-contain" />
+          <img src="/images/serenity/aif-2.gif" alt="Low Fidelity Prototype" className="w-full md:w-[65%] mx-auto block object-contain" />
         </div>
       </AnimatedSection>
 
       {/* Usability Testing */}
-      <AnimatedSection delay={0.8} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={0.8} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">Usability Testing</h1>
           <div className="h-px w-16 bg-black"></div>
@@ -205,7 +205,7 @@ export const CaseStudy2 = () => {
         </div>
 
         <div className="space-y-4 mt-8">
-          <img src="/images/serenity/image-7.png" alt="Redesigned Homepage" className="w-full object-contain" />
+          <img src="/images/serenity/image-7.png" alt="Redesigned Homepage" className="w-full md:w-[65%] mx-auto block object-contain" />
           <p className="text-sm text-gray-500 italic text-center">
             Redesigned homepage after usability study - more personalized with focus on promoting artists
           </p>
@@ -213,7 +213,7 @@ export const CaseStudy2 = () => {
       </AnimatedSection>
 
       {/* High-Fidelity Designs */}
-      <AnimatedSection delay={0.9} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={0.9} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">High-Fidelity Designs</h1>
           <div className="h-px w-16 bg-black"></div>
@@ -226,15 +226,17 @@ export const CaseStudy2 = () => {
         </div>
 
         <div className="space-y-6 mt-8">
-          <img src="/images/serenity/image-8.png" alt="High Fidelity Designs" className="w-full object-contain" />
+          <img src="/images/serenity/image-8.png" alt="High Fidelity Designs" className="w-full md:w-[65%] mx-auto block object-contain" />
         </div>
 
         <div className="space-y-6 mt-8">
-          <img src="/images/serenity/image-9.svg" alt="Design System" className="w-full object-contain" />
+          <img src="/images/serenity/image-9.svg" alt="Design System" className="w-full md:w-[65%] mx-auto block object-contain" />
         </div>
 
         <div className="space-y-4 mt-8">
-          <img src="/images/serenity/aif-3.gif" alt="High Fidelity Prototype" className="mx-auto max-w-sm object-contain" />
+          <div className="w-full flex justify-center py-12" style={{ backgroundColor: '#ffffff', border: '1px solid var(--line)', borderRadius: '12px' }}>
+            <img src="/images/serenity/aif-3.gif" alt="High Fidelity Prototype" className="mx-auto" style={{ maxWidth: '14rem', width: '100%', border: 'none', borderRadius: '0' }} />
+          </div>
           <span className="block text-center text-sm text-gray-500 italic">
             High Fidelity Prototype
           </span>
@@ -242,7 +244,7 @@ export const CaseStudy2 = () => {
       </AnimatedSection>
 
       {/* Accessibility */}
-      <AnimatedSection delay={1.0} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={1.0} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">Accessibility Considerations</h1>
           <div className="h-px w-16 bg-black"></div>
@@ -274,7 +276,7 @@ export const CaseStudy2 = () => {
       </AnimatedSection>
 
       {/* Design Critique */}
-      <AnimatedSection delay={1.1} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={1.1} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">Design Critique Session</h1>
           <div className="h-px w-16 bg-black"></div>
@@ -291,7 +293,7 @@ export const CaseStudy2 = () => {
       </AnimatedSection>
 
       {/* Key Learnings */}
-      <AnimatedSection delay={1.2} className="mx-auto max-w-4xl space-y-8">
+      <AnimatedSection delay={1.2} className="w-full space-y-8">
         <div className="space-y-4">
           <h1 className="text-3xl font-light tracking-tight">Key Learnings</h1>
           <div className="h-px w-16 bg-black"></div>

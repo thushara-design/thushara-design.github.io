@@ -198,7 +198,7 @@ export const CaseStudy3 = () => {
                     </ul>
 
                     <p className="leading-relaxed text-gray-600">
-                        People liked the design and the idea—but those who entered real emotional content said something that changed the direction:
+                        People liked the design and the idea, but those who entered real emotional content said something that changed the direction:
                     </p>
 
                     <div className="space-y-3 pl-6 border-l-2 border-gray-300">

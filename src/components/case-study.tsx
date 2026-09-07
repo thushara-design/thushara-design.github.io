@@ -1,43 +1,82 @@
 import { useCallback } from "react";
-import type { ComponentType, SVGProps } from "react";
 import { useNavigate } from "react-router";
-import { Dribbble, HalfMoon, Linkedin, Mail, Medium, Sparks, SunLight, User, ViewGrid } from "iconoir-react";
+import { HalfMoon, SunLight } from "iconoir-react";
 import { Logo } from "../assets/images";
-import caseStudiesData from "../data/case-studies";
-import featuredImage from "../assets/image 47.png";
-import gistlyUiImage from "../assets/gistly-ui.png";
+import gistlyCover from "../assets/gistly-cover.png";
+import { SocialRail } from "./social-rail";
 import { useTheme } from "../lib/theme";
 
-const prompt =
-  "I am evaluating Thushara Varghese for a B2B product design role. Use these links for context: case studies https://thushara-design.github.io/#case-studies, about page https://thushara-design.github.io/about-me, Medium https://medium.com/@thusharavarghese, Dribbble https://dribbble.com/thusharadesign. Based on her work, what should a B2B founder or hiring manager understand about how she thinks, what kinds of product problems she is strongest at, and what evidence in her portfolio supports that?";
+type Project = {
+  slug: string;
+  number: string;
+  badge: string;
+  title: string;
+  desc: string;
+  metricLabel: string;
+  metric: string;
+  // Optional second numeric stat (featured card only).
+  metric2?: string;
+  metricLabel2?: string;
+  role: string;
+  // What was actually designed, shown as small badges.
+  scope?: string[];
+  image: string;
+  // Optional theme-aware pair, light shot shown on dark page, dark shot on light page.
+  imageLight?: string;
+  imageDark?: string;
+  // When true, the media renders at the image's natural aspect (no crop).
+  naturalMedia?: boolean;
+  // The lead project, typography-forward, stacked with a large image below.
+  featured?: boolean;
+  alt: string;
+};
 
-const visualCards = [
+const projects: Project[] = [
   {
-    title: "Gistly call analysis",
-    badge: "Gistly.ai · B2B audit UX",
-    image: gistlyUiImage,
-    alt: "Gistly call analysis interface",
+    slug: "gistly",
+    number: "01",
+    badge: "Gistly.ai · Product design · 2024 – present",
+    title: "Designing Gistly",
+    desc: "Designing clarity and trust into AI-powered call QA.",
+    metricLabel: "Screens shipped",
+    metric: "120+",
+    metric2: "20+",
+    metricLabel2: "Core features & flows",
+    role: "Sole product designer",
+    scope: ["QA", "Analytics", "Templates", "AI workflows"],
+    featured: true,
+    image: gistlyCover,
+    alt: "Gistly's Ask AI assistant answering a question with an agent-score breakdown chart, surrounded by template library, scorecard, rubric builder, call review, and reporting panels",
   },
   {
-    title: "Serenity mobile app",
+    slug: "homepage",
+    number: "02",
+    badge: "Gistly.ai · Homepage",
+    title: "Homepage redesign",
+    desc: "Rebuilding the marketing homepage around one job: getting the right visitor to act, and measuring whether it worked.",
+    metricLabel: "Homepage key events",
+    metric: "+475%",
+    role: "Sole designer",
+    image: "/images/case-study-homepage.png",
+    alt: "Gistly homepage redesign preview",
+  },
+  {
+    slug: "serenity",
+    number: "03",
     badge: "Serenity · Mobile IA",
+    title: "Serenity",
+    desc: "A gallery artist-bio app, scan an artwork, learn the artist, save it. Google UX methodology, end to end.",
+    metricLabel: "Usability sessions",
+    metric: "5",
+    role: "UI/UX designer",
     image: "/images/case-study-2.png",
     alt: "Serenity mobile application screens",
   },
 ];
 
-type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
-
-const socialLinks: Array<{ label: string; href: string; Icon: IconComponent }> = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/thushara-v", Icon: Linkedin },
-  { label: "Medium", href: "https://medium.com/@thusharavarghese", Icon: Medium },
-  { label: "Dribbble", href: "https://dribbble.com/thusharadesign", Icon: Dribbble },
-];
-
 const CaseStudy = () => {
   const navigate = useNavigate();
   const { theme, toggle } = useTheme();
-  const featuredCaseStudy = caseStudiesData[0];
 
   const handleSlugChange = useCallback(
     (slug: string) => {
@@ -49,30 +88,15 @@ const CaseStudy = () => {
   return (
     <section id="case-studies" className="work-board-page">
       <div className="work-board">
-        <aside className="work-social-rail" aria-label="Social links">
-          {socialLinks.map(({ href, Icon, label }) => (
-            <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} title={label}>
-              <Icon aria-hidden="true" strokeWidth={1.5} />
-            </a>
-          ))}
-        </aside>
+        <SocialRail />
         <header className="work-board-header">
           <a href="/" className="work-logo" aria-label="Thushara home">
             <Logo aria-hidden="true" />
           </a>
           <nav aria-label="Portfolio navigation">
-            <a href="#case-studies">
-              <ViewGrid aria-hidden="true" strokeWidth={1.5} />
-              <span>Case studies</span>
-            </a>
-            <a href="/about-me">
-              <User aria-hidden="true" strokeWidth={1.5} />
-              <span>About me</span>
-            </a>
-            <a href="mailto:thusharavarghese9@gmail.com">
-              <Mail aria-hidden="true" strokeWidth={1.5} />
-              <span>Contact</span>
-            </a>
+            <a href="#case-studies"><span>Case studies</span></a>
+            <a href="/about-me"><span>About</span></a>
+            <a href="mailto:thusharavarghese9@gmail.com"><span>Contact</span></a>
             <button
               type="button"
               className="theme-toggle"
@@ -87,46 +111,53 @@ const CaseStudy = () => {
           </nav>
         </header>
 
-        <button type="button" className="featured-work-card hover-card" onClick={() => handleSlugChange(featuredCaseStudy.slug)}>
-          <div className="featured-work-copy">
-            <span className="case-card-badge featured-badge">Gistly.ai · Homepage redesign</span>
-            <h1>How We Redesigned The Homepage Resulting In 136% Increase In Engagement Time Within The First Quarter Post-Launch</h1>
-            <p>Case study on how I used design thinking to increase time on task and make a complex B2B product easier to understand.</p>
-            <div className="work-tags" aria-label="Case study tags">
-              {featuredCaseStudy.tags.map((tag) => (
-                <span key={tag}>{tag}</span>
-              ))}
-            </div>
-          </div>
-          <div className="featured-work-image">
-            <img src={featuredImage} alt="Gistly homepage redesign preview" />
-          </div>
-        </button>
-
-        <div className="work-card-grid">
-          {visualCards.map((card, index) => (
+        <div className="work-projects">
+          {projects.map((project, index) => {
+            // Show the opposite-theme screenshot for contrast: light shot on the
+            // dark page, dark shot on the light page. Falls back to the static image.
+            const mediaSrc =
+              project.imageLight && project.imageDark
+                ? theme === "dark"
+                  ? project.imageLight
+                  : project.imageDark
+                : project.image;
+            return (
             <button
-              key={card.title}
+              key={project.slug}
               type="button"
-              className="visual-work-card hover-card"
-              onClick={() => handleSlugChange(index === 0 ? "gistly" : "serenity")}
+              className={`work-project-row${project.featured ? " work-project-row--featured" : ""}${index % 2 === 1 ? " is-reversed" : ""}`}
+              onClick={() => handleSlugChange(project.slug)}
             >
-              <span className="case-card-badge">{card.badge}</span>
-              <img src={card.image} alt={card.alt} />
-              <div className="visual-card-overlay">
-                <span className="visual-card-overlay-badge">{card.badge}</span>
-                <h3 className="visual-card-overlay-title">{card.title}</h3>
+              <div className={`work-project-media${project.naturalMedia || project.featured ? " is-natural" : ""}`}>
+                <img src={mediaSrc} alt={project.alt} />
+                <span className="work-project-number" style={{ color: project.slug === 'serenity' ? '#000' : '' }}>{project.number}</span>
+              </div>
+              <div className="work-project-copy">
+                <span className="work-project-badge">{project.badge}</span>
+                <h3>{project.title}</h3>
+                <p>{project.desc}</p>
+                <div className="work-project-meta">
+                  <span className="work-project-metric">{project.metric}</span>
+                  {project.metric2 ? <span className="work-project-metric">{project.metric2}</span> : null}
+                  <span className="work-project-meta-label">{project.metricLabel}</span>
+                  {project.metricLabel2 ? <span className="work-project-meta-label">{project.metricLabel2}</span> : null}
+                </div>
+                {project.scope ? (
+                  <ul className="work-project-scope">
+                    {project.scope.map((tag) => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                ) : null}
+                <span className="work-project-cta">
+                  View case study <span className="work-project-arrow">→</span>
+                </span>
               </div>
             </button>
-          ))}
+            );
+          })}
         </div>
 
-        <footer className="work-ai-footer">
-          <a href={`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`} target="_blank" rel="noreferrer">
-            <Sparks aria-hidden="true" strokeWidth={1.5} />
-            <span>Ask AI about my work</span>
-          </a>
-        </footer>
       </div>
     </section>
   );

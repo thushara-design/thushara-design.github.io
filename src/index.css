@@ -12,7 +12,7 @@
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 
-  /* color — 4-token system */
+  /* color, 4-token system */
   --bg: #F5F4EF;
   --ink: #111111;
   --muted: #6B6B6B;
@@ -24,14 +24,14 @@
   --t-title: clamp(2.6rem, 5.2vw, 4.75rem);
   --t-lead: clamp(1.75rem, 3.2vw, 2.6rem);
   --t-say: clamp(1.5rem, 2.6vw, 2.15rem);
-  --t-h2: clamp(1.9rem, 3.4vw, 3rem);
+  --t-h2: clamp(1.6rem, 2.9vw, 2.6rem);
   --t-num: clamp(5rem, 11vw, 11rem);
   --t-body: 1.0625rem;
   --t-small: 0.9375rem;
   --t-foot: 0.8125rem;
   --t-label: 0.72rem;
 
-  /* spacing — strict 8px system */
+  /* spacing, strict 8px system */
   --s1: 8px;  --s2: 16px; --s3: 24px; --s4: 32px; --s6: 48px;
   --s8: 64px; --s12: 96px; --s16: 128px; --s20: 160px;
   --gap-macro: clamp(96px, 12vw, 160px);
@@ -50,6 +50,9 @@
   --container: 1400px;
   --gutter: clamp(24px, 5vw, 80px);
   --measure: 60ch;
+  /* Left edge shared by the social rail and the logo, so they line up. */
+  --rail-x: clamp(14px, 2vw, 28px);
+  --topbar-h: 3.25rem;
 
   /* motion */
   --ease: cubic-bezier(.16, 1, .3, 1);
@@ -74,12 +77,14 @@
 html {
   background: var(--bg);
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
@@ -108,7 +113,7 @@ button {
   }
 }
 
-/* Manual toggle — takes precedence over media query */
+/* Manual toggle, takes precedence over media query */
 [data-theme="dark"] {
   --bg: #14130F;
   --ink: #F2F0E9;
@@ -123,12 +128,6 @@ button {
   --muted: #6B6B6B;
   --line: #E7E7E7;
   --accent: #B0521F;
-}
-
-/* Intro sequence is always dark — independent of theme */
-.intro-sequence {
-  --bg: #14130F !important;
-  --ink: #F2F0E9 !important;
 }
 
 /* ─── Theme toggle button ───────────────────────────────────────────────────── */
@@ -185,82 +184,167 @@ p {
   color: var(--bg);
 }
 
-.intro-sequence {
+/* ─── Loading / intro screen ─────────────────────────────────────────────── */
+.load-screen {
   position: fixed;
   inset: 0;
   z-index: 80;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 20vh clamp(1rem, 5vw, 120px) var(--space-xl) clamp(1.5rem, 8vw, 120px);
+  justify-content: space-between;
+  padding: clamp(32px, 5vw, 64px) clamp(24px, 5vw, 72px);
   overflow: hidden;
-  background: #111111;
+  background: #0E0E0C;
   color: #F5F4EF;
-  animation: intro-shell 0.8s cubic-bezier(0.78, 0, 0.22, 1) forwards;
-  animation-delay: 3.5s;
+  font-family: var(--font-body);
+  transition: transform 800ms cubic-bezier(0.78, 0, 0.22, 1);
 }
 
-.intro-mark {
+.load-screen.is-lifting {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.load-head {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 32px;
-  margin-bottom: 64px;
-  animation: intro-mark-lift 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  animation-delay: 1.9s;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.intro-logo {
+.load-logo {
   width: 2.6rem;
   height: 2.6rem;
   color: #F5F4EF;
   opacity: 0;
-  animation: intro-logo 1.1s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+  transform-origin: center;
+  animation: load-logo 1.1s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
 }
 
-.intro-logo .logo-circle {
+.load-logo .logo-circle {
   stroke: rgba(245, 244, 239, 0.75);
 }
 
-.intro-name {
-  color: #F5F4EF;
-  font-family: var(--font-heading);
-  font-size: 28px;
-  font-weight: 400;
-  opacity: 0;
-  animation: intro-name 0.5s ease forwards;
-  animation-delay: 1.1s;
-}
-
-.intro-subtitle {
-  color: #F5F4EF;
+.load-eyebrow {
   font-family: var(--font-mono);
-  font-size: 14px;
-  letter-spacing: 0.12em;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8A867C;
   opacity: 0;
-  animation: intro-name 0.5s ease forwards;
-  animation-delay: 1.25s;
+  animation: load-fade 0.4s ease forwards;
+  animation-delay: 0.15s;
 }
 
-.intro-line-group {
-  display: grid;
-  gap: 0.08em;
-  color: var(--ink);
+.load-lede {
+  margin-bottom: 42px;
+}
+
+.load-greet {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: clamp(12px, 1.2vw, 14px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #F5F4EF;
+  opacity: 0;
+  animation: load-rise 0.5s ease forwards;
+  animation-delay: 0.25s;
+}
+
+.load-role {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 1.1vw, 14px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8A867C;
+  opacity: 0;
+  animation: load-rise 0.5s ease forwards;
+  animation-delay: 0.45s;
+}
+
+.load-sep {
+  color: #E5533D;
+}
+
+.load-tagline {
+  margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 8vw, 6.5rem);
   font-weight: 450;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
-  text-align: left;
+  font-size: clamp(44px, 8vw, 104px);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  white-space: pre-wrap;
+  min-height: 1.84em;
+  color: #F5F4EF;
 }
 
-.intro-line-group span {
+.load-accent {
+  color: #E5533D;
+}
+
+.load-caret {
+  display: inline-block;
+  width: 0.06em;
+  height: 0.82em;
+  background: #E5533D;
+  margin-left: 0.14em;
+  vertical-align: -0.08em;
+  transition: opacity 250ms ease;
+}
+
+.load-caret--solid {
+  opacity: 1;
+}
+
+/* Blink for ~1s once the sentence finishes … */
+.load-caret--blink {
+  animation: load-blink 1s steps(1) infinite;
+}
+
+/* … then fade out to signal "finished", not "editing". */
+.load-caret--gone {
   opacity: 0;
-  transform: translateY(20px);
-  animation: intro-line 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  animation-delay: calc(2.2s + (var(--line-index) * 200ms));
+}
+
+.load-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8A867C;
+}
+
+.load-pct {
+  color: #F5F4EF;
+}
+
+@media (max-width: 480px) {
+  .load-foot {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .load-logo,
+  .load-eyebrow,
+  .load-greet,
+  .load-role {
+    animation: none !important;
+    opacity: 1;
+  }
+  .load-caret--gone {
+    animation: none !important;
+    opacity: 0;
+  }
+  .load-screen {
+    transition: none;
+  }
 }
 
 
@@ -277,10 +361,14 @@ p {
   grid-template-columns: repeat(12, minmax(0, 1fr));
   grid-template-rows: auto;
   gap: var(--space-md);
-  width: min(var(--container), calc(100vw - (var(--gutter) * 2) - 6rem));
+  /* 100%-based, not 100vw: 100vw counts the scrollbar in most browsers, which
+     made this box a few px wider than the true available space and pushed it
+     to overflow on the right (margin:auto can't go negative to compensate). */
+  width: 100%;
+  max-width: calc(var(--container) + 2 * (var(--gutter) + 48px));
   min-height: 100vh;
   margin: 0 auto;
-  padding: var(--space-xs) 0 var(--space-xl) 0;
+  padding: var(--space-xs) calc(var(--gutter) + 48px) var(--space-xl);
 }
 
 .work-board-header {
@@ -292,11 +380,26 @@ p {
   margin-bottom: var(--space-xs);
 }
 
+/* Backdrop behind the fixed logo/nav so scrolling content passes cleanly under
+   the bar. Sits above content, below the nav itself. */
+.work-board-header::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--topbar-h);
+  z-index: 19;
+  pointer-events: none;
+  background: var(--bg);
+}
+
+/* Centred on the same x-axis as the social rail's icons: the rail's links are
+   1.75rem boxes, the logo is 1.25rem, so nudge it in by half the difference. */
 .work-logo {
   position: fixed;
-  left: calc((100% - min(var(--container), calc(100% - (var(--gutter) * 2) - 6rem))) / 2);
-  margin-left: -2rem;
-  top: var(--space-sm);
+  left: calc(var(--rail-x) + 0.25rem);
+  top: calc((var(--topbar-h) - 1.25rem) / 2);
   z-index: 20;
   display: grid;
   place-items: center;
@@ -310,24 +413,24 @@ p {
   height: 100%;
 }
 
+/* Mirrors the logo/rail on the left, so both ends hug the same edge inset. */
 .work-board-header nav {
   position: fixed;
-  top: var(--space-sm);
-  right: calc((100% - min(var(--container), calc(100% - (var(--gutter) * 2) - 6rem))) / 2);
+  top: 0;
+  right: calc(var(--rail-x) + 0.25rem);
   z-index: 20;
   display: flex;
   align-items: center;
   gap: clamp(var(--space-sm), 4vw, var(--space-xl));
-  height: 3rem;
+  height: var(--topbar-h);
   color: var(--ink);
   font-family: var(--font-mono);
-  font-size: clamp(0.78rem, 0.9vw, 0.88rem);
+  font-size: clamp(0.7rem, 0.75vw, 0.78rem);
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
 .work-board-header nav a,
-.work-ai-footer a,
 .about-v3-nav a,
 .about-v3-links a,
 .case-detail-nav a,
@@ -345,7 +448,6 @@ p {
 }
 
 .work-board-header nav a::after,
-.work-ai-footer a::after,
 .about-v3-nav a::after,
 .about-v3-links a::after,
 .case-detail-nav a::after,
@@ -363,7 +465,6 @@ p {
 }
 
 .work-board-header nav a:hover::after,
-.work-ai-footer a:hover::after,
 .about-v3-nav a:hover::after,
 .about-v3-links a:hover::after,
 .case-detail-nav a:hover::after,
@@ -371,25 +472,11 @@ p {
   transform: scaleX(1);
 }
 
-.featured-work-card,
-.visual-work-card {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  text-align: left;
-  outline: none;
+/* The bordered resume button already reads as a button, no link underline. */
+.about-v3-links a.about-v3-resume::after {
+  display: none;
 }
 
-.featured-work-card:focus,
-.featured-work-card:active,
-.visual-work-card:focus,
-.visual-work-card:active {
-  outline: none;
-}
 
 .hover-card {
   transition: border-color var(--dur-hover) var(--ease);
@@ -403,189 +490,279 @@ p {
   border-color: var(--ink);
 }
 
-.featured-work-card {
+/* ── Selected work, alternating editorial rows (Home v2) ── */
+/* No section heading above these any more, so the header spacer + grid gap
+   already provide the clearance, this just adds a little air. */
+.work-projects {
   grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
-  height: auto;
+  gap: clamp(72px, 8vw, 112px);
+  margin-top: var(--space-md);
 }
 
-.featured-work-image {
-  min-height: 0;
-  overflow: hidden;
-  background: var(--line);
-  padding: var(--space-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-top: 1px solid var(--line);
-}
-
-.featured-work-image img {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border: 1px solid var(--line);
-}
-
-.visual-work-card img {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border: 1px solid var(--line);
-  z-index: 1;
-}
-
-.featured-work-copy {
-  display: grid;
-  align-content: start;
-  gap: var(--space-xs);
-  padding: clamp(var(--space-md), 3.5vw, var(--space-xl));
-  overflow: hidden;
-}
-
-.featured-work-copy h1 {
-  max-width: 34ch;
-  font-size: clamp(1.8rem, 3.2vw, 3.2rem);
-  font-weight: 550;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  text-wrap: balance;
-}
-
-.featured-work-copy p {
-  max-width: 65ch;
-  color: var(--muted);
-  font-size: clamp(0.95rem, 1.1vw, 1.125rem);
-  line-height: 1.6;
-}
-
-.work-tags {
+.work-project-row {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xxs);
-  margin-top: var(--space-xxs);
-}
-
-.work-tags span,
-.case-card-badge {
-  display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  /* no border — design spec: no pill chrome */
-  border: none;
+  gap: clamp(32px, 5vw, 80px);
+  padding: 0;
   background: none;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: var(--t-label);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-transform: uppercase;
-  white-space: nowrap;
+  border: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
   outline: none;
 }
 
-.work-tags span {
-  padding: 0.3rem 0;
+.work-project-row.is-reversed {
+  flex-direction: row-reverse;
 }
 
-.work-tags span::before {
-  width: 0.22rem;
-  height: 0.22rem;
-  content: "";
-  background: var(--accent);
-  flex-shrink: 0;
-}
-
-.work-card-grid {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-md);
-  height: auto;
-  min-height: 0;
-}
-
-.visual-work-card {
+.work-project-media {
   position: relative;
+  flex: 1 1 440px;
   overflow: hidden;
+  aspect-ratio: 16 / 10;
   border: 1px solid var(--line);
   background: var(--line);
-  cursor: pointer;
-  aspect-ratio: 16 / 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-md);
+  border-radius: 24px;
 }
 
-.case-card-badge {
+.work-project-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 500ms var(--ease);
+}
+
+/* Natural-aspect media, show the full image, no crop */
+.work-project-media.is-natural {
+  aspect-ratio: auto;
+  align-self: center;
+  background: transparent;
+}
+
+.work-project-media.is-natural img {
+  height: auto;
+}
+
+.work-project-row:hover .work-project-media img,
+.work-project-row:focus-visible .work-project-media img {
+  transform: scale(1.04);
+}
+
+.work-project-number {
   position: absolute;
-  left: var(--space-xs);
-  top: var(--space-xs);
+  left: 20px;
+  top: 16px;
   z-index: 2;
-  padding: 0.3rem 0.5rem;
-  background: color-mix(in srgb, var(--bg) 80%, transparent);
-  backdrop-filter: none;
+  font-family: var(--font-heading);
+  font-weight: 100;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #fff;
 }
 
-.case-card-badge::before {
-  width: 0.22rem;
-  height: 0.22rem;
+.work-project-copy {
+  display: grid;
+  align-content: start;
+  gap: var(--space-sm);
+  flex: 1 1 360px;
+  padding-top: 8px;
+}
+
+.work-project-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.work-project-badge::before {
   content: "";
+  width: 0.24rem;
+  height: 0.24rem;
   background: var(--accent);
 }
 
-/* bottom card hover overlays */
-.visual-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: var(--ink);
-  color: var(--bg);
+.work-project-copy h3 {
+  margin: 0;
+  max-width: 20ch;
+  font-family: var(--font-heading);
+  font-weight: 550;
+  font-size: clamp(2rem, 3.6vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.work-project-copy p {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  line-height: 1.55;
+}
+
+.work-project-meta {
+  display: grid;
+  grid-template-columns: auto;
+  align-items: baseline;
+  gap: 6px 40px;
+  width: fit-content;
+  margin-top: 4px;
+}
+
+.work-project-meta-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.work-project-metric {
+  font-family: var(--font-heading);
+  font-weight: 550;
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.work-project-role {
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+/* What was designed, small badges, supporting detail. */
+.work-project-scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.work-project-scope li {
+  padding: 0.3rem 0.62rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.work-project-cta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-top: 8px;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.work-project-arrow {
+  transition: transform var(--dur-hover) var(--ease);
+}
+
+.work-project-row:hover .work-project-arrow,
+.work-project-row:focus-visible .work-project-arrow {
+  transform: translateX(8px);
+}
+
+/* ── Featured project (01), typography leads; the image is its conclusion ── */
+.work-project-row--featured {
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(32px, 6vw, 80px);
+}
+
+/* One connected block; spacing is set per-element rather than a uniform gap.
+   Kept slightly narrow so the left edge reads as a strong vertical axis. */
+.work-project-row--featured .work-project-copy {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: var(--space-lg);
-  opacity: 0;
-  transition: opacity var(--dur-hover) var(--ease);
-  z-index: 3;
+  align-items: flex-start;
+  gap: 0;
+  flex: 1;
+  width: 100%;
+  max-width: 38rem;
+  padding-top: 0;
 }
 
-.visual-work-card:hover .visual-card-overlay {
-  opacity: 1;
+/* The focal point, a touch smaller so it makes a statement without becoming
+   the design itself. */
+.work-project-row--featured .work-project-copy h3 {
+  max-width: 12ch;
+  margin-top: clamp(24px, 2.6vw, 32px);
+  font-size: clamp(2.75rem, 4vw, 4rem);
+  line-height: 0.95;
 }
 
-.visual-card-overlay-badge {
-  font-family: var(--font-mono);
-  font-size: var(--t-label);
-  font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: var(--space-xxs);
+/* Supporting subhead, clearly subordinate to the title. Widened so it fits on
+   one line where it can; text-wrap: balance evens the two lines otherwise, so
+   the last word is never stranded. */
+.work-project-row--featured .work-project-copy p {
+  max-width: 38rem;
+  margin-top: clamp(16px, 1.8vw, 22px);
+  text-wrap: balance;
 }
 
-.visual-card-overlay-title {
-  font-family: var(--font-heading);
-  font-size: var(--t-say);
-  font-weight: 550;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--bg);
+/* Proof block, a step down from the subhead, on a fixed two-column grid so the
+   value and its label read as one system. */
+.work-project-row--featured .work-project-meta {
+  grid-template-columns: auto auto;
+  gap: 8px 44px;
+  width: fit-content;
+  margin-top: clamp(36px, 4vw, 48px);
+}
+
+/* Scope reads as a caption of the metrics, not a fourth competing line. */
+.work-project-row--featured .work-project-scope {
+  margin-top: 14px;
+}
+
+/* CTA is the conclusion of everything above it. */
+.work-project-row--featured .work-project-cta {
+  margin-top: clamp(28px, 3.4vw, 40px);
+}
+
+/* Large supporting evidence, uncropped, tucked under the type. */
+.work-project-row--featured .work-project-media {
+  flex: 1.2;
+}
+
+@media (max-width: 760px) {
+  .work-project-row,
+  .work-project-row.is-reversed,
+  .work-project-row--featured {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 .work-social-rail {
   position: fixed;
-  left: calc((100% - min(var(--container), calc(100% - (var(--gutter) * 2) - 6rem))) / 2);
-  margin-left: -2.25rem;
-  bottom: var(--space-xl);
+  left: var(--rail-x);
+  bottom: var(--space-sm);
   z-index: 20;
   display: flex;
   flex-direction: column;
@@ -606,35 +783,59 @@ p {
   transform: translateX(0.2rem);
 }
 
+.work-social-rail a.work-social-ai {
+  position: relative;
+}
+
+/* Accent-coloured, and it shouldn't nudge on hover, the tooltip anchors to it. */
+.work-social-rail a.work-social-ai,
+.work-social-rail a.work-social-ai:hover {
+  color: var(--accent);
+  transform: none;
+}
+
 .work-social-rail svg {
   width: 1.25rem;
   height: 1.25rem;
 }
 
-.work-ai-footer {
-  position: fixed;
-  left: 50%;
-  bottom: var(--space-sm);
-  z-index: 30;
-  display: flex;
-  justify-content: center;
-  transform: translateX(-50%);
-}
-
-.work-ai-footer a {
-  padding: 0.52rem 0.75rem;
+/* Hover/focus tooltip on the rail's AI sparkle, says what it is and what it
+   does. Opens to the right, since the rail hugs the left edge. */
+.work-ai-tip {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  width: max-content;
+  max-width: min(14rem, 55vw);
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--line);
   background: var(--bg);
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: var(--t-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-align: left;
+  text-transform: none;
+  opacity: 0;
+  transform: translateY(-50%) translateX(-4px);
+  pointer-events: none;
+  transition: opacity var(--dur-hover) var(--ease),
+    transform var(--dur-hover) var(--ease);
 }
 
-.work-ai-footer svg {
-  width: 1rem;
-  height: 1rem;
-  color: var(--accent);
+.work-ai-tip b {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.work-social-rail a.work-social-ai:hover .work-ai-tip,
+.work-social-rail a.work-social-ai:focus-visible .work-ai-tip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
 }
 
 .about-v3 {
@@ -661,30 +862,68 @@ p {
 .about-v3-layout {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--space-lg);
-  align-items: center;
-  width: min(var(--container), calc(100vw - (var(--gutter) * 2) - 6rem));
-  min-height: 100vh;
+  gap: var(--space-md) var(--space-xl);
+  align-items: start;
+  /* 100%-based, not 100vw: 100vw counts the scrollbar in most browsers, which
+     made this box a few px wider than the true available space and pushed it
+     to overflow on the right (margin:auto can't go negative to compensate). */
+  width: 100%;
+  max-width: calc(var(--container) + 2 * (var(--gutter) + 48px));
   margin: 0 auto;
-  padding: var(--space-xl) 0;
+  /* Tight top so the whole intro, bio and resume included, clears the fold. */
+  padding: var(--space-sm) calc(var(--gutter) + 48px) var(--gap-group);
+}
+
+/* Left column: photo, then the testimonial carousel stacked beneath it. */
+.about-v3-left {
+  grid-column: 1 / 6;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
 }
 
 .about-v3-photo {
-  grid-column: 1 / 6;
   margin: 0;
-  border-top: 1px solid var(--line);
+  align-self: start;
+  width: 15rem;
+  max-width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .about-v3-photo img {
   display: block;
   width: 100%;
-  max-height: 68vh;
+  height: 100%;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.05);
+  object-position: 50% 32%;
+  transform: scale(1.3);
+  transform-origin: 50% 32%;
+}
+
+/* Portrait woven into the headline, the "I" is literally her. Big, and a
+   rounded rectangle rather than a circle. */
+.about-v3-inline-photo {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.02em;
+  margin: 0 0.14em;
+  border-radius: 0.34em;
+  overflow: hidden;
+  vertical-align: -0.2em;
+}
+
+.about-v3-inline-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
 }
 
 .about-v3-copy {
-  grid-column: 7 / -1;
+  grid-column: 6 / -1;
   display: grid;
   gap: var(--space-xs);
 }
@@ -712,11 +951,38 @@ p {
   line-height: 0.9;
 }
 
+/* The headline spans both columns at the top, with a full-width rule beneath
+   dividing it from the content row. */
+.about-v3-head {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line);
+}
+
+/* A POV statement, not a name, smaller than the billboard case-study titles,
+   but wide across the full page. */
+.about-v3-head h1 {
+  max-width: none;
+  font-size: clamp(2.25rem, 4.6vw, 4.5rem);
+  line-height: 1.05;
+}
+
+/* A deliberate ~8px offset below the TESTIMONIALS label on the left -
+   the asymmetry is intentional, not accidental. */
+.about-v3-name {
+  margin-top: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
 .about-v3-bio {
   display: grid;
   gap: var(--space-xs);
   max-width: 64ch;
-  margin-top: var(--space-sm);
+  margin-top: var(--space-xs);
 }
 
 .about-v3-bio p,
@@ -727,6 +993,11 @@ p {
   color: var(--muted);
   font-size: 1rem;
   line-height: 1.75;
+}
+
+/* Tighter on the About page so the intro + resume clears the fold. */
+.about-v3-bio p {
+  line-height: 1.55;
 }
 
 .about-v3-quote {
@@ -755,12 +1026,167 @@ p {
 .about-v3-links {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-sm);
+  align-items: center;
+  gap: var(--space-xs);
   margin-top: var(--space-xs);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+}
+
+/* The email is long, give it room from MEDIUM, keep it close to the button. */
+.about-v3-links a[href^="mailto"] {
+  margin-left: var(--space-xs);
+}
+
+/* ── About: testimonial carousel (editorial, with controls) ────────────────── */
+/* Lives inside the left column, beneath the photo, fills its width. */
+.tm {
+  width: 100%;
+  margin: 0;
+}
+
+.tm-marker {
+  margin: 0 0 var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Reserve height for the longest quote so the slide, and the divider/controls
+   beneath it, never move as the carousel changes. */
+.tm-viewport {
+  position: relative;
+  min-height: 13rem;
+}
+
+.tm-slide {
+  margin: 0;
+}
+
+.tm-slide blockquote {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 450;
+  font-size: clamp(1rem, 1vw, 1.1rem);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.tm-slide blockquote::before {
+  content: "\201C";
+  color: var(--accent);
+}
+
+.tm-slide figcaption {
+  margin-top: var(--space-md);
+  display: grid;
+  gap: 2px;
+}
+
+.tm-name {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.tm-contact {
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  color: var(--muted);
+}
+
+/* Controls */
+.tm-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--line);
+}
+
+.tm-dots {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tm-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: var(--line);
+  cursor: pointer;
+  transition: width var(--dur-hover) var(--ease), background var(--dur-hover) var(--ease);
+}
+
+.tm-dot:hover {
+  background: var(--muted);
+}
+
+.tm-dot.is-active {
+  width: 18px;
+  background: var(--accent);
+  opacity: 0.7;
+}
+
+.tm-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tm-btn {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 999px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color var(--dur-hover) var(--ease), background var(--dur-hover) var(--ease);
+}
+
+.tm-btn:hover {
+  color: var(--ink);
+  background: var(--line);
+}
+
+.tm-btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.tm-btn svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Autoplay toggle, subordinate to the prev/next arrows. */
+.tm-btn--toggle {
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-left: 6px;
+  opacity: 0.6;
+}
+
+.tm-btn--toggle svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.tm-btn--toggle:hover {
+  opacity: 1;
 }
 
 .case-detail-page {
@@ -770,9 +1196,13 @@ p {
 }
 
 .case-detail-shell {
-  width: min(var(--container), calc(100vw - (var(--gutter) * 2) - 6rem));
+  /* 100%-based, not 100vw: 100vw counts the scrollbar in most browsers, which
+     made this box a few px wider than the true available space and pushed it
+     to overflow on the right (margin:auto can't go negative to compensate). */
+  width: 100%;
+  max-width: calc(var(--container) + 2 * (var(--gutter) + 48px));
   margin: 0 auto;
-  padding: var(--space-xl) 0;
+  padding: var(--space-xl) calc(var(--gutter) + 48px);
 }
 
 .case-detail-hero {
@@ -829,6 +1259,9 @@ p {
 
 .case-detail-content {
   display: grid;
+  /* Explicit minmax(0, 1fr): the default implicit column sizes to max-content,
+     which let a capped child push the whole column past the shell's padding. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-xl);
   padding-top: var(--space-xl);
 }
@@ -838,6 +1271,9 @@ p {
 .case-detail-content iframe {
   max-width: 100%;
   border: 1px solid var(--line);
+  /* Explicit, because the global `* { border-radius: 0 }` reset squares off
+     every element by default. */
+  border-radius: 12px;
 }
 
 .case-detail-pagination {
@@ -853,12 +1289,12 @@ p {
   text-transform: uppercase;
 }
 
-@keyframes intro-logo {
+@keyframes load-logo {
   0% {
     opacity: 0;
-    transform: rotate(0deg) scale(0.86);
+    transform: rotate(0deg) scale(0.85);
   }
-  45% {
+  40% {
     opacity: 1;
     transform: rotate(0deg) scale(1);
   }
@@ -868,46 +1304,41 @@ p {
   }
 }
 
-@keyframes intro-name {
-  0% {
+@keyframes load-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes load-rise {
+  from {
     opacity: 0;
-    transform: translateY(0.5rem);
+    transform: translateY(14px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes intro-mark-lift {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(-2rem);
-  }
+@keyframes load-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
-@keyframes intro-line {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
+/* Tablets, stack the About intro before the two columns get cramped. */
+@media (max-width: 1100px) {
+  .about-v3-layout {
+    grid-template-columns: 1fr;
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes intro-shell {
-  0% {
-    transform: translateY(0);
+  .about-v3-left,
+  .about-v3-copy {
+    grid-column: auto;
   }
-  100% {
-    transform: translateY(-100%);
-    pointer-events: none;
+
+  /* Testimonial spans full width here, so it needs no left-column offset. */
+  .tm-viewport {
+    min-height: 9rem;
   }
 }
 
@@ -918,17 +1349,22 @@ p {
 
   .work-board {
     grid-template-rows: auto;
-    width: calc(100vw - (var(--gutter) * 2));
+    width: calc(100% - (var(--gutter) * 2));
     min-height: auto;
     padding: var(--space-lg) 0 var(--space-xl);
   }
 
   .work-logo,
   .work-board-header nav,
-  .work-social-rail,
-  .work-ai-footer {
+  .work-social-rail {
     position: static;
     transform: none;
+    margin-left: 0;
+  }
+
+  /* Nav flows inline here, so it needs no fixed backdrop. */
+  .work-board-header::before {
+    display: none;
   }
 
   .work-board-header {
@@ -962,10 +1398,6 @@ p {
     min-height: 17rem;
   }
 
-  .work-ai-footer {
-    justify-self: start;
-  }
-
   .about-v3-nav,
   .case-detail-nav {
     position: static;
@@ -973,10 +1405,20 @@ p {
   }
 
   .about-v3-layout,
+  .case-detail-shell {
+    width: calc(100% - (var(--gutter) * 2));
+    /* Desktop's horizontal padding (gutter + rail clearance) isn't needed here
+       — the rail goes static/inline on mobile — so width alone does the inset. */
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .about-v3-layout,
   .case-detail-hero {
     grid-template-columns: 1fr;
   }
 
+  .about-v3-left,
   .about-v3-photo,
   .about-v3-copy,
   .case-detail-hero-copy,
@@ -984,14 +1426,78 @@ p {
     grid-column: auto;
   }
 
-  .about-v3 h1,
   .case-detail-hero h1 {
     font-size: clamp(3.25rem, 18vw, 6rem);
+  }
+
+  /* About page, a statement headline, kept readable rather than billboard. */
+  .about-v3-head h1 {
+    font-size: clamp(2.25rem, 8vw, 3.75rem);
+  }
+
+  /* The page becomes a plain vertical stack; enable `order` so the social rail
+     can drop below the content instead of sitting above the nav. */
+  .about-v3 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header and rail are no longer fixed, align them to the content gutter. */
+  .about-v3 .work-board-header {
+    padding: var(--space-sm) var(--gutter) 0;
+  }
+
+  .about-v3 .work-social-rail {
+    order: 1;
+    padding: var(--space-lg) var(--gutter) var(--space-sm);
+  }
+
+  /* Full-width column → wider, shorter quotes need less reserved height. */
+  .tm-viewport {
+    min-height: 8rem;
   }
 
   .case-detail-meta {
     grid-template-columns: 1fr;
   }
+}
+
+/* ─── Small phones ──────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .work-board-header nav {
+    gap: var(--space-xs) var(--space-sm);
+  }
+
+  .work-board-header nav a span {
+    white-space: nowrap;
+  }
+
+  .about-v3-head h1 {
+    font-size: clamp(1.85rem, 8.5vw, 2.6rem);
+  }
+
+  .about-v3-links {
+    gap: var(--space-xs);
+  }
+
+  .work-project-media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .work-project-meta {
+    grid-template-columns: 1fr;
+    gap: var(--s1) 0;
+  }
+
+  .testing-flow-credits {
+    grid-template-columns: 1fr;
+  }
+
+  .case-detail-pagination {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1019,6 +1525,13 @@ a:focus-visible {
 
 /* ─── Case Study 1 (Testing Flow) Styles ────────────────────────────────────── */
 .testing-flow-case {
+  /* This is a grid item (.case-detail-content is a grid), so its default
+     min-width:auto refused to shrink below max-content and it rendered at the
+     full 1400px inside a 1264.8px parent — overflowing the right edge while the
+     left stayed correct. width:100% + min-width:0 make --container a cap, not
+     a floor. */
+  width: 100%;
+  min-width: 0;
   max-width: var(--container);
   margin: 0 auto;
 }
@@ -1151,10 +1664,60 @@ a:focus-visible {
 }
 
 .testing-flow-list li::before {
-  content: "—";
+  content: "·";
   position: absolute;
   left: 0;
   color: var(--muted);
+}
+
+/* Problem breakdown, numbered diagnostic list */
+.tf-breakdowns {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.tf-breakdowns li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-sm);
+  align-items: baseline;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.tf-bd-index {
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  color: var(--accent);
+  font-feature-settings: "tnum" 1;
+}
+
+.tf-breakdowns b {
+  display: block;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  margin-bottom: 4px;
+}
+
+.tf-bd-desc {
+  display: block;
+  color: var(--muted);
+  font-size: var(--t-small);
+  line-height: 1.55;
+}
+
+/* Decision tag, the breakdown each decision closes */
+.testing-flow-copy .testing-flow-tag {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  line-height: 1.3;
+  margin: 0 0 var(--space-xs);
 }
 
 .testing-flow-foot {
@@ -1215,5 +1778,149 @@ a:focus-visible {
   }
   .testing-flow-credits {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Notion-style scroll-spy table of contents. `right` here is only the value
+   used for the first instant before JS measures the content column's real
+   right edge and overrides it (see SectionNav.tsx) — that measurement is the
+   source of truth, so this fallback doesn't need to duplicate the container's
+   width formula (two copies of that formula are exactly what drifted apart
+   and caused the ticks to overlap the content previously). */
+.section-toc {
+  position: fixed;
+  top: 50%;
+  /* Mirrors the social rail's left inset so the two rails are symmetric. */
+  right: var(--rail-x);
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  /* Only as wide as the widest tick. The labels used to sit in normal flow at
+     opacity 0, making this a ~180px invisible fixed box over the right of the
+     content column that ate hovers and clicks. */
+  width: 30px;
+}
+.section-toc-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* The item used to be as tall as its label's line box; with the label now
+     absolute it would collapse to the 2px tick, closing up the rail. This
+     keeps the original rhythm and gives the tick a real hit target. */
+  min-height: 18px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.section-toc-tick {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--muted);
+  opacity: 0.3;
+  transition: width 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+}
+.section-toc-item.is-passed .section-toc-tick {
+  opacity: 0.85;
+  background: var(--ink);
+}
+.section-toc-item.is-active .section-toc-tick {
+  width: 30px;
+  opacity: 1;
+  background: var(--ink);
+}
+.section-toc-label {
+  /* Absolute so it reveals on hover without reserving layout width. */
+  position: absolute;
+  right: calc(100% + 12px);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  pointer-events: none;
+}
+.section-toc:hover .section-toc-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+.section-toc:hover .section-toc-item.is-active .section-toc-label {
+  color: var(--ink);
+}
+@media (max-width: 900px) {
+  .section-toc {
+    display: none;
+  }
+}
+
+/* Auto-scrolling product-screenshot wall */
+.shot-wall {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: var(--space-lg) 0;
+}
+.shot-row {
+  overflow: hidden;
+}
+.shot-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.shot-row:hover .shot-track {
+  animation-play-state: paused;
+}
+.shot-card {
+  flex: 0 0 auto;
+  width: clamp(240px, 27vw, 380px);
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  box-shadow: 0 6px 22px color-mix(in srgb, var(--ink) 12%, transparent);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  overflow: hidden;
+}
+.shot-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.shot-row--rtl .shot-track {
+  animation: shot-scroll-left 48s linear infinite;
+}
+.shot-row--ltr .shot-track {
+  animation: shot-scroll-right 48s linear infinite;
+}
+@keyframes shot-scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes shot-scroll-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shot-track {
+    animation: none;
   }
 }

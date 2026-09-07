@@ -1,20 +1,26 @@
 [
   {
     "id": 1,
+    "quote": "What stood out about Thushara was her ability to bring structure and clarity to ambiguous product problems. She was especially strong at reducing friction in workflows that could otherwise feel overwhelming to users.",
+    "author": "Ashit Shrivastava",
+    "contact": "Co-founder, Gistly.ai · managed Thushara directly"
+  },
+  {
+    "id": 2,
+    "quote": "Thushara mentioned being the sole designer at her company, and our conversation clearly showed her determination in steering her own career, which requires a lot of energy and initiative. She has the attitude to be a great professional.",
+    "author": "Mariana Perez",
+    "contact": "Design Manager @ PayPay · mentor"
+  },
+  {
+    "id": 3,
     "quote": "I had a great experience working with Thushara. She was super responsive, quick to accommodate a tight delivery schedule, and understood the brand requirements. I can't recommend her enough!",
     "author": "Adriana",
     "contact": "adrianasim.com"
   },
   {
-    "id": 1,
+    "id": 4,
     "quote": "Thushara is a design pro! She created gorgeous templates that complemented my brand and specifications perfectly. Her communication was on point throughout the job.",
     "author": "Ranjni",
     "contact": "restoreandnurture.com"
-  },
-  {
-    "id": 1,
-    "quote": "Thushara is a wonderful person to talk to! She mentioned being the sole designer at her company, and our conversation clearly showed her determination in steering her own career, which requires a lot of energy and initiative. She has attitude to be a great professional.",
-    "author": "Mariana Perez (Mentor)",
-    "contact": "Design Manager @PayPay"
   }
 ]

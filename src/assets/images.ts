@@ -13,7 +13,7 @@ import Logo from "./logo";
 import Mail from "../assets/mail";
 import Menu from "./menu";
 // import profile from "../assets/image.png";
-import profile from "../assets/profile.png";
+import profile from "../assets/profile-2.png";
 import subtractLeft from "../assets/subtract-left.svg";
 import subtractRight from "../assets/subtract-right.svg";
 
