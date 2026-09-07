@@ -5,6 +5,8 @@ import { CaseStudyDat } from "./components/case-study-details";
 import { Logo } from "./assets/images";
 import { caseStudiesData } from "./data";
 
+import { PasswordProtect } from "./components/password-protect";
+
 function App() {
   const location = useLocation();
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
@@ -13,6 +15,7 @@ function App() {
   const ref = queryParams.get("ref");
 
   const [showIntro, setShowIntro] = useState(location.pathname === "/" && !ref);
+  const [isLocked, setIsLocked] = useState(!sessionStorage.getItem("unlocked"));
 
   useEffect(() => {
     if (ref) {
@@ -30,6 +33,20 @@ function App() {
   }, [location, ref, showIntro]);
 
   const handleIntroDone = useCallback(() => setShowIntro(false), []);
+
+  const handleUnlock = useCallback(() => {
+    sessionStorage.setItem("unlocked", "true");
+    setIsLocked(false);
+  }, []);
+
+  if (isLocked) {
+    return (
+      <div className="relative min-h-screen font-sans text-dark">
+        {showIntro ? <IntroSequence onDone={handleIntroDone} /> : null}
+        <PasswordProtect onUnlock={handleUnlock} />
+      </div>
+    );
+  }
 
   if (selectedSlug && caseStudiesData.find((caseStudy) => caseStudy.slug === selectedSlug)) {
     return <CaseStudyDat slug={selectedSlug} />;
