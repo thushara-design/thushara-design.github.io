@@ -12,6 +12,7 @@ import { preloadImages, warmInBackground } from "./preload-images";
 import { projectImages } from "../components/case-study";
 import { screenshotImages } from "../components/screenshot-wall";
 import { caseStudyShots } from "../components/case-studies/case-study-1";
+import { profile } from "../assets/images";
 
 /**
  * The work board's card images — awaited by the intro before it lifts, so the
@@ -19,6 +20,9 @@ import { caseStudyShots } from "../components/case-studies/case-study-1";
  */
 export const criticalImagesReady = preloadImages(projectImages);
 
-// Everything behind a click: the marquee wall and the case study's inline shots
-// for both themes. Not gating anything, just cached before it is needed.
-warmInBackground([...screenshotImages, ...caseStudyShots]);
+// Everything behind a click: the marquee wall, the case study's inline shots for
+// both themes, and the About portrait. Not gating anything, just cached before
+// it is needed — the portrait is the heaviest single image on the site, so
+// fetching it during the intro is the difference between it being there on
+// arrival and visibly loading in.
+warmInBackground([...screenshotImages, ...caseStudyShots, profile]);

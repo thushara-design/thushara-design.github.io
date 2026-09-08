@@ -131,6 +131,16 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
 type Entry = { locked: boolean; intro: boolean };
 
 /**
+ * The work board, as opposed to a case study or the about page. Arriving here
+ * is the moment the intro is for, so it plays on every such landing — an
+ * unlocked visitor reloading the homepage gets the sequence, not a blank wait
+ * and not the password screen they already cleared.
+ */
+const onHomepage = () =>
+  window.location.pathname === "/" &&
+  !new URLSearchParams(window.location.search).get("ref");
+
+/**
  * Resolved once, before first paint, so a valid share link never flashes the
  * gate. It must not run twice: `consumeToken` strips `?k=` from the address
  * bar, so a second call would find nothing. It runs even for someone already
@@ -138,14 +148,16 @@ type Entry = { locked: boolean; intro: boolean };
  */
 function resolveEntry(): Entry {
   const token = consumeToken();
-  if (readGrant()) return { locked: false, intro: false };
+  if (readGrant()) return { locked: false, intro: onHomepage() };
   if (!token) return { locked: true, intro: true };
 
   const match = verifySync(token);
   if (!match) return { locked: true, intro: true };
 
   writeGrant(match.label);
-  return { locked: false, intro: match.intro };
+  // A deep link opens on the work it points at; only the board gets the intro,
+  // unless the link was minted to lead with it.
+  return { locked: false, intro: match.intro || onHomepage() };
 }
 
 export const AuthGate = ({ children }: { children: ReactNode }) => {
