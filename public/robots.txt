@@ -1,4 +1,20 @@
+# The case studies are gated for readers but readable to crawlers by design.
+# See /llms.txt for a plain-text index.
+
 User-agent: *
+Allow: /
+
+# Assistants people ask about me — explicitly welcome.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
 Allow: /
 
 Sitemap: https://www.thushara.design/sitemap.xml

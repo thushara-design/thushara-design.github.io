@@ -2,24 +2,7 @@ import React, { useCallback, useState, type ReactNode } from "react";
 import { ArrowRight, Eye, EyeClosed, Lock } from "iconoir-react";
 import { Logo } from "../assets/images";
 import { IntroSequence } from "./intro-sequence";
-import { sha256Hex } from "../lib/sha256";
-
-// The SHA-256 hash of "design2026"
-const VALID_HASH = "020c355824f43c23a61f7fbeb5fde1acdfdf447747b52c670bfd965be7cd9a52";
-
-async function hashPassword(password: string): Promise<string> {
-  // `crypto.subtle` exists only in a secure context. localhost qualifies, but
-  // a LAN address over plain HTTP (testing on a phone against the dev server)
-  // does not — there it is undefined, so this threw and every password was
-  // rejected as incorrect. Fall back to a local digest in that case.
-  if (!globalThis.crypto?.subtle) return sha256Hex(password);
-
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-}
+import { consumeToken, readGrant, verify, verifySync, writeGrant } from "../lib/access";
 
 interface PasswordProtectProps {
   onUnlock: () => void;
@@ -39,8 +22,9 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
     setError(false);
 
     try {
-      const hash = await hashPassword(password);
-      if (hash === VALID_HASH) {
+      const label = await verify(password);
+      if (label) {
+        writeGrant(label);
         onUnlock();
       } else {
         setError(true);
@@ -144,17 +128,23 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
 };
 
 export const AuthGate = ({ children }: { children: ReactNode }) => {
-  const [isLocked, setIsLocked] = useState(
-    () => !sessionStorage.getItem("unlocked"),
-  );
+  // Resolved before first paint, so arriving on a valid share link never shows
+  // a flash of the gate. `consumeToken` runs either way, so `?k=` is stripped
+  // from the address bar even for someone who was already unlocked.
+  const [isLocked, setIsLocked] = useState(() => {
+    const token = consumeToken();
+    if (readGrant()) return false;
+    if (!token) return true;
+    const label = verifySync(token);
+    if (!label) return true;
+    writeGrant(label);
+    return false;
+  });
   const [showIntro, setShowIntro] = useState(isLocked);
 
   const handleIntroDone = useCallback(() => setShowIntro(false), []);
 
-  const handleUnlock = useCallback(() => {
-    sessionStorage.setItem("unlocked", "true");
-    setIsLocked(false);
-  }, []);
+  const handleUnlock = useCallback(() => setIsLocked(false), []);
 
   if (isLocked) {
     return (
