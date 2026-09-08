@@ -35,13 +35,13 @@ const projects: Project[] = [
   {
     slug: "gistly",
     number: "01",
-    badge: "Gistly.ai · Product design · 2024 – present",
+    badge: "Gistly.ai · Product design · 2+ yrs",
     title: "Designing Gistly",
-    desc: "Designing clarity and trust into AI-powered call QA.",
+    desc: "Designing clarity and trust into AI-powered quality assurance, so managers can act on scores they understand.",
     metricLabel: "Screens shipped",
     metric: "120+",
     metric2: "20+",
-    metricLabel2: "Core features & flows",
+    metricLabel2: "Core flows",
     role: "Sole product designer",
     scope: ["QA", "Analytics", "Templates", "AI workflows"],
     featured: true,
@@ -73,6 +73,15 @@ const projects: Project[] = [
     alt: "Serenity mobile application screens",
   },
 ];
+
+/**
+ * Every image the work board paints on first render. Preloaded behind the intro
+ * screen so the board is fully painted the moment it lifts. Derived from
+ * `projects` rather than hand-listed, so it can't drift out of sync.
+ */
+export const projectImages: string[] = projects.flatMap((p) =>
+  [p.image, p.imageLight, p.imageDark].filter((s): s is string => Boolean(s)),
+);
 
 const CaseStudy = () => {
   const navigate = useNavigate();

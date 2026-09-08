@@ -12,7 +12,7 @@ export const AboutMe = () => {
       <Seo
         title="About Me | Thushara"
         description="Learn more about Thushara, a Product Designer focused on B2B UX, psychology, AI development, and writing."
-        url="https://thushara-design.github.io/about-me"
+        url="https://www.thushara.design/about-me"
         robots="noindex"
       />
 

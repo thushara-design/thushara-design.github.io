@@ -756,6 +756,19 @@ p {
   .work-project-row--featured {
     flex-direction: column;
     align-items: stretch;
+    /* Without this the column stays wrappable, so the 440px/360px flex bases
+       spilled into a second flex column and forced the children to 587px
+       inside a 374px row. */
+    flex-wrap: nowrap;
+  }
+
+  /* Those bases are main-axis sizes once the row is a column, i.e. heights.
+     Reset them so each block is simply full width and content-height. */
+  .work-project-media,
+  .work-project-copy {
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
   }
 }
 
@@ -1348,39 +1361,88 @@ p {
   }
 
   .work-board {
+    /* Collapse to one column. The 12-column track can't fit on a phone: its 11
+       column gaps alone (11 x 34px = 374px) are wider than the whole board
+       (342px at 390px), so the columns floored at 0 and every `1 / -1` child
+       rendered 374px wide and spilled off-screen. */
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto;
+    gap: var(--space-md) 0;
     width: calc(100% - (var(--gutter) * 2));
     min-height: auto;
     padding: var(--space-lg) 0 var(--space-xl);
   }
 
+  /* One bar pinned to the viewport, not flowing inside each page's own
+     container — that container difference is why the logo sat at a different
+     inset on the work board (padded) than in a case study (not), and why the
+     bar scrolled away. Body padding below reserves the space it gives up. */
+  .work-board-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    min-height: var(--topbar-h);
+    margin: 0;
+    padding: 0 var(--gutter);
+    background: var(--bg);
+  }
+
+  body {
+    padding-top: var(--topbar-h);
+  }
+
   .work-logo,
-  .work-board-header nav,
-  .work-social-rail {
+  .work-board-header nav {
     position: static;
     transform: none;
     margin-left: 0;
   }
 
-  /* Nav flows inline here, so it needs no fixed backdrop. */
+  /* The bar paints its own background now. */
   .work-board-header::before {
     display: none;
   }
 
-  .work-board-header {
-    display: grid;
-    gap: var(--space-sm);
-    justify-content: start;
-  }
-
-  .work-board-header nav,
-  .work-social-rail {
+  /* Links and the theme toggle share the logo's line rather than wrapping
+     underneath it. */
+  .work-board-header nav {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: clamp(0.7rem, 3.4vw, 1.25rem);
+    height: auto;
+    font-size: clamp(0.6rem, 2.5vw, 0.72rem);
   }
 
   .work-social-rail {
+    position: static;
+    transform: none;
+    margin-left: 0;
     order: 4;
+    display: flex;
+    /* The rail is a vertical column while it's fixed to the side; inline at the
+       foot of the page it has to lie down, or it stacks into a 170px tower. */
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* Centred at the foot of the page instead of hugging the left edge. */
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  /* The board's own row gap already separates the header from the work; the
+     desktop margin on top of it left an 85px dead band on a phone. */
+  .work-projects {
+    margin-top: 0;
   }
 
   .featured-work-card,
@@ -1413,6 +1475,32 @@ p {
     padding-right: 0;
   }
 
+  /* On a case study the header and rail are siblings of the shell rather than
+     grid items, so they get no inset of their own once they stop being fixed —
+     they sat hard against x=0, with the rail stranded above the logo. Flex
+     makes the page orderable so the rail can drop to the foot like it does on
+     the work board. */
+  .case-detail-page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .case-detail-page > .work-board-header,
+  .case-detail-page > .work-social-rail {
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+
+  .case-detail-page > .work-social-rail {
+    order: 99;
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-lg);
+  }
+
+  .case-detail-shell {
+    padding-top: var(--space-md);
+  }
+
   .about-v3-layout,
   .case-detail-hero {
     grid-template-columns: 1fr;
@@ -1430,9 +1518,11 @@ p {
     font-size: clamp(3.25rem, 18vw, 6rem);
   }
 
-  /* About page, a statement headline, kept readable rather than billboard. */
+  /* About page, a statement headline. Scaled up 1.5x on small screens so it
+     lands as a statement rather than body copy; the inline portrait is sized in
+     `em`, so it grows with it. */
   .about-v3-head h1 {
-    font-size: clamp(2.25rem, 8vw, 3.75rem);
+    font-size: clamp(3.375rem, 12vw, 5.625rem);
   }
 
   /* The page becomes a plain vertical stack; enable `order` so the social rail
@@ -1442,9 +1532,12 @@ p {
     flex-direction: column;
   }
 
-  /* Header and rail are no longer fixed, align them to the content gutter. */
+  /* The header is fixed again, so it must not add a top inset here — that extra
+     padding is what put the logo 15px lower on About than on every other page.
+     Horizontal gutter only; the shared bar rule owns the rest. */
   .about-v3 .work-board-header {
-    padding: var(--space-sm) var(--gutter) 0;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
   }
 
   .about-v3 .work-social-rail {
@@ -1473,7 +1566,14 @@ p {
   }
 
   .about-v3-head h1 {
-    font-size: clamp(1.85rem, 8.5vw, 2.6rem);
+    font-size: clamp(2.775rem, 12.75vw, 3.9rem);
+  }
+
+  /* Dialled back so it reads as a label under the now-much-larger headline
+     rather than competing with it. */
+  .about-v3-kicker {
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
   }
 
   .about-v3-links {

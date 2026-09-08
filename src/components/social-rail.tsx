@@ -9,8 +9,12 @@ const socialLinks: Array<{ label: string; href: string; Icon: IconComponent }> =
   { label: "Dribbble", href: "https://dribbble.com/thusharadesign", Icon: Dribbble },
 ];
 
+// Points at the prerendered /case-studies/*.html pages, not the SPA's `?ref=`
+// URLs: the app is client-rendered, so those serve an empty #root and a model
+// that doesn't execute JavaScript reads nothing. These pages carry the full
+// prose as static HTML.
 const aiPrompt =
-  "I am evaluating Thushara Varghese for a B2B product design role. Use these links for context: case studies https://thushara-design.github.io/#case-studies, about page https://thushara-design.github.io/about-me, Medium https://medium.com/@thusharavarghese, Dribbble https://dribbble.com/thusharadesign. Based on her work, what should a B2B founder or hiring manager understand about how she thinks, what kinds of product problems she is strongest at, and what evidence in her portfolio supports that?";
+  "I am evaluating Thushara Varghese for a B2B product design role. Read these for context: Gistly product design case study https://www.thushara.design/case-studies/gistly.html, Gistly homepage redesign case study https://www.thushara.design/case-studies/homepage.html, Serenity mobile case study https://www.thushara.design/case-studies/serenity.html, summary index https://www.thushara.design/llms.txt, Medium https://medium.com/@thusharavarghese, Dribbble https://dribbble.com/thusharadesign. Based on her work, what should a B2B founder or hiring manager understand about how she thinks, what kinds of product problems she is strongest at, and what evidence in her portfolio supports that?";
 
 /**
  * Fixed bottom-left rail, the AI sparkle on top, then social links.

@@ -27,6 +27,12 @@ const toImages = (mods: Record<string, unknown>) =>
 const darkImages = toImages(darkModules);
 const lightImages = toImages(lightModules);
 
+/**
+ * Both themes' screenshots. Warmed in the background once the intro is done, so
+ * opening a case study — or flipping the theme — doesn't wait on the network.
+ */
+export const screenshotImages = [...darkImages, ...lightImages];
+
 const directions = ["ltr", "rtl", "ltr"] as const;
 
 const splitRows = (images: string[]) => {

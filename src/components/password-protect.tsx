@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useCallback, useState, type ReactNode } from "react";
 import { ArrowRight } from "iconoir-react";
 import { Logo } from "../assets/images";
+import { IntroSequence } from "./intro-sequence";
+import { sha256Hex } from "../lib/sha256";
 
 // The SHA-256 hash of "design2026"
 const VALID_HASH = "020c355824f43c23a61f7fbeb5fde1acdfdf447747b52c670bfd965be7cd9a52";
 
 async function hashPassword(password: string): Promise<string> {
+  // `crypto.subtle` exists only in a secure context. localhost qualifies, but
+  // a LAN address over plain HTTP (testing on a phone against the dev server)
+  // does not — there it is undefined, so this threw and every password was
+  // rejected as incorrect. Fall back to a local digest in that case.
+  if (!globalThis.crypto?.subtle) return sha256Hex(password);
+
   const encoder = new TextEncoder();
   const data = encoder.encode(password);
   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
@@ -106,4 +114,29 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
       </div>
     </div>
   );
+};
+
+export const AuthGate = ({ children }: { children: ReactNode }) => {
+  const [isLocked, setIsLocked] = useState(
+    () => !sessionStorage.getItem("unlocked"),
+  );
+  const [showIntro, setShowIntro] = useState(isLocked);
+
+  const handleIntroDone = useCallback(() => setShowIntro(false), []);
+
+  const handleUnlock = useCallback(() => {
+    sessionStorage.setItem("unlocked", "true");
+    setIsLocked(false);
+  }, []);
+
+  if (isLocked) {
+    return (
+      <div className="relative min-h-screen font-sans text-dark">
+        {showIntro ? <IntroSequence onDone={handleIntroDone} /> : null}
+        <PasswordProtect onUnlock={handleUnlock} />
+      </div>
+    );
+  }
+
+  return children;
 };

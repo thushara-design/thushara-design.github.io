@@ -34,7 +34,7 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
 
   const formattedTools = Array.isArray(tools) && tools.length > 1 ? `${tools.slice(0, -1).join(", ")} and ${tools.slice(-1)}` : tools;
   const formattedResponsibilities = Array.isArray(responsibilities) ? responsibilities.join(", ") : responsibilities;
-  const siteUrl = "https://designwiththushara.com";
+  const siteUrl = "https://www.thushara.design";
   const canonicalUrl = `${siteUrl}/?ref=${slug}`;
 
   return (

@@ -1,28 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://designwiththushara.com/</loc>
+    <loc>https://www.thushara.design/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://designwiththushara.com/?ref=serenity</loc>
+    <loc>https://www.thushara.design/about-me</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://designwiththushara.com/?ref=aria</loc>
+    <loc>https://www.thushara.design/?ref=gistly</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://designwiththushara.com/?ref=Reflect</loc>
+    <loc>https://www.thushara.design/?ref=homepage</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://designwiththushara.com/?ref=elementry</loc>
+    <loc>https://www.thushara.design/?ref=serenity</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.7</priority>
   </url>
-</urlset> 
+  <url>
+    <loc>https://www.thushara.design/case-studies/gistly.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.thushara.design/case-studies/homepage.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.thushara.design/case-studies/serenity.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
