@@ -26,7 +26,7 @@ export const PASSWORD_HASH = "020c355824f43c23a61f7fbeb5fde1acdfdf447747b52c670b
 export const SHARE_TOKENS: ReadonlyArray<{ label: string; hash: string; intro?: boolean }> = [
   { label: "sample", hash: "fbb2ffb6c270632cda747764557e3d611e14dba611dbc49aa86ba7d02cb43e9c" },
   { label: "gistly", hash: "4135d0a942da10d80808b94b9fec1cb9912e225e52548706915b113d857490ac" },
-  { label: "showcase", hash: "a9b85d68941a4368fff350a30aa313fbca1b7cc963289f8e7923ee8ec8c2c91e", intro: true },
+  { label: "showcase", hash: "1ce8980ebe0167061739e034959975a6b21449d16a2e5a586ac1e51ac54f44ba", intro: true },
 ];
 
 const STORAGE_KEY = "tv.access";
