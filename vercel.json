@@ -1,3 +1,9 @@
 {
+  "headers": [
+    {
+      "source": "/(.*).(png|jpg|jpeg|gif|webp|avif|svg|ico)",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, noimageindex" }]
+    }
+  ],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

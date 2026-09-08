@@ -102,6 +102,8 @@ const page = (cs, body, secrets) => `<!DOCTYPE html>
 <title>${escape(cs.title)} — Thushara, Product Designer</title>
 <meta name="description" content="${escape(cs.description)}">
 <link rel="canonical" href="${SITE}/case-studies/${cs.slug}.html">
+<!-- Index the page, keep the imagery out of Google Images. -->
+<meta name="robots" content="noimageindex">
 <script type="application/ld+json">${JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Article",
