@@ -22,9 +22,9 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
     setError(false);
 
     try {
-      const label = await verify(password);
-      if (label) {
-        writeGrant(label);
+      const match = await verify(password);
+      if (match) {
+        writeGrant(match.label);
         onUnlock();
       } else {
         setError(true);
@@ -127,20 +127,31 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
   );
 };
 
+/** How this visit opens: at the gate, straight into the work, or via the intro. */
+type Entry = { locked: boolean; intro: boolean };
+
+/**
+ * Resolved once, before first paint, so a valid share link never flashes the
+ * gate. It must not run twice: `consumeToken` strips `?k=` from the address
+ * bar, so a second call would find nothing. It runs even for someone already
+ * unlocked, so a re-opened share link still tidies its own URL.
+ */
+function resolveEntry(): Entry {
+  const token = consumeToken();
+  if (readGrant()) return { locked: false, intro: false };
+  if (!token) return { locked: true, intro: true };
+
+  const match = verifySync(token);
+  if (!match) return { locked: true, intro: true };
+
+  writeGrant(match.label);
+  return { locked: false, intro: match.intro };
+}
+
 export const AuthGate = ({ children }: { children: ReactNode }) => {
-  // Resolved before first paint, so arriving on a valid share link never shows
-  // a flash of the gate. `consumeToken` runs either way, so `?k=` is stripped
-  // from the address bar even for someone who was already unlocked.
-  const [isLocked, setIsLocked] = useState(() => {
-    const token = consumeToken();
-    if (readGrant()) return false;
-    if (!token) return true;
-    const label = verifySync(token);
-    if (!label) return true;
-    writeGrant(label);
-    return false;
-  });
-  const [showIntro, setShowIntro] = useState(isLocked);
+  const [entry] = useState(resolveEntry);
+  const [isLocked, setIsLocked] = useState(entry.locked);
+  const [showIntro, setShowIntro] = useState(entry.intro);
 
   const handleIntroDone = useCallback(() => setShowIntro(false), []);
 
@@ -155,5 +166,12 @@ export const AuthGate = ({ children }: { children: ReactNode }) => {
     );
   }
 
-  return children;
+  // The intro is a fixed overlay that lifts away, so the work renders behind it
+  // and is already painted the moment it clears.
+  return (
+    <>
+      {showIntro ? <IntroSequence onDone={handleIntroDone} /> : null}
+      {children}
+    </>
+  );
 };

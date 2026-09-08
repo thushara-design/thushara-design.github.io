@@ -17,10 +17,16 @@ import { sha256Hex } from "./sha256";
 /** SHA-256 of the shared password. Exported so the prerendered pages share it. */
 export const PASSWORD_HASH = "020c355824f43c23a61f7fbeb5fde1acdfdf447747b52c670bfd965be7cd9a52";
 
-/** One entry per recipient, so a link can be retired without changing the rest. */
-export const SHARE_TOKENS: ReadonlyArray<{ label: string; hash: string }> = [
+/**
+ * One entry per recipient, so a link can be retired without changing the rest.
+ *
+ * `intro: true` plays the loading sequence before the work appears, for a link
+ * whose first impression matters more than getting straight to the projects.
+ */
+export const SHARE_TOKENS: ReadonlyArray<{ label: string; hash: string; intro?: boolean }> = [
   { label: "sample", hash: "fbb2ffb6c270632cda747764557e3d611e14dba611dbc49aa86ba7d02cb43e9c" },
   { label: "gistly", hash: "4135d0a942da10d80808b94b9fec1cb9912e225e52548706915b113d857490ac" },
+  { label: "showcase", hash: "a9b85d68941a4368fff350a30aa313fbca1b7cc963289f8e7923ee8ec8c2c91e", intro: true },
 ];
 
 const STORAGE_KEY = "tv.access";
@@ -28,10 +34,15 @@ const TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
 type Grant = { label: string; exp: number };
 
-/** The name of whatever matched, used as the analytics label. */
-const matchLabel = (hash: string): string | null => {
-  if (hash === PASSWORD_HASH) return "password";
-  return SHARE_TOKENS.find((t) => t.hash === hash)?.label ?? null;
+/** What matched, and how the site should open for it. */
+export type Access = { label: string; intro: boolean };
+
+const matchEntry = (hash: string): Access | null => {
+  // Typing the password happens *after* the intro has already played, so it
+  // never replays it.
+  if (hash === PASSWORD_HASH) return { label: "password", intro: false };
+  const token = SHARE_TOKENS.find((t) => t.hash === hash);
+  return token ? { label: token.label, intro: token.intro === true } : null;
 };
 
 async function hashHex(input: string): Promise<string> {
@@ -46,10 +57,10 @@ async function hashHex(input: string): Promise<string> {
     .join("");
 }
 
-export const verify = async (input: string) => matchLabel(await hashHex(input));
+export const verify = async (input: string) => matchEntry(await hashHex(input));
 
 /** Synchronous twin, used on first paint so a valid `?k=` never flashes the gate. */
-export const verifySync = (input: string) => matchLabel(sha256Hex(input));
+export const verifySync = (input: string) => matchEntry(sha256Hex(input));
 
 export function readGrant(): Grant | null {
   try {
