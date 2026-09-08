@@ -131,13 +131,18 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
 type Entry = { locked: boolean; intro: boolean };
 
 /**
- * The work board, as opposed to a case study or the about page. Arriving here
- * is the moment the intro is for, so it plays on every such landing — an
+ * A landing on the front door itself, which is the moment the intro is for: an
  * unlocked visitor reloading the homepage gets the sequence, not a blank wait
  * and not the password screen they already cleared.
+ *
+ * A hash means the opposite — `/#case-studies` is someone aiming at a section,
+ * including the About page's own nav link back to the work. Dropping a curtain
+ * over the thing they asked for, and scrolling away from it, is not an
+ * entrance. Same reasoning as `?ref=`: pointed at content, so no intro.
  */
 const onHomepage = () =>
   window.location.pathname === "/" &&
+  !window.location.hash &&
   !new URLSearchParams(window.location.search).get("ref");
 
 /**
