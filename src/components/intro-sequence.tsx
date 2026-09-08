@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Logo } from "../assets/images";
-import { preloadImages, warmInBackground } from "../lib/preload-images";
-import { projectImages } from "./case-study";
-import { screenshotImages } from "./screenshot-wall";
+import { criticalImagesReady } from "../lib/warm-assets";
 
 const TAGLINE = "I turn complexity\ninto clarity.";
 const ACCENT = "clarity.";
@@ -64,15 +62,6 @@ export function IntroSequence({ onDone }: { onDone: () => void }) {
   const [caret, setCaret] = useState<CaretPhase>("solid");
   const [lifting, setLifting] = useState(false);
   const [clock, setClock] = useState(formatIST);
-  // Started during the first render so fetching overlaps the whole typing
-  // animation instead of beginning only once the animation has finished. The
-  // marquee screenshots warm alongside it — they aren't gating the reveal, but
-  // starting them here means the wall is cached before a case study is opened
-  // rather than only after the intro finishes.
-  const [preload] = useState(() => {
-    warmInBackground(screenshotImages);
-    return preloadImages(projectImages);
-  });
 
   useEffect(() => {
     const id = window.setInterval(() => setClock(formatIST()), 1000);
@@ -88,7 +77,7 @@ export function IntroSequence({ onDone }: { onDone: () => void }) {
     // already painted the instant the screen lifts. `preload` self-resolves on a
     // timeout, so this can delay the reveal but never stall it.
     const liftWhenImagesReady = () => {
-      void preload.then(() => {
+      void criticalImagesReady.then(() => {
         if (cancelled) return;
         setStatus("READY");
         setLifting(true);
@@ -141,7 +130,7 @@ export function IntroSequence({ onDone }: { onDone: () => void }) {
       cancelAnimationFrame(raf);
       timers.forEach((id) => window.clearTimeout(id));
     };
-  }, [onDone, preload]);
+  }, [onDone]);
 
   const typedMain = typed.slice(0, SPLIT);
   const typedAccent = typed.length > SPLIT ? typed.slice(SPLIT) : "";

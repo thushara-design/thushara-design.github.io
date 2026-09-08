@@ -26,6 +26,12 @@ const shotsForLightPage: Record<ShotKey, string> = {
   test: testDark,
 };
 
+/** Both themes' inline shots, warmed ahead of the case study being opened. */
+export const caseStudyShots = [
+  ...Object.values(shotsForDarkPage),
+  ...Object.values(shotsForLightPage),
+];
+
 const breakdowns = [
   ["Forms that drift", "A parameter was edited in the builder and again on a separate testing page, two forms of the same thing, quietly diverging."],
   ["No trigger for testing", "Nothing signalled when a test applied or mattered, so testing felt bolted on rather than part of the work."],

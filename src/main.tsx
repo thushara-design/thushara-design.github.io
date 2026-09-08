@@ -5,6 +5,8 @@ import { AboutMe } from "./pages/AboutMe";
 import { AuthGate } from "./components/password-protect";
 import { ThemeProvider } from "./lib/theme";
 import "./index.css";
+// Side-effect import: begins fetching imagery as soon as the bundle runs.
+import "./lib/warm-assets";
 
 const root = document.getElementById("root")!;
 
