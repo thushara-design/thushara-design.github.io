@@ -2,8 +2,22 @@
   "headers": [
     {
       "source": "/(.*).(png|jpg|jpeg|gif|webp|avif|svg|ico)",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, noimageindex" }]
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, noimageindex"
+        },
+        {
+          "key": "Cross-Origin-Resource-Policy",
+          "value": "same-origin"
+        }
+      ]
     }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
