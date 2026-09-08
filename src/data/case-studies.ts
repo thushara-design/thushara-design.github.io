@@ -28,11 +28,11 @@ const caseStudies = [
     extendedDescription:
       "A redesign of Gistly's homepage from a feature-heavy, exploratory layout to a focused, action-led page. Homepage key events +475%, key-event rate +246%, and average engagement time +47% year-over-year, measured across GA4 and Clarity, with engagement gains attributed to the redesign and traffic growth kept separate.",
     image: "case-study-homepage.png",
-    role: "Sole designer",
+    role: "Visual design and build",
     timeframe: "2025 – 2026",
-    tools: ["Figma", "GA4", "Microsoft Clarity"],
+    tools: ["Figma", "Adobe Illustrator", "Webflow", "GA4", "Microsoft Clarity"],
     responsibilities: [
-      "Homepage redesign, information hierarchy, and post-launch performance analysis",
+      "Visual design, information hierarchy, composition, content organisation, Webflow build, and post-launch performance analysis",
     ],
     Component: CaseStudyHomepage,
     liveProjectLink: "https://gistly.ai",

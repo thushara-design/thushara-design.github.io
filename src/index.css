@@ -2024,3 +2024,47 @@ a:focus-visible {
     animation: none;
   }
 }
+
+/* Before/after click maps in the homepage case study. `auto-fit` drops them to
+   a single column on narrow screens without a separate media query. */
+.case-heatmaps {
+  display: grid;
+  gap: var(--space-sm);
+  margin: var(--space-xs) 0 0;
+}
+
+.case-heatmaps-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-sm);
+}
+
+.case-heatmaps-item {
+  display: grid;
+  gap: 0.5rem;
+  /* Grid items default to min-width:auto and refuse to shrink below the
+     image's intrinsic width, which would overflow the column. */
+  min-width: 0;
+}
+
+.case-heatmaps-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.case-heatmaps-item span {
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.case-heatmaps figcaption {
+  max-width: var(--measure);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--muted);
+}

@@ -1,21 +1,20 @@
 
 const constraints = [
-  ["A category-defining product.", "Nobody searches for \"call-QA AI\", so the page has to teach and sell at the same time."],
   ["Mixed intent.", "Visitors range from \"what even is this\" to \"ready to book a demo\". One page has to serve both."],
   ["A fast, small team.", "The site changes constantly, so the design had to be a durable system, not a one-off layout."],
-  ["Honest measurement.", "A lot shipped in the same window, so I could not claim the analytics as design alone."],
+  ["Features that are hard to picture.", "A capability only lands if a visitor can see it in their own workflow, so I created an animation for each feature in Adobe Illustrator rather than leaning on static screenshots."],
 ];
 
 const decisions = [
   {
     number: "01",
-    title: "One clear promise, up top",
-    body: "The old page opened with a vague \"empower sales and collections performance.\" The new one leads with what it actually is (AI analytics for sales, support, and collections), so a visitor understands the product in a single line before they scroll.",
+    title: "Focused hero with a clear CTA",
+    body: "The old hero opened on a vague \"empower sales and collections performance\" and offered several competing things to do at once. I gave it one job: say what the product is, then offer a single obvious next step. The demo action leads, and the exploratory links step back behind it.",
   },
   {
     number: "02",
     title: "Outcomes over features",
-    body: "The old homepage listed capabilities like a spec sheet: automated auditing, sentiment analysis, transcription. I reframed the top of the page around what you get on day one (concrete results a non-technical buyer recognises), and let the feature detail come later, for the people who want it.",
+    body: "The old homepage listed capabilities like a spec sheet: automated auditing, sentiment analysis, transcription. Working from the marketing copy, I sequenced the page around what you get on day one and pushed the feature detail further down, for the people who want it — the same words, ordered so the payoff comes before the mechanism.",
   },
   {
     number: "03",
@@ -25,7 +24,7 @@ const decisions = [
   {
     number: "04",
     title: "Show proof, not just claims",
-    body: "A complex, unfamiliar product is bought on trust. I brought customer testimonials and a real product dashboard onto the page, so the value is demonstrated rather than asserted.",
+    body: "A complex, unfamiliar product is bought on trust. I argued to keep the customer testimonial on the page when it was up for cutting, and gave it and a real product dashboard room to breathe, so the value is demonstrated rather than asserted.",
   },
   {
     number: "05",
@@ -36,6 +35,9 @@ const decisions = [
 
 const context =
   "Gistly's homepage is the front door for a hard-to-explain product: AI that scores recorded sales, support, and collections calls against quality rubrics. The people who land on it are QA leads and sales, support, and collections managers, buyers who need to grasp a technical, category-defining product quickly, then be moved toward a demo. The page has to teach and convert at the same time.";
+
+const scope =
+  "The copy came out of a wider marketing effort. My work was everything around it: the visual design, the hierarchy and composition, and how the content was organised and sequenced down the page. I argued to keep the customer testimonial when it was up for cutting, and I built most of the page in Webflow.";
 
 const problem =
   "The previous homepage led with a broad promise and then a wall of everything: an \"unlock the magic\" feature grid, a phone walkthrough of how it works, and several dashboard shots. It explained a lot but pointed nowhere in particular: the primary action competed with exploration. The heatmaps later confirmed it: on the old page, people roamed the navigation and visuals instead of moving toward a demo.";
@@ -64,6 +66,10 @@ export const CaseStudyHomepage = () => {
     <main className="testing-flow-case">
       <CaseRow label="Context">
         <p>{context}</p>
+      </CaseRow>
+
+      <CaseRow label="My scope">
+        <p>{scope}</p>
       </CaseRow>
 
       <CaseRow label="The problem">
@@ -125,6 +131,37 @@ export const CaseStudyHomepage = () => {
           </div>
           <p>{results}</p>
           <p>{attribution}</p>
+        </div>
+      </section>
+
+      {/* Own row with the measure cap lifted: side by side, the pair needs the
+          full copy column to stay legible. */}
+      <section className="testing-flow-row">
+        <p className="testing-flow-marker">Heatmaps</p>
+        <div className="testing-flow-copy" style={{ maxWidth: "none" }}>
+          <figure className="case-heatmaps">
+            <div className="case-heatmaps-pair">
+              <div className="case-heatmaps-item">
+                <img
+                  src="/images/homepage-heatmap-before.png"
+                  alt="Click map of the old homepage. The highest-ranked clicks land across the top navigation, with the densest hotspot on the nav links rather than on the demo button."
+                />
+                <span>Before · Jun–Sep 2025 · 601 views, 236 clicks</span>
+              </div>
+              <div className="case-heatmaps-item">
+                <img
+                  src="/images/homepage-heatmap-after.png"
+                  alt="Click map of the redesigned homepage. The highest-ranked clicks land on the headline and on the Get a Free Demo and Explore Features buttons."
+                />
+                <span>After · Dec 2025 – Mar 2026 · 686 views, 424 clicks</span>
+              </div>
+            </div>
+            <figcaption>
+              Microsoft Clarity click maps, numbered by click rank over matched four-month windows. On the old page the top-ranked
+              clicks sit in the navigation; on the new one they sit on the headline and the two calls to action. That is the
+              39% → 62% click efficiency above, seen directly.
+            </figcaption>
+          </figure>
         </div>
       </section>
 

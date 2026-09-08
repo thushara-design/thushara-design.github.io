@@ -56,7 +56,7 @@ const projects: Project[] = [
     desc: "Rebuilding the marketing homepage around one job: getting the right visitor to act, and measuring whether it worked.",
     metricLabel: "Homepage key events",
     metric: "+475%",
-    role: "Sole designer",
+    role: "Visual design and build",
     image: "/images/case-study-homepage.png",
     alt: "Gistly homepage redesign preview",
   },
