@@ -522,7 +522,14 @@ p {
 
 .work-project-media {
   position: relative;
-  flex: 1 1 440px;
+  /* Zero basis, so the pair divides the row instead of wrapping once 440 + 360
+     + the gap stops fitting — which happened from ~760px to ~1180px and left
+     these rows stacked while the featured row, already basis-zero, stayed side
+     by side. Stacking is the 760px query's job alone. `min-width` lets them
+     actually shrink to their share. The 1.2 : 1 ratio is the old 440 : 360
+     proportion, kept. */
+  flex: 1.2 1 0;
+  min-width: 0;
   overflow: hidden;
   aspect-ratio: 16 / 10;
   border: 1px solid var(--line);
@@ -572,7 +579,8 @@ p {
   display: grid;
   align-content: start;
   gap: var(--space-sm);
-  flex: 1 1 360px;
+  flex: 1 1 0;
+  min-width: 0;
   padding-top: 8px;
 }
 
