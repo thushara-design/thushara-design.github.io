@@ -174,7 +174,7 @@ export const CaseStudy1 = () => {
               fontFamily: "var(--font-heading)",
               fontSize: "clamp(3.5rem, 7vw, 6rem)",
               lineHeight: 0.6,
-              color: "var(--muted)",
+              color: "var(--accent)",
               marginBottom: "var(--space-xs)",
             }}
           >
@@ -417,7 +417,7 @@ export const CaseStudy1 = () => {
 
       <CaseRow label="Outcome">
         <p>
-          The flow was aligned with the founder and engineering and adopted as the build direction: a single coherent loop, author, run, verify, tune, save, that a non-engineer can move through, with the ground-truth burden designed down to confirmations rather than cold labelling. Validation with real QA users and the visual and interaction craft are the next phase; the couple of engineering-gated decisions are documented as such.
+          The flow was aligned with the founders and the engineering team and adopted as the build direction: a single coherent loop, author, run, verify, tune, save, that a non-engineer can move through, with the ground-truth burden designed down to confirmations rather than cold labelling. Validation with real QA users and the visual and interaction craft are the next phase; the couple of engineering-gated decisions are documented as such.
         </p>
       </CaseRow>
 
