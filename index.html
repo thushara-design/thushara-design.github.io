@@ -11,6 +11,10 @@
     <link rel="canonical" href="https://www.thushara.design/" />
     <!-- Index the pages, keep the imagery out of Google Images. -->
     <meta name="robots" content="noimageindex" />
+    <!-- Findable by assistants, not listed in Google. `googlebot` overrides
+         `robots` for Google alone, so GPTBot, OAI-SearchBot, ClaudeBot and
+         PerplexityBot are unaffected. -->
+    <meta name="googlebot" content="noindex" />
 
     <!-- Open Graph / Twitter (link previews) -->
     <meta property="og:type" content="website" />
@@ -30,7 +34,7 @@
       "name": "Thushara",
       "jobTitle": "Product Designer",
       "description": "Product designer working on B2B SaaS and AI products — research through shipped UI, with a psychology background.",
-      "knowsAbout": ["Product Design", "B2B SaaS", "UX Research", "AI Product Design", "Design Systems"],
+      "knowsAbout": ["Product Design", "B2B SaaS", "UX Research", "AI Product Design", "Design Systems", "AI evaluation tooling", "Ground truth labelling", "Complex B2B workflows", "Information architecture"],
       "url": "https://www.thushara.design",
       "sameAs": [
         "https://www.linkedin.com/in/thushara-v",
@@ -58,6 +62,27 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>Thushara — Product Designer</h1>
+      <p>
+        Product designer working on B2B SaaS and AI products. Sole product designer on a
+        founding engineering team at Gistly, an AI call-auditing platform for sales, support
+        and collections, taking an engineer-built product from internal tool to something
+        customers could use.
+      </p>
+      <p>
+        The through-line is making AI output legible and trustworthy to business users:
+        designing the evaluation and ground-truth labelling loop that lets a non-engineer
+        QA lead verify an AI's scoring and correct it when it is wrong. Came to design
+        through psychology rather than design school.
+      </p>
+      <ul>
+        <li><a href="/about.html">Profile and what I work on</a></li>
+        <li><a href="/case-studies/gistly.html">Designing Gistly — trust in AI quality scoring</a></li>
+        <li><a href="/case-studies/homepage.html">Homepage redesign — conversion, honestly attributed</a></li>
+        <li><a href="/llms.txt">llms.txt</a></li>
+      </ul>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

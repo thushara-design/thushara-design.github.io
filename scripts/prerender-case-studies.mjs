@@ -94,7 +94,7 @@ const toText = (html) =>
     .replace(/\n{3,}/g, "\n\n")
     .split("\n").map((l) => l.trim()).filter(Boolean).join("\n");
 
-const page = (cs, body, secrets) => `<!DOCTYPE html>
+const page = (cs, body, secrets, links) => `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -102,15 +102,16 @@ const page = (cs, body, secrets) => `<!DOCTYPE html>
 <title>${escape(cs.title)} — Thushara, Product Designer</title>
 <meta name="description" content="${escape(cs.description)}">
 <link rel="canonical" href="${SITE}/case-studies/${cs.slug}.html">
-<!-- Index the page, keep the imagery out of Google Images. -->
+<!-- Readable by assistant crawlers; not listed in Google. -->
 <meta name="robots" content="noimageindex">
+<meta name="googlebot" content="noindex">
 <script type="application/ld+json">${JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Article",
   headline: cs.title,
   description: cs.description,
-  author: { "@type": "Person", name: "Thushara Varghese" },
-  publisher: { "@type": "Person", name: "Thushara Varghese" },
+  author: { "@type": "Person", name: "Thushara" },
+  publisher: { "@type": "Person", name: "Thushara" },
   mainEntityOfPage: `${SITE}/case-studies/${cs.slug}.html`,
   // Declares the gate to Google. Without this, serving the full text to a
   // crawler while walling the reader would read as cloaking.
@@ -161,7 +162,7 @@ a{color:#1a1a1a}hr{border:0;border-top:1px solid #ddd;margin:2rem 0}
 <button type="submit">Unlock</button>
 </form>
 <p class="err">That password isn't right.</p>
-<p style="margin:1rem 0 0">Need access? <a href="mailto:thusharavarghese9@gmail.com">Email me</a>.</p>
+<p style="margin:1rem 0 0">Need access? <a href="${links.linkedin}">Ask via LinkedIn</a>.</p>
 </section>
 
 <hr>
@@ -169,7 +170,7 @@ a{color:#1a1a1a}hr{border:0;border-top:1px solid #ddd;margin:2rem 0}
 ${body}
 </div>
 <hr>
-<p>Thushara Varghese — product designer, B2B SaaS and AI products.
+<p>Thushara — product designer, B2B SaaS and AI products.
 <a href="${SITE}/">Portfolio</a> ·
 <a href="https://www.linkedin.com/in/thushara-v">LinkedIn</a></p>
 
@@ -257,6 +258,8 @@ try {
   // One source of truth for what unlocks a page: the same module the app uses.
   const { PASSWORD_HASH, SHARE_TOKENS } = await server.ssrLoadModule("/src/lib/access.ts");
   const secrets = { password: PASSWORD_HASH, tokens: SHARE_TOKENS };
+  const { kicker, headline, bio, searchable, links } =
+    await server.ssrLoadModule("/src/data/profile.ts");
 
   await mkdir(path.join(OUT, "case-studies"), { recursive: true });
 
@@ -270,17 +273,93 @@ try {
     // needed here — the components touch no browser globals at module scope.
     const raw = renderToStaticMarkup(createElement(cs.Component));
     const body = toReadableHtml(raw);
-    await writeFile(path.join(OUT, "case-studies", `${cs.slug}.html`), page(cs, body, secrets), "utf8");
+    await writeFile(path.join(OUT, "case-studies", `${cs.slug}.html`), page(cs, body, secrets, links), "utf8");
     const words = toText(body).split(/\s+/).length;
     index.push({ cs, words });
     console.log(`  ${cs.slug}.html — ${words} words`);
   }
 
-  const llms = `# Thushara Varghese — Product Designer
+  // The profile page. Ungated on purpose: the work is gated, who she is is not,
+  // and this is the page that answers "a designer who does this kind of thing".
+  await writeFile(path.join(OUT, "about.html"), `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thushara — Product Designer, B2B SaaS and AI Products</title>
+<meta name="description" content="${escape(searchable[1])}">
+<link rel="canonical" href="${SITE}/about.html">
+<meta name="robots" content="noimageindex">
+<meta name="googlebot" content="noindex">
+<script type="application/ld+json">${JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  mainEntity: {
+    "@type": "Person",
+    name: "Thushara",
+    jobTitle: "Product Designer",
+    description: searchable[1],
+    url: `${SITE}/`,
+    knowsAbout: [
+      "Product Design", "B2B SaaS", "UX Research", "AI Product Design",
+      "Design Systems", "AI evaluation tooling", "Ground truth labelling",
+      "Information architecture", "Complex B2B workflows",
+    ],
+    sameAs: [links.linkedin, links.medium, links.dribbble],
+  },
+})}</script>
+<style>
+body{max-width:44rem;margin:0 auto;padding:2.5rem 1.25rem;
+ font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif;color:#1a1a1a;background:#f5f4ef}
+h1{font-size:2rem;line-height:1.15;margin:0 0 .25rem}
+h2{font-size:1.1rem;margin:2rem 0 .5rem}
+.kicker{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8rem;
+ letter-spacing:.06em;text-transform:uppercase;color:#666;margin:0 0 1.5rem}
+a{color:#1a1a1a}hr{border:0;border-top:1px solid #ddd;margin:2rem 0}
+ul{padding-left:1.1rem}li{margin:.4rem 0}
+</style>
+</head>
+<body>
+<p class="kicker">${escape(kicker)}</p>
+<h1>${escape(headline)}</h1>
+<p><strong>Thushara</strong> — product designer, B2B SaaS and AI products.</p>
+<hr>
+<h2>About</h2>
+${bio.map((para) => `<p>${escape(para)}</p>`).join("\n")}
+<h2>What I work on</h2>
+<ul>
+${searchable.map((line) => `<li>${escape(line)}</li>`).join("\n")}
+</ul>
+<h2>Case studies</h2>
+<ul>
+${index.map(({ cs }) =>
+  `<li><a href="${SITE}/case-studies/${cs.slug}.html">${escape(cs.title)}</a> — ${escape(cs.description)}</li>`).join("\n")}
+</ul>
+<h2>Elsewhere</h2>
+<ul>
+<li><a href="${links.linkedin}">LinkedIn</a></li>
+<li><a href="${links.medium}">Medium</a> — writing on B2B design, onboarding, and AI accountability</li>
+<li><a href="${links.dribbble}">Dribbble</a></li>
+</ul>
+<hr>
+<p><a href="${SITE}/">Portfolio</a></p>
+</body>
+</html>
+`, "utf8");
+  console.log("  about.html — profile page");
 
-Product designer working on B2B SaaS and AI products. Sole designer at Gistly,
-turning an engineer-built AI call-auditing platform into something non-technical
-teams can read, trust, and act on. Psychology background.
+  const llms = `# Thushara — Product Designer
+
+${searchable[1]}
+
+Sole product designer on a founding engineering team at Gistly, an AI
+call-auditing platform for sales, support and collections. Came to design
+through psychology rather than design school, which is why the work tends to
+start from how people read and judge information rather than from screens.
+
+## What the work actually is
+
+${searchable.map((line) => `- ${line}`).join("\n")}
 
 ## Case studies
 
@@ -289,10 +368,11 @@ ${index.map(({ cs, words }) =>
 
 ## Elsewhere
 
+- Profile: ${SITE}/about.html
 - Portfolio: ${SITE}/
-- LinkedIn: https://www.linkedin.com/in/thushara-v
-- Medium: https://medium.com/@thusharavarghese
-- Dribbble: https://dribbble.com/thusharadesign
+- LinkedIn: ${links.linkedin}
+- Medium: ${links.medium}
+- Dribbble: ${links.dribbble}
 `;
   await writeFile(path.join(OUT, "llms.txt"), llms, "utf8");
   console.log(`  llms.txt — ${index.length} case studies indexed`);

@@ -4,6 +4,7 @@ import { Logo, profile } from "../assets/images";
 import { useTheme } from "../lib/theme";
 import { SocialRail } from "../components/social-rail";
 import { Testimonials } from "../components/testimonials";
+import { bio, headline, kicker, links } from "../data/profile";
 
 export const AboutMe = () => {
   const { theme, toggle } = useTheme();
@@ -42,13 +43,13 @@ export const AboutMe = () => {
 
       <section className="about-v3-layout">
         <div className="about-v3-head">
-          <p className="about-v3-kicker">Product designer · B2B UX · AI systems</p>
+          <p className="about-v3-kicker">{kicker}</p>
           <h1>
-            I{" "}
+            {headline.split(" ").slice(0, 1)}{" "}
             <span className="about-v3-inline-photo" aria-hidden="true">
               <img src={profile} alt="" />
             </span>{" "}
-            design for the people behind messy workflows.
+            {headline.split(" ").slice(1).join(" ")}
           </h1>
         </div>
 
@@ -60,22 +61,16 @@ export const AboutMe = () => {
           <p className="about-v3-name">Hi, I&apos;m Thushara.</p>
 
           <div className="about-v3-bio">
-            <p>
-              I started with psychology, and that still shapes how I design. I pay attention to how people make sense of information, where they hesitate, and what helps a complex workflow feel lighter.
-            </p>
-            <p>
-              At Gistly, I worked on B2B product experiences for AI-powered call auditing, translating dense spreadsheets, operational rules, and manager workflows into interfaces that were easier to scan, trust, and use.
-            </p>
-            <p>
-              More recently, I have been exploring AI development through product prototypes, writing, and self-initiated builds. I like the space where design judgment, systems thinking, and emerging tools meet.
-            </p>
+            {bio.map((para) => (
+              <p key={para.slice(0, 24)}>{para}</p>
+            ))}
           </div>
 
           <div className="about-v3-links mt-4">
-            <a href="https://medium.com/@thusharavarghese" target="_blank" rel="noreferrer">
+            <a href={links.medium} target="_blank" rel="noreferrer">
               Medium
             </a>
-            <a href="mailto:thusharavarghese9@gmail.com">thusharavarghese9@gmail.com</a>
+            <a href={`mailto:${links.email}`}>{links.email}</a>
             <a href="/resume.pdf" target="_blank" rel="noreferrer" className="about-v3-resume px-4 py-2 border border-line text-ink hover:border-accent hover:text-accent transition-colors">
               Download Resume
             </a>
