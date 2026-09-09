@@ -214,7 +214,7 @@ export const CaseStudy1 = () => {
 
       <CaseRow label="Overview">
         <p>
-          For two-plus years I have been Gistly's only designer, shaping most of the product with the founders (dashboards and reporting, the call-review workspace, objects and records, onboarding, and the scoring system) across 20+ end-to-end flows. This case study zooms in on the single hardest one: making the AI's quality scores something non-engineers can actually trust, verifying them when they're right and tuning the rubric when they're not.
+          For two-plus years I have been Gistly's only designer, shaping most of the product with the founders and the engineering team (dashboards and reporting, the call-review workspace, objects and records, onboarding, and the scoring system) across 20+ end-to-end flows. This case study zooms in on the single hardest one: making the AI's quality scores something non-engineers can actually trust, verifying them when they're right and tuning the rubric when they're not.
         </p>
       </CaseRow>
 
