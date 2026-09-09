@@ -6,7 +6,7 @@ const caseStudies = [
     slug: "gistly",
     tagline: "AI POWERED CALL AUDITING",
     tags: ["CRM", "B2B SaaS", "Data Analytics"],
-    description: "Gistly.ai is an AI-powered platform that automates call auditing for sales, support, and collections, and is in production at 6+ companies.",
+    description: "Gistly.ai is an AI-powered platform that automates call auditing for sales, support, and collections, and is used by 6+ organisations with multiple teams.",
     extendedDescription:
       "Gistly.ai is an AI-powered platform that streamlines the call auditing process for sales calls to enhance customer interactions, gain more leads, and assess the calls. As Gistly's sole designer, I shaped the product end-to-end; this case study goes deep on its hardest problem, making the AI's scores something non-engineers can trust.",
     image: "case-study-1.png",

@@ -34,14 +34,13 @@ export const caseStudyShots = [
 
 const breakdowns = [
   ["Forms that drift", "A parameter was edited in the builder and again on a separate testing page, two forms of the same thing, quietly diverging."],
-  ["No trigger for testing", "Nothing signalled when a test applied or mattered, so testing felt bolted on rather than part of the work."],
   ["Weights you can't compare", "Scoring weights lived inside a single parameter's editor, invisible to the siblings they're weighed against."],
   ["No ground truth", "There was no honest, affordable way to fix the correct answer every test has to measure against."],
 ];
 
 const constraints = [
   ["Non-engineer users", "No jargon; it had to read like QA work, not tooling."],
-  ["No clean precedent", "The closest analogues were developer eval tools, none built for a QA lead."],
+  ["No clean precedent", "The closest analogues were developer eval tools like Langfuse, none built for a QA lead."],
   ["A fast, lean team", "Designs had to be decisive and clearly reasoned to move."],
   ["Correctness-critical", "This is the scoring engine; a confusing tuning flow risks wrong scores reaching customers."],
 ];
@@ -49,7 +48,7 @@ const constraints = [
 const decisions: Array<{
   number: string;
   title: string;
-  tag: string;
+  tag?: string;
   body: string;
   shotKey?: ShotKey;
   shotAlt?: string;
@@ -58,16 +57,15 @@ const decisions: Array<{
   {
     number: "01",
     title: "Author first, test later",
-    tag: "Closes:No trigger for testing",
     body: "Users author a rubric, run it on real calls, and only then tune when results look wrong. So a new template opens in a fast side panel for quick authoring; once it has run, each parameter gets its own page where testing lives. Testing actions do not appear until there is something to test, which keeps a first-timer's path simple. The tradeoff: a quick edit on a live parameter now costs a navigation. I judged the consistency worth it.",
     shotKey: "library",
     shotAlt: "Template library, start from scratch, or from a prebuilt Support, Sales, or Collections rubric.",
   },
   {
     number: "02",
-    title: "Make ground truth cheap",
+    title: "Use existing workflows instead of creating new ones",
     tag: "Closes:No ground truth",
-    body: "Instead of labelling from a blank slate, the system auto-seeds a small set of recently evaluated calls, pre-fills the AI's answers, and asks the reviewer only to confirm or correct them. Verification becomes a quick pass, not thousands of cold judgments: the difference between the feature being usable and abandoned.",
+    body: "The user can correct the answers from the review flow itself, and it gets seeded to the verified set automatically. Instead of labelling from a blank slate, the system auto-seeds a small set of recently evaluated calls, pre-fills the AI's answers, and asks the reviewer only to confirm or correct them. Verification becomes a quick pass, not thousands of cold judgments: the difference between the feature being usable and abandoned.",
     shotKey: "review",
     shotAlt: "Review tab, the AI's answer pre-filled per call, with one-click Confirm or Edit against real transcripts and timestamps.",
   },
@@ -229,7 +227,7 @@ export const CaseStudy1 = () => {
 
       <CaseRow label="The problem">
         <p>
-          Authoring a rubric and testing it had become two disconnected surfaces. In the gap between them, four things were broken.
+          Authoring a rubric and testing it had become two disconnected surfaces. In the gap between them, three things were broken.
         </p>
         <ol className="tf-breakdowns">
           {breakdowns.map(([title, body], i) => (
@@ -243,7 +241,7 @@ export const CaseStudy1 = () => {
           ))}
         </ol>
         <p style={{ marginTop: "var(--space-md)" }}>
-          And underneath all four sat a number. To verify the AI at any real scale, a human has to confirm the correct answer for each question on each call. With a 100-call sample and 30&ndash;50 parameters, that is thousands of judgments before a single meaningful test can run. If the design did not make that cheap, no one would do it &mdash; and the feature would be theatre.
+          And underneath all three sat a number. To verify the AI at any real scale, a human has to confirm the correct answer for each question on each call. With a 100-call sample and 30&ndash;50 parameters, that is thousands of judgments before a single meaningful test can run. If the design did not make that cheap, no one would do it &mdash; and the feature would be theatre.
         </p>
         <figure
           style={{
@@ -311,12 +309,12 @@ export const CaseStudy1 = () => {
 
       <CaseRow label="How I approached it">
         <p>
-          I studied how developer eval tools structure the tweak, run, grade loop, then reframed it for a non-technical audience. Midway, a senior design review landed with its own recommendations; I treated it as input, not instruction, adopting what held and reconciling what did not against the product's reality. Its draft versus published model, for instance, did not match how calls are actually ingested. Throughout, I surfaced my assumptions and the genuinely open questions rather than designing around them.
+          I studied how developer eval tools structure the tweak, run, grade loop, then reframed it for a non-technical audience. Earlier user interviews had shown that users carry a high cognitive load and that technical savviness varies. AI-based design reviews and audits landed with their own recommendations; I treated them as input, not instruction, adopting what held and reconciling what did not against the product's reality. Their draft versus published model, for instance, did not match how calls are actually ingested. Throughout, I surfaced my assumptions and the genuinely open questions rather than designing around them.
         </p>
       </CaseRow>
 
       <CaseRow label="The key decisions">
-        <p className="testing-flow-frame">Five decisions. Four close the breakdowns above; the last makes the whole loop reusable.</p>
+        <p className="testing-flow-frame">Five decisions. Three close the breakdowns above; the others shape the loop itself.</p>
       </CaseRow>
 
       <figure
@@ -375,7 +373,7 @@ export const CaseStudy1 = () => {
         <section className="testing-flow-row testing-flow-decision" key={decision.number}>
           <p className="testing-flow-number">{decision.number}</p>
           <div className="testing-flow-copy">
-            <p className="testing-flow-tag">{decision.tag}</p>
+            {decision.tag ? <p className="testing-flow-tag">{decision.tag}</p> : null}
             <h2>{decision.title}</h2>
             <p>{decision.body}</p>
             {decision.diagram ? <TwoContextsDiagram /> : null}
