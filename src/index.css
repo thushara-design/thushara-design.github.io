@@ -2044,22 +2044,42 @@ a:focus-visible {
    Each column holds its image twice and travels -50%, which puts the duplicate
    exactly where the original started, so the loop has no seam. */
 .case-scroller {
-  display: grid;
-  /* Deliberately uneven: a lead page and a companion beside it, rather than two
-     columns competing for the same attention. */
-  grid-template-columns: 1.62fr 1fr;
-  gap: clamp(12px, 1.6vw, 22px);
+  display: flex;
+  justify-content: center;
   height: clamp(380px, 66vh, 660px);
   margin: 0 0 var(--space-lg);
   padding: clamp(14px, 2.2vw, 28px);
   overflow: hidden;
   border-radius: 20px;
-  background: #0E0E0C;
+  /* Not a flat fill: a cool lift at the top left and a warm pool at the bottom
+     right, over a dark base. Both are weak enough to read as depth behind the
+     pages rather than as colour of their own. Fixed values, not theme tokens,
+     because the ground stays dark either way. */
+  background:
+    radial-gradient(90% 70% at 12% 0%, rgba(122, 98, 204, 0.20) 0%, rgba(122, 98, 204, 0) 62%),
+    radial-gradient(80% 70% at 96% 100%, rgba(176, 82, 31, 0.16) 0%, rgba(176, 82, 31, 0) 58%),
+    linear-gradient(158deg, #16141E 0%, #0C0C0B 52%, #120F14 100%);
+}
+
+/* The pages sit inside the dark rather than filling it, which is what gives the
+   panel its air. */
+.case-scroller-inner {
+  display: grid;
+  /* Deliberately uneven: a lead page and a companion beside it, rather than two
+     columns competing for the same attention. */
+  grid-template-columns: 1.62fr 1fr;
+  gap: clamp(14px, 1.9vw, 28px);
+  width: 74%;
 }
 
 .case-scroller-col {
   overflow: hidden;
   border-radius: 10px;
+  /* Lifts each page off the ground so they read as objects on a surface. Two
+     layers: a tight contact shadow, and a wide soft one for the drop. */
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.45),
+    0 26px 60px rgba(0, 0, 0, 0.55);
 }
 
 .case-scroller-track {
@@ -2072,18 +2092,29 @@ a:focus-visible {
   display: block;
   width: 100%;
   height: auto;
+  /* `.case-detail-content img` frames every image in a case study with a 1px
+     --line border and a radius. Inside the panel that drew a pale outline
+     around each page and a second radius inside the column's own. The column
+     does the clipping here. */
+  border: 0;
+  border-radius: 0;
 }
 
-/* Slow on purpose: this sits above the paragraphs, not instead of them. The
-   two speeds differ so neither column looks like it is chasing the other. */
+/* Slow on purpose: this sits above the paragraphs, not instead of them, and it
+   is the only thing in the panel that moves. */
 .case-scroller-col--up .case-scroller-track {
   animation: case-scroll-up 150s linear infinite;
+  /* Armed, but held at frame zero until the observer adds `is-running`. Pausing
+     rather than withholding the animation means it starts from the top of the
+     page image instead of jumping. */
+  animation-play-state: paused;
 }
 
-.case-scroller-col--down .case-scroller-track {
-  animation: case-scroll-down 110s linear infinite;
+.case-scroller.is-running .case-scroller-track {
+  animation-play-state: running;
 }
 
+/* After `is-running` on purpose: equal specificity, so hover still wins. */
 .case-scroller:hover .case-scroller-track {
   animation-play-state: paused;
 }
@@ -2093,18 +2124,16 @@ a:focus-visible {
   to { transform: translateY(-50%); }
 }
 
-@keyframes case-scroll-down {
-  from { transform: translateY(-50%); }
-  to { transform: translateY(0); }
-}
-
 @media (max-width: 700px) {
   /* One column on a phone: two would be too narrow to read as pages at all. */
   .case-scroller {
-    grid-template-columns: 1fr;
     height: clamp(320px, 52vh, 460px);
   }
-  .case-scroller-col--down {
+  .case-scroller-inner {
+    grid-template-columns: 1fr;
+    width: 84%;
+  }
+  .case-scroller-col--static {
     display: none;
   }
 }

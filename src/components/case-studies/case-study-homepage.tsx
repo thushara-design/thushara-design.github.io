@@ -1,30 +1,79 @@
 
+import { useEffect, useRef, useState } from "react";
 import homeShot from "../../assets/case-study-homepage/home.webp";
 import blogShot from "../../assets/case-study-homepage/blog.webp";
 
 /**
- * The two pages, tracking vertically inside one clipped frame and running in
- * opposite directions, so the panel reads as alive without either column
- * chasing the other. Each image is rendered twice and the track travels -50%,
- * which lands the second copy exactly where the first began: a seam-free loop
- * with no JavaScript and no scroll listener.
+ * Two pages in one clipped frame. Only the homepage drifts: it is the subject
+ * of the study, and a single moving element reads as deliberate where two
+ * competing ones read as busy. The blog sits still beside it.
+ *
+ * The moving column renders its image twice and travels -50%, which lands the
+ * second copy exactly where the first began: a seam-free loop. The static one
+ * needs only the one copy.
+ *
+ * It does not start on load. Motion already running before you arrive reads as
+ * a background loop; motion that begins shortly after you settle on it reads as
+ * the page answering you. So the animation is armed but paused in CSS, and an
+ * observer releases it a beat after the panel is genuinely on screen — once,
+ * with no restart if you scroll away and back.
  */
-const PageScroller = () => (
-  <figure className="case-scroller" aria-label="The redesigned Gistly homepage and blog index">
-    <div className="case-scroller-col case-scroller-col--up">
-      <div className="case-scroller-track">
-        <img src={homeShot} alt="The redesigned Gistly homepage, from the hero through to the footer." loading="lazy" />
-        <img src={homeShot} alt="" aria-hidden="true" loading="lazy" />
+const START_DELAY_MS = 2500;
+
+const PageScroller = () => {
+  const frame = useRef<HTMLElement>(null);
+  const [running, setRunning] = useState(false);
+
+  useEffect(() => {
+    const el = frame.current;
+    if (!el) return;
+
+    // Without an observer there is no way to know when it is seen, so run
+    // rather than leave it frozen for good.
+    if (typeof IntersectionObserver === "undefined") {
+      setRunning(true);
+      return;
+    }
+
+    let timer: number | undefined;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        io.disconnect();
+        timer = window.setTimeout(() => setRunning(true), START_DELAY_MS);
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+
+    return () => {
+      io.disconnect();
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }, []);
+
+  return (
+    <figure
+      ref={frame}
+      className={`case-scroller${running ? " is-running" : ""}`}
+      aria-label="The redesigned Gistly homepage and blog index"
+    >
+      <div className="case-scroller-inner">
+        <div className="case-scroller-col case-scroller-col--up">
+          <div className="case-scroller-track">
+            <img src={homeShot} alt="The redesigned Gistly homepage, from the hero through to the footer." loading="lazy" />
+            <img src={homeShot} alt="" aria-hidden="true" loading="lazy" />
+          </div>
+        </div>
+        <div className="case-scroller-col case-scroller-col--static">
+          <div className="case-scroller-track">
+            <img src={blogShot} alt="The Gistly blog index, a grid of article cards." loading="lazy" />
+          </div>
+        </div>
       </div>
-    </div>
-    <div className="case-scroller-col case-scroller-col--down">
-      <div className="case-scroller-track">
-        <img src={blogShot} alt="The Gistly blog index, a grid of article cards." loading="lazy" />
-        <img src={blogShot} alt="" aria-hidden="true" loading="lazy" />
-      </div>
-    </div>
-  </figure>
-);
+    </figure>
+  );
+};
 
 const constraints = [
   ["Mixed intent.", "Visitors range from \"what even is this\" to \"ready to book a demo\". One page has to serve both."],

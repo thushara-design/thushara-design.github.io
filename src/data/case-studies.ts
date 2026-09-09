@@ -12,7 +12,7 @@ const caseStudies = [
     image: "case-study-1.png",
     role: "Sole product designer",
     timeframe: "2024 – present",
-    tools: ["Figma", "FigJam", "Axure", "Amplitude", "Claude Code"],
+    tools: ["Figma", "FigJam", "Axure", "Amplitude"],
     responsibilities: ["UX research", "Information architecture", "Complex B2B workflows", "Design systems", "Prototyping", "AI-assisted front-end"],
     Component: CaseStudy1,
     liveProjectLink: "https://gistly.ai",
