@@ -2036,29 +2036,30 @@ a:focus-visible {
 /* The homepage case study's opening panel: two page screenshots tracking
    vertically inside one clipped frame, in opposite directions.
 
-   The height is viewport-relative and capped, so the frame stays a window onto
-   the pages rather than growing into a wall of screenshot on a tall monitor.
+   The ground is a fixed dark, not a theme token — these are dark-theme captures
+   and they need a dark surround to sit on whichever way the site is set. No
+   border and no fade at the ends: the clip is the edge, which is what makes it
+   read as a window rather than a decorated box.
+
    Each column holds its image twice and travels -50%, which puts the duplicate
-   exactly where the original started — the loop has no seam to hide. */
+   exactly where the original started, so the loop has no seam. */
 .case-scroller {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  height: clamp(380px, 64vh, 620px);
+  /* Deliberately uneven: a lead page and a companion beside it, rather than two
+     columns competing for the same attention. */
+  grid-template-columns: 1.62fr 1fr;
+  gap: clamp(12px, 1.6vw, 22px);
+  height: clamp(380px, 66vh, 660px);
   margin: 0 0 var(--space-lg);
-  padding: 14px;
+  padding: clamp(14px, 2.2vw, 28px);
   overflow: hidden;
-  border: 1px solid var(--line);
   border-radius: 20px;
-  background: color-mix(in srgb, var(--ink) 6%, transparent);
-  /* Softens both ends so a page's footer meeting its own header reads as a
-     fade rather than a cut. */
-  mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+  background: #0E0E0C;
 }
 
 .case-scroller-col {
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .case-scroller-track {
@@ -2073,8 +2074,8 @@ a:focus-visible {
   height: auto;
 }
 
-/* Slow on purpose: this is meant to drift, not to demand attention while
-   someone is reading the paragraphs underneath it. */
+/* Slow on purpose: this sits above the paragraphs, not instead of them. The
+   two speeds differ so neither column looks like it is chasing the other. */
 .case-scroller-col--up .case-scroller-track {
   animation: case-scroll-up 150s linear infinite;
 }
