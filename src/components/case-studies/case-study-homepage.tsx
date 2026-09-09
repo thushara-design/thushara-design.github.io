@@ -1,4 +1,31 @@
 
+import homeShot from "../../assets/case-study-homepage/home.webp";
+import blogShot from "../../assets/case-study-homepage/blog.webp";
+
+/**
+ * The two pages, tracking vertically inside one clipped frame and running in
+ * opposite directions, so the panel reads as alive without either column
+ * chasing the other. Each image is rendered twice and the track travels -50%,
+ * which lands the second copy exactly where the first began: a seam-free loop
+ * with no JavaScript and no scroll listener.
+ */
+const PageScroller = () => (
+  <figure className="case-scroller" aria-label="The redesigned Gistly homepage and blog index">
+    <div className="case-scroller-col case-scroller-col--up">
+      <div className="case-scroller-track">
+        <img src={homeShot} alt="The redesigned Gistly homepage, from the hero through to the footer." loading="lazy" />
+        <img src={homeShot} alt="" aria-hidden="true" loading="lazy" />
+      </div>
+    </div>
+    <div className="case-scroller-col case-scroller-col--down">
+      <div className="case-scroller-track">
+        <img src={blogShot} alt="The Gistly blog index, a grid of article cards." loading="lazy" />
+        <img src={blogShot} alt="" aria-hidden="true" loading="lazy" />
+      </div>
+    </div>
+  </figure>
+);
+
 const constraints = [
   ["Mixed intent.", "Visitors range from \"what even is this\" to \"ready to book a demo\". One page has to serve both."],
   ["A fast, small team.", "The site changes constantly, so the design had to be a durable system, not a one-off layout."],
@@ -64,6 +91,8 @@ const took =
 export const CaseStudyHomepage = () => {
   return (
     <main className="testing-flow-case">
+      <PageScroller />
+
       <CaseRow label="Context">
         <p>{context}</p>
       </CaseRow>

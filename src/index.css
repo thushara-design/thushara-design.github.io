@@ -2033,6 +2033,87 @@ a:focus-visible {
   }
 }
 
+/* The homepage case study's opening panel: two page screenshots tracking
+   vertically inside one clipped frame, in opposite directions.
+
+   The height is viewport-relative and capped, so the frame stays a window onto
+   the pages rather than growing into a wall of screenshot on a tall monitor.
+   Each column holds its image twice and travels -50%, which puts the duplicate
+   exactly where the original started — the loop has no seam to hide. */
+.case-scroller {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  height: clamp(380px, 64vh, 620px);
+  margin: 0 0 var(--space-lg);
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  /* Softens both ends so a page's footer meeting its own header reads as a
+     fade rather than a cut. */
+  mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+
+.case-scroller-col {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.case-scroller-track {
+  display: block;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.case-scroller-track img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Slow on purpose: this is meant to drift, not to demand attention while
+   someone is reading the paragraphs underneath it. */
+.case-scroller-col--up .case-scroller-track {
+  animation: case-scroll-up 150s linear infinite;
+}
+
+.case-scroller-col--down .case-scroller-track {
+  animation: case-scroll-down 110s linear infinite;
+}
+
+.case-scroller:hover .case-scroller-track {
+  animation-play-state: paused;
+}
+
+@keyframes case-scroll-up {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+@keyframes case-scroll-down {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+
+@media (max-width: 700px) {
+  /* One column on a phone: two would be too narrow to read as pages at all. */
+  .case-scroller {
+    grid-template-columns: 1fr;
+    height: clamp(320px, 52vh, 460px);
+  }
+  .case-scroller-col--down {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-scroller-track {
+    animation: none;
+  }
+}
+
 /* Before/after click maps in the homepage case study. `auto-fit` drops them to
    a single column on narrow screens without a separate media query. */
 .case-heatmaps {
