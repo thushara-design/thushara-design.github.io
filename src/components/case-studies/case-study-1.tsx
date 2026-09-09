@@ -309,7 +309,7 @@ export const CaseStudy1 = () => {
 
       <CaseRow label="How I approached it">
         <p>
-          I studied how developer eval tools structure the tweak, run, grade loop, then reframed it for a non-technical audience. Earlier user interviews had shown that users carry a high cognitive load and that technical savviness varies. AI-based design reviews and audits landed with their own recommendations; I treated them as input, not instruction, adopting what held and reconciling what did not against the product's reality. Their draft versus published model, for instance, did not match how calls are actually ingested. Throughout, I surfaced my assumptions and the genuinely open questions rather than designing around them.
+          I studied how developer eval tools structure the tweak, run, grade loop, then reframed it for a non-technical audience. Earlier user interviews had shown that users carry a high cognitive load and vary in how technical they are. AI-based design reviews and audits landed with their own recommendations; I treated them as input, not instruction, adopting what held and reconciling what did not against the product's reality. Their draft versus published model, for instance, did not match how calls are actually ingested. Throughout, I surfaced my assumptions and the genuinely open questions rather than designing around them.
         </p>
       </CaseRow>
 
