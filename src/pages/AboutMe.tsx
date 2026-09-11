@@ -71,7 +71,7 @@ export const AboutMe = () => {
               Medium
             </a>
             <a href={`mailto:${links.email}`}>{links.email}</a>
-            <a href="/resume.pdf" target="_blank" rel="noreferrer" className="about-v3-resume px-4 py-2 border border-line text-ink hover:border-accent hover:text-accent transition-colors">
+            <a href="/resume.pdf" target="_blank" rel="nofollow noreferrer" className="about-v3-resume px-4 py-2 border border-line text-ink hover:border-accent hover:text-accent transition-colors">
               Download Resume
             </a>
           </div>
