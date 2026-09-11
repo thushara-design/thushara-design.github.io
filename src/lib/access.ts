@@ -27,6 +27,7 @@ export const SHARE_TOKENS: ReadonlyArray<{ label: string; hash: string; intro?: 
   { label: "sample", hash: "fbb2ffb6c270632cda747764557e3d611e14dba611dbc49aa86ba7d02cb43e9c" },
   { label: "gistly", hash: "4135d0a942da10d80808b94b9fec1cb9912e225e52548706915b113d857490ac" },
   { label: "showcase", hash: "1ce8980ebe0167061739e034959975a6b21449d16a2e5a586ac1e51ac54f44ba", intro: true },
+  { label: "supabase", hash: "57e04f052a3e7851a10862dddd2e4d92dd120b6faa4bad0a7e3172541b24f7cd", intro: true },
 ];
 
 const STORAGE_KEY = "tv.access";
