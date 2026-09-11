@@ -631,6 +631,12 @@ p {
   margin-top: 4px;
 }
 
+/* Two metrics sit side by side, each value over its own label. Doubled class
+   so the narrow-screen single-column rule doesn't split the pairs apart. */
+.work-project-meta.work-project-meta--pair {
+  grid-template-columns: auto auto;
+}
+
 .work-project-meta-label {
   font-family: var(--font-mono);
   font-size: 0.68rem;
@@ -898,6 +904,10 @@ p {
 /* Left column: photo, then the testimonial carousel stacked beneath it. */
 .about-v3-left {
   grid-column: 1 / 6;
+  /* Baseline-aligned with .about-v3-copy: grid lines up each column's first
+     baseline, which puts the TESTIMONIALS label level with "Hi, I'm Thushara."
+     whatever sizes the two use. */
+  align-self: baseline;
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
@@ -945,6 +955,7 @@ p {
 
 .about-v3-copy {
   grid-column: 6 / -1;
+  align-self: baseline;
   display: grid;
   gap: var(--space-xs);
 }
@@ -990,10 +1001,9 @@ p {
   line-height: 1.05;
 }
 
-/* A deliberate ~8px offset below the TESTIMONIALS label on the left -
-   the asymmetry is intentional, not accidental. */
+/* Level with the TESTIMONIALS label on the left — the two columns are
+   baseline-aligned (see .about-v3-left), so no offset is needed here. */
 .about-v3-name {
-  margin-top: 0.5rem;
   font-size: 1.05rem;
   font-weight: 500;
   color: var(--ink);
@@ -1069,7 +1079,10 @@ p {
 }
 
 .tm-marker {
-  margin: 0 0 var(--space-md);
+  /* +3px so the quote's first line lands level with the first bio paragraph
+     across the gutter; the quote's line box is slightly taller than the
+     label-to-bio spacing on the right. Measured, not guessed. */
+  margin: 0 0 calc(var(--space-md) + 3px);
   font-family: var(--font-mono);
   font-size: var(--t-label);
   letter-spacing: 0.08em;
@@ -1155,7 +1168,6 @@ p {
 .tm-dot.is-active {
   width: 18px;
   background: var(--accent);
-  opacity: 0.7;
 }
 
 .tm-nav {

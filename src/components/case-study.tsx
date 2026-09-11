@@ -54,8 +54,10 @@ const projects: Project[] = [
     badge: "Gistly.ai · Homepage",
     title: "Homepage redesign",
     desc: "Rebuilding the marketing homepage around one job: getting the right visitor to act, and measuring whether it worked.",
-    metricLabel: "Homepage key events",
-    metric: "+475%",
+    metricLabel: "Key-event rate",
+    metric: "3.5×",
+    metric2: "+47%",
+    metricLabel2: "Engagement time",
     role: "Visual design and build",
     image: "/images/case-study-homepage.png",
     alt: "Gistly homepage redesign preview",
@@ -145,7 +147,7 @@ const CaseStudy = () => {
                 <span className="work-project-badge">{project.badge}</span>
                 <h3>{project.title}</h3>
                 <p>{project.desc}</p>
-                <div className="work-project-meta">
+                <div className={`work-project-meta${project.metric2 ? " work-project-meta--pair" : ""}`}>
                   <span className="work-project-metric">{project.metric}</span>
                   {project.metric2 ? <span className="work-project-metric">{project.metric2}</span> : null}
                   <span className="work-project-meta-label">{project.metricLabel}</span>
