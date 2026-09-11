@@ -635,6 +635,7 @@ p {
    so the narrow-screen single-column rule doesn't split the pairs apart. */
 .work-project-meta.work-project-meta--pair {
   grid-template-columns: auto auto;
+  column-gap: clamp(24px, 6vw, 40px);
 }
 
 .work-project-meta-label {
