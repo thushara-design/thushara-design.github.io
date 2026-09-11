@@ -2200,3 +2200,44 @@ a:focus-visible {
   line-height: 1.55;
   color: var(--muted);
 }
+
+/* A feature animation from the homepage, on a flat dark ground. The animation
+   is drawn in white for Gistly's dark homepage; on the cream page its text
+   would vanish. A fixed value rather than a theme token, because the ground
+   stays dark either way. */
+.case-feature-anim {
+  display: grid;
+  gap: var(--space-sm);
+  margin: var(--space-xs) 0 0;
+  /* Grid items default to min-width:auto and refuse to shrink below their
+     content, which would push the whole row past a phone's edge. */
+  min-width: 0;
+}
+
+/* One landscape frame width for every animation, with the animation centred
+   in it: short of the full column, which read as a slab, but wide enough that
+   a tall animation doesn't leave a square block. Black, since the animations
+   are drawn in white for a dark page. */
+.case-feature-anim-stage {
+  display: flex;
+  justify-content: center;
+  width: min(100%, 560px);
+  padding: clamp(10px, 1.6vw, 18px);
+  border-radius: clamp(24px, 3vw, 40px);
+  background: #000;
+}
+
+/* Width and aspect ratio come inline from each animation's own size, so the
+   frame is held open before the player arrives and the page doesn't jump
+   when it does. The width is min(100%, size) rather than a fixed size, so it
+   gives way on a narrow screen instead of setting the frame's minimum. */
+.case-feature-anim-player {
+  flex: none;
+}
+
+.case-feature-anim figcaption {
+  max-width: var(--measure);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--muted);
+}

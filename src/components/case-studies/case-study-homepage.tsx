@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
+import type { AnimationItem } from "lottie-web";
 import homeShot from "../../assets/case-study-homepage/home.webp";
 import blogShot from "../../assets/case-study-homepage/blog.webp";
 
@@ -75,6 +76,108 @@ const PageScroller = () => {
   );
 };
 
+/**
+ * A feature animation from the live homepage, played from its Lottie export
+ * rather than a screen recording, so it stays sharp at any size. The player
+ * and the animation file load only once the figure reaches the screen, keeping
+ * both off the page's first load, and it pauses whenever it scrolls out of view.
+ *
+ * With reduced motion it holds `stillFrame`, a frame where the content has
+ * already arrived, rather than playing.
+ */
+type FeatureAnimationProps = {
+  load: () => Promise<{ default: object }>;
+  width: number;
+  height: number;
+  displayWidth: number;
+  stillFrame: number;
+  label: string;
+  caption: string;
+};
+
+const FeatureAnimation = ({ load: loadData, width, height, displayWidth, stillFrame, label, caption }: FeatureAnimationProps) => {
+  const stage = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = stage.current;
+    if (!el) return;
+
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let anim: AnimationItem | undefined;
+    let visible = false;
+    let requested = false;
+    let cancelled = false;
+
+    const load = async () => {
+      const [{ default: lottie }, { default: data }] = await Promise.all([
+        import("lottie-web/build/player/lottie_light"),
+        loadData(),
+      ]);
+      if (cancelled) return;
+      anim = lottie.loadAnimation({
+        container: el,
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        // Lottie writes into the data it is handed; a copy keeps the cached
+        // module clean for the next time the case study mounts.
+        animationData: structuredClone(data),
+      });
+      anim.addEventListener("DOMLoaded", () => {
+        if (still) anim?.goToAndStop(stillFrame, true);
+        else if (visible) anim?.play();
+      });
+    };
+
+    // Without an observer there is no way to know when it is seen, so load
+    // and play rather than leave the frame empty.
+    if (typeof IntersectionObserver === "undefined") {
+      visible = true;
+      void load();
+      return () => {
+        cancelled = true;
+        anim?.destroy();
+      };
+    }
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible && !requested) {
+          requested = true;
+          void load();
+        }
+        if (still || !anim?.isLoaded) return;
+        if (visible) anim.play();
+        else anim.pause();
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+
+    return () => {
+      cancelled = true;
+      io.disconnect();
+      anim?.destroy();
+    };
+  }, [loadData, stillFrame]);
+
+  return (
+    <figure className="case-feature-anim">
+      <div className="case-feature-anim-stage">
+        <div
+          ref={stage}
+          className="case-feature-anim-player"
+          style={{ width: `min(100%, ${displayWidth}px)`, aspectRatio: `${width} / ${height}` }}
+          role="img"
+          aria-label={label}
+        />
+      </div>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+};
+
 const constraints = [
   ["Mixed intent.", "Visitors range from \"what even is this\" to \"ready to book a demo\". One page has to serve both."],
   ["A fast, small team.", "The site changes constantly, so the design had to be a durable system, not a one-off layout."],
@@ -91,11 +194,33 @@ const decisions = [
     number: "02",
     title: "Outcomes over features",
     body: "The old homepage listed capabilities like a spec sheet: automated auditing, sentiment analysis, transcription. Working from the marketing copy, I sequenced the page around what you get on day one and pushed the feature detail further down, for the people who want it — the same words, ordered so the payoff comes before the mechanism.",
+    media: (
+      <FeatureAnimation
+        load={() => import("../../assets/case-study-homepage/feature-insights.json")}
+        width={540}
+        height={339}
+        displayWidth={440}
+        stillFrame={60}
+        label="Animation: an accordion of call insights, Agent Performance, Lead Signals, and Compliance Flags, appearing one after another."
+        caption="An accordion from the homepage: what an audited call gives you (agent performance, lead signals, compliance flags), named as outcomes rather than as the features that produce them."
+      />
+    ),
   },
   {
     number: "03",
     title: "One block per capability",
     body: "Instead of one long undifferentiated scroll, I organised the page into distinct capability blocks (conversation QA, agent assist, voice and chat agents, observability), each self-contained and each with its own call to action, so the page guides the visitor forward rather than dumping everything at once.",
+    media: (
+      <FeatureAnimation
+        load={() => import("../../assets/case-study-homepage/feature-calls.json")}
+        width={480}
+        height={500}
+        displayWidth={320}
+        stillFrame={20}
+        label="Animation: a list of calls with Alex, Taylor, and Priya, each marked with a shield when it passes the audit or a warning when it is flagged."
+        caption="The animation from the conversation QA block: calls come in and are marked as passing or flagged. Every capability block has one, so a visitor sees the feature working rather than reading about it."
+      />
+    ),
   },
   {
     number: "04",
@@ -177,6 +302,7 @@ export const CaseStudyHomepage = () => {
           <div className="testing-flow-copy">
             <h2>{decision.title}</h2>
             <p>{decision.body}</p>
+            {decision.media}
           </div>
         </section>
       ))}
