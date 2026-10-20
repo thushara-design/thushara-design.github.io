@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { HalfMoon, SunLight } from "iconoir-react";
 import { Logo } from "../assets/images";
 import gistlyCover from "../assets/gistly-cover.png";
+import recordsCover from "../assets/case-study-records/records-cover.webp";
 import { SocialRail } from "./social-rail";
 import { useTheme } from "../lib/theme";
 
@@ -20,7 +21,8 @@ type Project = {
   role: string;
   // What was actually designed, shown as small badges.
   scope?: string[];
-  image: string;
+  // Optional: a project without one renders as text only until a shot exists.
+  image?: string;
   // Optional theme-aware pair, light shot shown on dark page, dark shot on light page.
   imageLight?: string;
   imageDark?: string;
@@ -28,13 +30,27 @@ type Project = {
   naturalMedia?: boolean;
   // The lead project, typography-forward, stacked with a large image below.
   featured?: boolean;
-  alt: string;
+  alt?: string;
 };
 
 const projects: Project[] = [
   {
-    slug: "gistly",
+    slug: "records",
     number: "01",
+    badge: "Gistly.ai · Records table",
+    title: "Records redesign",
+    desc: "Rebuilding the table QA analysts used to leave for Excel: controls on the columns, values readable in place, and saving that stays out of the way.",
+    metricLabel: "Share of app users",
+    metric: "+74%",
+    metric2: "+24%",
+    metricLabel2: "View use per visit",
+    role: "Product design and front-end build",
+    image: recordsCover,
+    alt: "Gistly's redesigned records table in a browser window, sidebar collapsed: a list of calls with coloured status and intent badges, agent avatars and a labelled toolbar",
+  },
+  {
+    slug: "gistly",
+    number: "02",
     badge: "Gistly.ai · Product design · 2+ yrs",
     title: "Designing Gistly",
     desc: "Designing clarity and trust into AI-powered quality assurance, so managers can act on scores they understand.",
@@ -50,7 +66,7 @@ const projects: Project[] = [
   },
   {
     slug: "homepage",
-    number: "02",
+    number: "03",
     badge: "Gistly.ai · Homepage",
     title: "Homepage redesign",
     desc: "Rebuilding the marketing homepage around one job: getting the right visitor to act, and measuring whether it worked.",
@@ -64,7 +80,7 @@ const projects: Project[] = [
   },
   {
     slug: "serenity",
-    number: "03",
+    number: "04",
     badge: "Serenity · Mobile IA",
     title: "Serenity",
     desc: "A gallery artist-bio app, scan an artwork, learn the artist, save it. Google UX methodology, end to end.",
@@ -139,10 +155,12 @@ const CaseStudy = () => {
               className={`work-project-row${project.featured ? " work-project-row--featured" : ""}${index % 2 === 1 ? " is-reversed" : ""}`}
               onClick={() => handleSlugChange(project.slug)}
             >
-              <div className={`work-project-media${project.naturalMedia || project.featured ? " is-natural" : ""}`}>
-                <img src={mediaSrc} alt={project.alt} />
-                <span className="work-project-number" style={{ color: project.slug === 'serenity' ? '#000' : '' }}>{project.number}</span>
-              </div>
+              {mediaSrc ? (
+                <div className={`work-project-media${project.naturalMedia || project.featured ? " is-natural" : ""}`}>
+                  <img src={mediaSrc} alt={project.alt} />
+                  <span className="work-project-number" style={{ color: project.slug === 'serenity' ? '#000' : '' }}>{project.number}</span>
+                </div>
+              ) : null}
               <div className="work-project-copy">
                 <span className="work-project-badge">{project.badge}</span>
                 <h3>{project.title}</h3>

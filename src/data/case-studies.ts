@@ -1,6 +1,24 @@
-import { CaseStudy1, CaseStudyHomepage, CaseStudy2 } from "../components/case-studies";
+import { CaseStudyRecords, CaseStudy1, CaseStudyHomepage, CaseStudy2 } from "../components/case-studies";
 
 const caseStudies = [
+  {
+    title: "Redesigning Gistly's records table",
+    slug: "records",
+    tagline: "DATA TABLE REDESIGN",
+    tags: ["B2B SaaS", "Data tables", "Design engineering"],
+    description:
+      "Rebuilding the table where QA analysts find and track their calls, so they could filter, read and save their work in the product instead of exporting it to Excel.",
+    extendedDescription:
+      "A redesign and front-end rebuild of Gistly's records table: Excel-style controls on every column, values readable in place, saving that stays out of the way, ready-made views, and a layout that holds still while you scroll. Records' share of active app users rose from 5.3% to 9.3% after launch while overall usage fell, and view use per visit rose 24%.",
+    image: "case-study-records.png",
+    role: "Product design and front-end build",
+    timeframe: "2026",
+    tools: ["Excel", "React", "TypeScript", "Tailwind", "Amplitude"],
+    responsibilities: ["User research", "interaction design", "visual design", "accessibility", "front-end build"],
+    Component: CaseStudyRecords,
+    liveProjectLink: "https://gistly.ai",
+    externalLink: undefined,
+  },
   {
     title: "Designing Gistly",
     slug: "gistly",

@@ -13,7 +13,7 @@
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 
   /* color, 4-token system */
-  --bg: #F5F4EF;
+  --bg: #FAF9F6;
   --ink: #111111;
   --muted: #6B6B6B;
   --line: #E7E7E7;
@@ -123,7 +123,7 @@ button {
 }
 
 [data-theme="light"] {
-  --bg: #F5F4EF;
+  --bg: #FAF9F6;
   --ink: #111111;
   --muted: #6B6B6B;
   --line: #E7E7E7;
