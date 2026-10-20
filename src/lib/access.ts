@@ -28,6 +28,8 @@ export const SHARE_TOKENS: ReadonlyArray<{ label: string; hash: string; intro?: 
   { label: "gistly", hash: "4135d0a942da10d80808b94b9fec1cb9912e225e52548706915b113d857490ac" },
   { label: "showcase", hash: "1ce8980ebe0167061739e034959975a6b21449d16a2e5a586ac1e51ac54f44ba", intro: true },
   { label: "supabase", hash: "57e04f052a3e7851a10862dddd2e4d92dd120b6faa4bad0a7e3172541b24f7cd", intro: true },
+  // thushara.design/?k=unlocked: a second short link beside ?k=peek, straight to the work, no intro.
+  { label: "unlocked", hash: "fd5b396c4c1877ab875884fa183f469f87bcc136bf2cc76a4c97c4c7cd48a7b8" },
 ];
 
 const STORAGE_KEY = "tv.access";
