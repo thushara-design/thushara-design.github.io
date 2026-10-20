@@ -2205,6 +2205,13 @@ a:focus-visible {
    is drawn in white for Gistly's dark homepage; on the cream page its text
    would vanish. A fixed value rather than a theme token, because the ground
    stays dark either way. */
+/* The records walkthrough poster: its play button needs a visible keyboard focus.
+   Inset, because the frame clips anything drawn outside it. */
+.walkthrough-play:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: -6px;
+}
+
 .case-feature-anim {
   display: grid;
   gap: var(--space-sm);

@@ -12,7 +12,7 @@ import { preloadImages, warmInBackground } from "./preload-images";
 import { projectImages } from "../components/case-study";
 import { screenshotImages } from "../components/screenshot-wall";
 import { caseStudyShots } from "../components/case-studies/case-study-1";
-import { LOOM_EMBED_URL, recordsShots } from "../components/case-studies/case-study-records";
+import { recordsShots } from "../components/case-studies/case-study-records";
 import { profile } from "../assets/images";
 
 /**
@@ -27,39 +27,3 @@ export const criticalImagesReady = preloadImages(projectImages);
 // fetching it during the intro is the difference between it being there on
 // arrival and visibly loading in.
 warmInBackground([...screenshotImages, ...caseStudyShots, ...recordsShots, profile]);
-
-/**
- * The records case study opens on a Loom walkthrough, and Loom's player takes a
- * couple of seconds to arrive from cold. Loading it once in a hidden frame,
- * behind the loading screen, puts its scripts, styles and poster in the cache.
- * The browser keys that cache to this site and to Loom's frame, which is exactly
- * where the real embed reads from, so it then appears almost at once.
- *
- * Waits for the page's own load so it never competes with the card images, and
- * drops the frame after a while; what it fetched stays cached.
- */
-function warmEmbed(src: string, keepMs = 20000): void {
-  const start = () => {
-    const frame = document.createElement("iframe");
-    frame.src = src;
-    frame.title = "";
-    frame.tabIndex = -1;
-    frame.setAttribute("aria-hidden", "true");
-    Object.assign(frame.style, {
-      position: "fixed",
-      left: "-10000px",
-      top: "0",
-      width: "640px",
-      height: "360px",
-      border: "0",
-      opacity: "0",
-      pointerEvents: "none",
-    });
-    frame.addEventListener("load", () => window.setTimeout(() => frame.remove(), keepMs), { once: true });
-    document.body.appendChild(frame);
-  };
-  if (document.readyState === "complete") start();
-  else window.addEventListener("load", start, { once: true });
-}
-
-warmEmbed(LOOM_EMBED_URL);

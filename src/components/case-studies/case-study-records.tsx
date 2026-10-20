@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import walkthroughPoster from "../../assets/case-study-records/records-cover.webp";
 import { useTheme } from "../../lib/theme";
 import beforeTableLight from "../../assets/case-study-records/light/before-table.webp";
 import afterTableLight from "../../assets/case-study-records/light/after-table.webp";
@@ -92,8 +93,7 @@ const Shot = ({ shot, alt, caption, maxWidth, flushTop }: ShotData) => {
 };
 
 const LOOM_ID = "e38c16f92cc04e9089e90438d274d1d2";
-/** Also loaded in a hidden frame during the loading screen; see lib/warm-assets.ts. */
-export const LOOM_EMBED_URL = `https://www.loom.com/embed/${LOOM_ID}`;
+const LOOM_EMBED_URL = `https://www.loom.com/embed/${LOOM_ID}`;
 
 /** Both themes' inline shots, warmed ahead of the case study being opened. */
 export const recordsShots = [
@@ -106,47 +106,93 @@ export const recordsShots = [
  * rest of the page rather than spanning it, so it doesn't fill the screen; the caption
  * link opens it full size in Loom.
  */
-const Walkthrough = () => (
-  // The page's opening block, like the other case studies' first visual: it sits under
-  // the hero's divider instead of drawing its own, so there's no doubled line on top.
-  <section className="testing-flow-row" style={{ borderTop: "none", marginTop: 0, paddingTop: 0 }}>
-    <p className="testing-flow-marker">Walkthrough</p>
-    {/* Measure cap lifted, as for the homepage heatmaps: the UI needs the whole column to stay legible. */}
-    <div className="testing-flow-copy" style={{ maxWidth: "none" }}>
-      <figure style={{ margin: 0 }}>
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            aspectRatio: "53 / 30",
-            overflow: "hidden",
-          }}
-        >
-          <iframe
-            src={LOOM_EMBED_URL}
-            title="Records redesign walkthrough, about 5 minutes"
-            allow="fullscreen"
-            allowFullScreen
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
-          />
-        </div>
-        <figcaption
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "var(--t-small)",
-            color: "var(--muted)",
-            marginTop: "var(--space-xs)",
-          }}
-        >
-          A 5-minute walkthrough.{" "}
-          <a href={`https://www.loom.com/share/${LOOM_ID}`} target="_blank" rel="noopener noreferrer">
-            Open in Loom →
-          </a>
-        </figcaption>
-      </figure>
-    </div>
-  </section>
-);
+const Walkthrough = () => {
+  // Loom's player is tens of megabytes of script, slow on a phone. A poster with a
+  // play button shows at once; the player loads only when someone asks for it.
+  const [playing, setPlaying] = useState(false);
+  return (
+    // The page's opening block, like the other case studies' first visual: it sits under
+    // the hero's divider instead of drawing its own, so there's no doubled line on top.
+    <section className="testing-flow-row" style={{ borderTop: "none", marginTop: 0, paddingTop: 0 }}>
+      <p className="testing-flow-marker">Walkthrough</p>
+      {/* Measure cap lifted, as for the homepage heatmaps: the UI needs the whole column to stay legible. */}
+      <div className="testing-flow-copy" style={{ maxWidth: "none" }}>
+        <figure style={{ margin: 0 }}>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              aspectRatio: "53 / 30",
+              overflow: "hidden",
+              borderRadius: "10px",
+              background: "#111111",
+            }}
+          >
+            {playing ? (
+              <iframe
+                src={LOOM_EMBED_URL}
+                title="Records redesign walkthrough, about 5 minutes"
+                allow="autoplay; fullscreen"
+                allowFullScreen
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
+              />
+            ) : (
+              <button
+                type="button"
+                className="walkthrough-play"
+                onClick={() => setPlaying(true)}
+                aria-label="Play the 5-minute walkthrough"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  padding: 0,
+                  border: 0,
+                  cursor: "pointer",
+                  display: "grid",
+                  placeItems: "center",
+                  background: `#111111 url(${walkthroughPoster}) center / cover no-repeat`,
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    display: "grid",
+                    placeItems: "center",
+                    width: "72px",
+                    height: "72px",
+                    borderRadius: "50%",
+                    // Dark, so it reads over both the dark ground and the light table behind it.
+                    background: "rgba(17, 17, 17, 0.86)",
+                    boxShadow: "0 0 0 1px rgba(255, 255, 255, 0.28)",
+                  }}
+                >
+                  <svg width="22" height="24" viewBox="0 0 22 24" fill="#FFFFFF" style={{ marginLeft: "4px" }}>
+                    <path d="M0 0 L22 12 L0 24 Z" />
+                  </svg>
+                </span>
+              </button>
+            )}
+          </div>
+          <figcaption
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--t-small)",
+              color: "var(--muted)",
+              marginTop: "var(--space-xs)",
+            }}
+          >
+            A 5-minute walkthrough.{" "}
+            <a href={`https://www.loom.com/share/${LOOM_ID}`} target="_blank" rel="noopener noreferrer">
+              Open in Loom →
+            </a>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+};
 
 const quotes = [
   "The bottom drawer for saving is annoying and confusing.",
