@@ -36,8 +36,8 @@ export const Header: React.FC<React.HTMLProps<HTMLElement>> = ({ className, ...p
     <a
       key={link.id}
       href={link.link}
-      target={link.link.startsWith("http") ? "_blank" : "_self"}
-      rel={link.link.startsWith("http") ? "noopener noreferrer" : ""}
+      target={link.link.startsWith("http") || link.link.endsWith(".pdf") ? "_blank" : "_self"}
+      rel={link.link.startsWith("http") || link.link.endsWith(".pdf") ? "noopener noreferrer" : ""}
       onClick={() => setIsOpen(false)}
       className={cn("underline-offset-8 hover:underline [&.active]:underline text-inherit hover:opacity-80 transition-all duration-200", { "font-bold": link.label === "Resume" })}>
       {link.label}
