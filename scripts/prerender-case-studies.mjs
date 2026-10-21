@@ -80,7 +80,7 @@ function toReadableHtml(html) {
       alt.trim() ? `<p><em>Figure: ${alt}</em></p>` : "")
     .replace(/<img\b[^>]*>/g, "")
     .replace(/<iframe\b[^>]*>[\s\S]*?<\/iframe>/g, "")
-    // The walkthrough's player and its poster path; the transcript beside it carries the words.
+    // The walkthrough's player: its poster is a dev-server path, and a static page can't play it.
     .replace(/<video\b[^>]*>[\s\S]*?<\/video>/g, "")
     .replace(/\s+aria-hidden="true"/g, "");
 }

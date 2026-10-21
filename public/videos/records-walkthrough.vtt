@@ -4,7 +4,7 @@ WEBVTT
 Hi, I'm Thushara and this is the records table
 
 00:00:04.643 --> 00:00:09.108
-in Gistly, where QA analysts and Managers find the calls to audit.
+in Gistly, where QA analysts and managers find the calls to audit.
 
 00:00:09.503 --> 00:00:14.246
 I redesigned the table and built the front end using coding agents
@@ -16,16 +16,16 @@ and it went from this to
 this. And here is what I changed and why.
 
 00:00:23.422 --> 00:00:25.526
-when we looked at our amplitude data,
+When we looked at our Amplitude data,
 
 00:00:25.527 --> 00:00:30.797
 we found about half of our users were exporting the table to Excel.
 
 00:00:30.798 --> 00:00:35.561
-And, the users told us the data looks very monotonous,
+And the users told us the data looks very monotonous,
 
 00:00:36.320 --> 00:00:39.282
-and, the icons were difficult to understand,
+and the icons were difficult to understand,
 
 00:00:39.540 --> 00:00:42.906
 and it was very hard to make sense of the data.
@@ -34,31 +34,31 @@ and it was very hard to make sense of the data.
 If you look at this, you can see different data types are shown in
 
 00:00:47.566 --> 00:00:52.613
-a similar way, uh, which makes it difficult because there's a lot of information
+a similar way, which makes it difficult because there's a lot of information
 
 00:00:52.614 --> 00:00:57.191
 here, and it might make it difficult for the user to make
 
 00:00:57.192 --> 00:01:01.076
-sense of it. And we also noticed that a lot of users are getting
+sense of it. And we also noticed that a lot of users were
 
 00:01:01.077 --> 00:01:03.272
 going back to a previous calls page,
 
 00:01:03.273 --> 00:01:07.893
-uh, instead of using this new records page where we had
+instead of using this new Records page where we had
 
 00:01:07.894 --> 00:01:12.312
 a lot of advanced features that is more useful for the user.
 
 00:01:13.312 --> 00:01:15.807
-when I started working on this redesign,
+When I started working on this redesign,
 
 00:01:16.062 --> 00:01:20.081
 the first thing I did was try to understand the workflow.
 
 00:01:20.082 --> 00:01:23.636
-So I actually, I exported the table to Excel,
+So I exported the table to Excel,
 
 00:01:23.637 --> 00:01:28.010
 tried to understand how Excel is different from our platform,
@@ -67,7 +67,7 @@ tried to understand how Excel is different from our platform,
 and I found out that there are more intuitive
 
 00:01:33.065 --> 00:01:35.788
-controls, and there is this, uh,
+controls, and there is this
 
 00:01:35.799 --> 00:01:38.272
 familiarity principle at play as well,
@@ -82,25 +82,25 @@ So we had to bridge that gap between,
 the existing workflows and our platform.
 
 00:01:48.994 --> 00:01:51.035
-firstly, I made the column headers.
+First, I made the column headers
 
 00:01:51.036 --> 00:01:53.400
-Clickable, where they can sort,
+clickable, where they can sort,
 
 00:01:53.692 --> 00:01:58.502
 filter, or hide, instead of just relying on this main filter option.
 
 00:01:58.954 --> 00:02:03.834
-I also added labels to this. This toolbar icons to make the functions more
+I also added labels to these toolbar icons to make their functions
 
 00:02:03.835 --> 00:02:06.483
-clearer and easy to understand.
+clearer and easier to understand.
 
 00:02:06.484 --> 00:02:09.442
-Uh, next I focused on views.
+Next, I focused on views.
 
 00:02:10.889 --> 00:02:13.154
-one of the reviews,
+One of the reviews
 
 00:02:13.165 --> 00:02:17.976
 we got was that the views are not understandable at all.
@@ -115,19 +115,19 @@ But rather than relying on a longer explanation,
 I wanted to make the feature immediately useful.
 
 00:02:27.274 --> 00:02:30.782
-So, I introduced this ready-made views such as today,
+So I introduced ready-made views such as Today,
 
 00:02:30.783 --> 00:02:33.420
-this week, flagged-only, follow-ups,
+This week, Flagged only, Follow-ups,
 
 00:02:33.421 --> 00:02:36.976
-uhm, and configured it on the backend.
+and configured them on the backend.
 
 00:02:37.593 --> 00:02:42.108
 So, these were very common filtering patterns we identified
 
 00:02:42.109 --> 00:02:46.822
-from our user data. Now the user can can quickly access different views
+from our user data. Now the user can quickly access different views
 
 00:02:47.041 --> 00:02:51.228
 they need without having to configure filters every time.
@@ -136,7 +136,7 @@ they need without having to configure filters every time.
 I made sure that we use the color very intentionally because,
 
 00:02:56.136 --> 00:03:00.660
-uhm, it should communicate meaningful information rather
+it should communicate meaningful information rather
 
 00:03:00.661 --> 00:03:05.743
 than being just a decoration. I also introduced
@@ -166,13 +166,13 @@ such as topics, I avoided the semantic colors so that the
 styling wouldn't imply a level of importance that wasn't actually there.
 
 00:03:35.389 --> 00:03:39.216
-this was configured in the backend so that it is much more flexible.
+This was configured in the backend so that it is much more flexible.
 
 00:03:39.748 --> 00:03:44.258
-But, the design tokens were very intentionally chosen it means
+But the design tokens were very intentionally chosen, with
 
 00:03:44.259 --> 00:03:49.027
-the accessibility as well. when I worked on this using
+accessibility in mind as well. When I worked on this using
 
 00:03:49.028 --> 00:03:51.271
 the coding agents in the front-end,
@@ -181,7 +181,7 @@ the coding agents in the front-end,
 I was able to work on different minor things like
 
 00:03:55.941 --> 00:03:59.745
-the interactions that were very difficult.
+the interactions that were very difficult
 
 00:03:59.746 --> 00:04:02.041
 to explore in Figma.
@@ -199,19 +199,19 @@ the table was moving a lot.
 So here, when I was working on this, I was able to work,
 
 00:04:17.637 --> 00:04:22.145
-uhm, specifically work on this table stability
+specifically on this table stability
 
 00:04:22.146 --> 00:04:26.483
 and work on this minor inconvenience. Interactions like the shadow,
 
 00:04:26.494 --> 00:04:31.510
-on scroll, I added this, added this interaction
+on scroll. I added this interaction
 
 00:04:31.511 --> 00:04:36.701
-where, this sidebar folds, so there is more horizontal space.
+where this sidebar folds, so there is more horizontal space.
 
 00:04:36.712 --> 00:04:41.333
-this changes made the experience feel more stable and gave users more room
+These changes made the experience feel more stable and gave users more room
 
 00:04:41.334 --> 00:04:44.515
 to work with their data. So, after the redesign,
@@ -220,7 +220,7 @@ to work with their data. So, after the redesign,
 the share of active users,
 
 00:04:46.530 --> 00:04:50.238
-uh, using the records page increased from 5 to 9%.
+using the Records page increased from 5% to 9%.
 
 00:04:50.271 --> 00:04:55.190
 And we also saw users shift towards
@@ -229,7 +229,7 @@ And we also saw users shift towards
 saved views rather than manually configuring filters each time.
 
 00:04:59.620 --> 00:05:02.891
-So, the feedback full write-up is available in the case study.
+The full write-up is available in the case study.
 
 00:05:02.892 --> 00:05:04.046
 Thank you for watching.

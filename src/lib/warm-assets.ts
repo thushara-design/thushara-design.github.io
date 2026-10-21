@@ -27,3 +27,12 @@ export const criticalImagesReady = preloadImages(projectImages);
 // fetching it during the intro is the difference between it being there on
 // arrival and visibly loading in.
 warmInBackground([...screenshotImages, ...caseStudyShots, ...recordsShots, profile]);
+
+// The records walkthrough's player (media-chrome) is its own chunk, kept out of the first
+// load. Fetched once the browser is idle, it's cached before the case study is opened.
+const warmWalkthroughPlayer = () => void import("../components/case-studies/walkthrough-player");
+if (typeof window.requestIdleCallback === "function") {
+  window.requestIdleCallback(warmWalkthroughPlayer, { timeout: 3000 });
+} else {
+  window.setTimeout(warmWalkthroughPlayer, 1200);
+}

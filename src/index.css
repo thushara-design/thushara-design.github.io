@@ -2225,25 +2225,83 @@ a:focus-visible {
   text-decoration-color: var(--accent);
 }
 
-/* The walkthrough's transcript: closed under the caption, set in the caption's type so
-   it reads as part of the figure. Opened, its paragraphs drop back to the prose measure. */
-.walkthrough-transcript {
-  margin-top: var(--space-xs);
+/* The walkthrough's captions sit over a light table, and the browser's default box is
+   see-through enough for rows to show through the words. Near-solid, as on YouTube. A
+   caption style set in the OS's accessibility settings still takes precedence. */
+.walkthrough-video::cue {
+  background-color: rgba(0, 0, 0, 0.88);
+  color: #FFFFFF;
 }
-.walkthrough-transcript summary {
-  width: fit-content;
-  font-family: var(--font-mono);
-  font-size: var(--t-small);
-  color: var(--ink);
-  cursor: pointer;
-  transition: color var(--dur-hover) var(--ease);
+
+/* The walkthrough's frame: the video's own 1908 × 1080 shape, rounded, dark while empty. */
+.walkthrough-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 53 / 30;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #111111;
 }
-.walkthrough-transcript summary:hover {
-  color: var(--accent);
+
+/* The walkthrough player (media-chrome), filling the rounded frame. White icons and the
+   caption's mono type, with the accent marking how much has played. */
+.walkthrough-player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  --media-background-color: #111111;
+  --media-primary-color: #FFFFFF;
+  --media-secondary-color: transparent;
+  --media-control-background: transparent;
+  --media-control-hover-background: rgba(255, 255, 255, 0.12);
+  --media-font-family: var(--font-mono);
+  --media-font-size: 13px;
+  --media-range-bar-color: var(--accent);
+  --media-range-track-background: rgba(255, 255, 255, 0.28);
+  --media-time-range-buffered-color: rgba(255, 255, 255, 0.45);
+  --media-range-thumb-background: #FFFFFF;
+  --media-focus-box-shadow: inset 0 0 0 2px #FFFFFF;
 }
-.walkthrough-transcript p {
-  max-width: var(--measure);
-  margin: var(--space-sm) 0 0;
+/* Cover, so the 16:10 poster crops the same as on the play button; the video itself is
+   the frame's shape, so nothing of it is lost. Contain in fullscreen, where a screen of
+   another shape would otherwise cut off its sides. */
+.walkthrough-video {
+  display: block;
+  object-fit: cover;
+}
+.walkthrough-player[mediaisfullscreen] .walkthrough-video {
+  object-fit: contain;
+}
+/* A dark fade under the bar, so the white icons hold up over the light table. */
+.walkthrough-bar {
+  width: 100%;
+  align-items: center;
+  padding: 24px 8px 4px;
+  background: linear-gradient(to top, rgba(17, 17, 17, 0.85), rgba(17, 17, 17, 0));
+}
+.walkthrough-bar media-time-range {
+  flex: 1;
+}
+/* The browser draws captions at the very bottom of the video, under the bar; lift them
+   clear of it. Chrome and Safari only: Firefox has no hook for this. */
+.walkthrough-video::-webkit-media-text-track-container {
+  transform: translateY(-52px);
+}
+/* Phones: one row still, so the bar doesn't swallow a small video. Tighter buttons, and
+   the time and volume controls go, since a phone sets volume with its own buttons. */
+@media (max-width: 600px) {
+  .walkthrough-player {
+    --media-control-padding: 6px;
+  }
+  .walkthrough-bar {
+    padding-top: 16px;
+  }
+  .walkthrough-bar media-time-display,
+  .walkthrough-bar media-mute-button,
+  .walkthrough-bar media-volume-range {
+    display: none;
+  }
 }
 
 .case-feature-anim {
