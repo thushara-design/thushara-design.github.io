@@ -10,7 +10,7 @@
       ]
     },
     {
-      "source": "/(.*).(png|jpg|jpeg|gif|webp|avif|svg|ico)",
+      "source": "/(.*).(png|jpg|jpeg|gif|webp|avif|svg|ico|mp4|vtt)",
       "headers": [
         {
           "key": "X-Robots-Tag",

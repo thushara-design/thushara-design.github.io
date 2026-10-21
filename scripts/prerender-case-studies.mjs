@@ -80,6 +80,8 @@ function toReadableHtml(html) {
       alt.trim() ? `<p><em>Figure: ${alt}</em></p>` : "")
     .replace(/<img\b[^>]*>/g, "")
     .replace(/<iframe\b[^>]*>[\s\S]*?<\/iframe>/g, "")
+    // The walkthrough's player and its poster path; the transcript beside it carries the words.
+    .replace(/<video\b[^>]*>[\s\S]*?<\/video>/g, "")
     .replace(/\s+aria-hidden="true"/g, "");
 }
 

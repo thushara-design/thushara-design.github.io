@@ -2212,6 +2212,40 @@ a:focus-visible {
   outline-offset: -6px;
 }
 
+/* The Loom link in the walkthrough caption. Links have no underline site-wide, and
+   in a muted caption it read as plain text, so this one keeps a standing underline. */
+.walkthrough-loom {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color var(--dur-hover) var(--ease);
+}
+.walkthrough-loom:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* The walkthrough's transcript: closed under the caption, set in the caption's type so
+   it reads as part of the figure. Opened, its paragraphs drop back to the prose measure. */
+.walkthrough-transcript {
+  margin-top: var(--space-xs);
+}
+.walkthrough-transcript summary {
+  width: fit-content;
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  color: var(--ink);
+  cursor: pointer;
+  transition: color var(--dur-hover) var(--ease);
+}
+.walkthrough-transcript summary:hover {
+  color: var(--accent);
+}
+.walkthrough-transcript p {
+  max-width: var(--measure);
+  margin: var(--space-sm) 0 0;
+}
+
 .case-feature-anim {
   display: grid;
   gap: var(--space-sm);

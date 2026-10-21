@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import walkthroughPoster from "../../assets/case-study-records/records-cover.webp";
 import { useTheme } from "../../lib/theme";
 import beforeTableLight from "../../assets/case-study-records/light/before-table.webp";
@@ -93,7 +93,23 @@ const Shot = ({ shot, alt, caption, maxWidth, flushTop }: ShotData) => {
 };
 
 const LOOM_ID = "e38c16f92cc04e9089e90438d274d1d2";
-const LOOM_EMBED_URL = `https://www.loom.com/embed/${LOOM_ID}`;
+// A self-hosted copy of the Loom recording. Loom's own player is ~28 MB of script
+// before the video can start; a plain file streams and starts in a second or two.
+const WALKTHROUGH_SRC = "/videos/records-walkthrough.mp4";
+const WALKTHROUGH_CAPTIONS = "/videos/records-walkthrough.vtt";
+
+// The narration as prose: the captions with fillers and false starts taken out. It's page
+// text, so crawlers and readers who skip the video get it too, which the captions file isn't.
+const transcript = [
+  "Hi, I'm Thushara, and this is the Records table in Gistly, where QA analysts and managers find the calls to audit. I redesigned the table and built the front end using coding agents, and it went from this to this. Here is what I changed and why.",
+  "When we looked at our Amplitude data, we found about half of our users were exporting the table to Excel. Users told us the data looks very monotonous, the icons were difficult to understand, and it was very hard to make sense of the data. If you look at this, you can see different data types are shown in a similar way, which makes it difficult, because there's a lot of information here for the user to make sense of. We also noticed that a lot of users were going back to the previous calls page instead of using this new Records page, where we had a lot of advanced features that are more useful for them.",
+  "When I started working on this redesign, the first thing I did was try to understand the workflow. I exported the table to Excel and tried to understand how Excel is different from our platform, and I found out that there are more intuitive controls. There's a familiarity principle at play as well, because managers and QA analysts are so used to Excel. So we had to bridge that gap between their existing workflows and our platform.",
+  "First, I made the column headers clickable, where they can sort, filter or hide, instead of just relying on the main filter option. I also added labels to the toolbar icons to make their functions clearer and easier to understand.",
+  "Next, I focused on views. One of the reviews we got was that views were not understandable at all. So I added this description, but rather than relying on a longer explanation, I wanted to make the feature immediately useful. So I introduced ready-made views, such as Today, This week, Flagged only and Follow-ups, and configured them on the backend. These were very common filtering patterns we identified from our user data. Now users can quickly get to the views they need without having to configure filters every time.",
+  "I made sure we use colour very intentionally, because it should communicate meaningful information rather than being just decoration. I also introduced distinct styling for different data types, like user information, email addresses, phone numbers and links, so they're much more distinct from each other. For neutral data types, such as topics, I avoided the semantic colours, so the styling wouldn't imply a level of importance that wasn't actually there. This was configured on the backend so that it's much more flexible, but the design tokens were chosen very intentionally, with accessibility in mind as well.",
+  "When I worked on this using coding agents in the front end, I was able to work on minor things, like interactions that were very difficult to explore in Figma. Previously, the table's stability was not that great: when you scrolled up or down, the table moved a lot. So while I was working on this, I was able to work specifically on table stability and on these minor inconveniences, with interactions like the shadow on scroll, and the sidebar that folds so there's more horizontal space. These changes made the experience feel more stable and gave users more room to work with their data.",
+  "After the redesign, the share of active users using the Records page increased from 5% to 9%, and we also saw users shift towards saved views rather than manually configuring filters each time. The full write-up is available in the case study. Thank you for watching.",
+];
 
 /** Both themes' inline shots, warmed ahead of the case study being opened. */
 export const recordsShots = [
@@ -107,9 +123,17 @@ export const recordsShots = [
  * link opens it full size in Loom.
  */
 const Walkthrough = () => {
-  // Loom's player is tens of megabytes of script, slow on a phone. A poster with a
-  // play button shows at once; the player loads only when someone asks for it.
-  const [playing, setPlaying] = useState(false);
+  // The poster and play button show at once, and nothing else loads until someone
+  // presses play. The click calls play() itself, so the video starts with sound on
+  // every browser, iOS included, which only allows that inside the tap.
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [started, setStarted] = useState(false);
+  const start = () => {
+    setStarted(true);
+    videoRef.current?.play().catch(() => {});
+    // Shows up in Clarity alongside the session, so a watch can be told from a skim.
+    (window as unknown as { clarity?: (...a: unknown[]) => void }).clarity?.("event", "records-walkthrough-play");
+  };
   return (
     // The page's opening block, like the other case studies' first visual: it sits under
     // the hero's divider instead of drawing its own, so there's no doubled line on top.
@@ -128,19 +152,26 @@ const Walkthrough = () => {
               background: "#111111",
             }}
           >
-            {playing ? (
-              <iframe
-                src={LOOM_EMBED_URL}
-                title="Records redesign walkthrough, about 5 minutes"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
-              />
-            ) : (
+            <video
+              ref={videoRef}
+              src={WALKTHROUGH_SRC}
+              poster={walkthroughPoster}
+              preload="none"
+              playsInline
+              controls={started}
+              aria-label="Records redesign walkthrough, about 5 minutes"
+              // The frame is the video's own 1908 × 1080, so cover crops nothing from the video;
+              // it keeps the 16:10 poster cropped the same as on the play button behind it.
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            >
+              {/* Loom's own captions, converted to WebVTT. Off until turned on from the CC button. */}
+              <track kind="captions" src={WALKTHROUGH_CAPTIONS} srcLang="en" label="English" />
+            </video>
+            {started ? null : (
               <button
                 type="button"
                 className="walkthrough-play"
-                onClick={() => setPlaying(true)}
+                onClick={start}
                 aria-label="Play the 5-minute walkthrough"
                 style={{
                   position: "absolute",
@@ -183,11 +214,22 @@ const Walkthrough = () => {
               marginTop: "var(--space-xs)",
             }}
           >
-            A 5-minute walkthrough.{" "}
-            <a href={`https://www.loom.com/share/${LOOM_ID}`} target="_blank" rel="noopener noreferrer">
+            A 5-minute walkthrough, recorded on demo data.{" "}
+            <a
+              className="walkthrough-loom"
+              href={`https://www.loom.com/share/${LOOM_ID}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Open in Loom →
             </a>
           </figcaption>
+          <details className="walkthrough-transcript">
+            <summary>Read the transcript</summary>
+            {transcript.map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
+          </details>
         </figure>
       </div>
     </section>
@@ -439,7 +481,7 @@ export const CaseStudyRecords = () => {
           <Shot
             shot="afterTable"
             alt="The redesigned table: coloured badges with dots, avatars for people, a labelled toolbar, a column menu on every header and a red flag beside the first call."
-            caption="After. The video and screenshots all use demo data."
+            caption="After. The screenshots use demo data too."
           />
         </div>
       </section>
