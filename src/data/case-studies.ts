@@ -2,7 +2,7 @@ import { CaseStudyRecords, CaseStudy1, CaseStudyHomepage, CaseStudy2 } from "../
 
 const caseStudies = [
   {
-    title: "Redesigning Gistly's records table",
+    title: "Redesigning Gistly's data table",
     slug: "records",
     tagline: "DATA TABLE REDESIGN",
     tags: ["B2B SaaS", "Data tables", "Design engineering"],
@@ -20,7 +20,7 @@ const caseStudies = [
     externalLink: undefined,
   },
   {
-    title: "Designing Gistly",
+    title: "Designing AI evaluation for non-engineers",
     slug: "gistly",
     tagline: "AI POWERED CALL AUDITING",
     tags: ["CRM", "B2B SaaS", "Data Analytics"],

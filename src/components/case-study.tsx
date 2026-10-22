@@ -19,7 +19,8 @@ type Project = {
   metric2?: string;
   metricLabel2?: string;
   role: string;
-  // What was actually designed, shown as small badges.
+  // What was actually designed, shown as small badges. Three short ones at most: they
+  // must stay on one line in the narrowest copy column (~270px, on 320px phones).
   scope?: string[];
   // Optional: a project without one renders as text only until a shot exists.
   image?: string;
@@ -38,13 +39,14 @@ const projects: Project[] = [
     slug: "records",
     number: "01",
     badge: "Gistly.ai · Records table",
-    title: "Records redesign",
+    title: "Data table redesign",
     desc: "Rebuilding the table QA analysts used to leave for Excel: controls on the columns, values readable in place, and saving that stays out of the way.",
     metricLabel: "Share of app users",
     metric: "+74%",
     metric2: "+24%",
     metricLabel2: "View use per visit",
     role: "Product design and front-end build",
+    scope: ["Data tables", "Views", "Front end"],
     image: recordsCover,
     alt: "Gistly's redesigned records table in a browser window, sidebar collapsed: a list of calls with coloured status and intent badges, agent avatars and a labelled toolbar",
   },
@@ -52,14 +54,14 @@ const projects: Project[] = [
     slug: "gistly",
     number: "02",
     badge: "Gistly.ai · Product design · 2+ yrs",
-    title: "Designing Gistly",
+    title: "AI evals for QA teams",
     desc: "Designing clarity and trust into AI-powered quality assurance, so managers can act on scores they understand.",
     metricLabel: "Screens shipped",
     metric: "120+",
     metric2: "20+",
     metricLabel2: "Core flows",
     role: "Sole product designer",
-    scope: ["QA", "Analytics", "Templates", "AI workflows"],
+    scope: ["QA", "Templates", "AI workflows"],
     featured: true,
     image: gistlyCover,
     alt: "Gistly's Ask AI assistant answering a question with an agent-score breakdown chart, surrounded by template library, scorecard, rubric builder, call review, and reporting panels",
@@ -75,6 +77,7 @@ const projects: Project[] = [
     metric2: "+47%",
     metricLabel2: "Engagement time",
     role: "Visual design and build",
+    scope: ["Hierarchy", "Animation", "Webflow"],
     image: "/images/case-study-homepage.png",
     alt: "Gistly homepage redesign preview",
   },
@@ -87,6 +90,7 @@ const projects: Project[] = [
     metricLabel: "Usability sessions",
     metric: "5",
     role: "UI/UX designer",
+    scope: ["Research", "Prototypes", "Testing"],
     image: "/images/case-study-2.png",
     alt: "Serenity mobile application screens",
   },

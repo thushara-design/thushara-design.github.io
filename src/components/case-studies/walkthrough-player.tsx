@@ -57,7 +57,7 @@ const WalkthroughPlayer = () => {
           poster={walkthroughPoster}
           preload="none"
           playsInline
-          aria-label="Records redesign walkthrough, about 5 minutes"
+          aria-label="Data table redesign walkthrough, about 5 minutes"
         >
           {/* Loom's captions, converted to WebVTT. On from the start, as on Loom and YouTube;
               the CC button turns them off. */}

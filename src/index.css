@@ -723,13 +723,10 @@ p {
   padding-top: 0;
 }
 
-/* The focal point, a touch smaller so it makes a statement without becoming
-   the design itself. */
+/* Same size and measure as every other card's title, so no one project outranks the
+   rest; only the spacing differs, to suit this card's stacked layout. */
 .work-project-row--featured .work-project-copy h3 {
-  max-width: 12ch;
   margin-top: clamp(24px, 2.6vw, 32px);
-  font-size: clamp(2.75rem, 4vw, 4rem);
-  line-height: 0.95;
 }
 
 /* Supporting subhead, clearly subordinate to the title. Widened so it fits on
