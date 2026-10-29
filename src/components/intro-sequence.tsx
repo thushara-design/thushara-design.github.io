@@ -9,13 +9,13 @@ const SPLIT = TAGLINE.length - ACCENT.length;
 const TYPE_START = 0.9;
 const SCHEDULE: Array<[number, number]> = [
   [0.0, 0],
-  [0.28, 7],
-  [0.42, 7],
-  [0.97, 18],
-  [1.13, 18],
-  [1.41, 23],
-  [1.57, 23],
-  [2.17, 31],
+  [0.15, 7],
+  [0.22, 7],
+  [0.52, 18],
+  [0.6, 18],
+  [0.76, 23],
+  [0.84, 23],
+  [1.15, 31],
 ];
 const TYPE_END = TYPE_START + SCHEDULE[SCHEDULE.length - 1][0];
 
