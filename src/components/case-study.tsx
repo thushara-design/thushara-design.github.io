@@ -54,6 +54,8 @@ type Project = {
   naturalMedia?: boolean;
   // The lead project. Same frame as the rest; its cover crops from the centre.
   featured?: boolean;
+  // The newest case study: a Latest pill beside its label.
+  latest?: boolean;
   alt?: string;
 };
 
@@ -88,12 +90,13 @@ const projects: Project[] = [
     role: "Product design and front-end build",
     scope: ["Data tables", "Views", "Front end"],
     mock: RecordsMock,
+    latest: true,
     alt: "Gistly's redesigned records table in a dark app window: a list of calls with agent avatars, status, intent and disposition labels, quality scores and a labelled toolbar",
   },
   {
     slug: "gistly",
     number: "02",
-    badge: "Gistly.ai · Product design",
+    badge: "Gistly.ai · Product design 0 → 1",
     title: "AI evals for QA teams",
     desc: "Making AI-scored QA clear enough for managers to trust and act on.",
     metricLabel: "Screens shipped",
@@ -210,9 +213,16 @@ const WorkCard = ({
         </div>
       ) : null}
       <div className="work-project-copy">
-        <RiseLine className="work-project-badge" delay={TEXT_BEAT_LABEL}>
-          {project.badge}
-        </RiseLine>
+        <div className="work-project-kicker">
+          <RiseLine className="work-project-badge" delay={TEXT_BEAT_LABEL}>
+            {project.badge}
+          </RiseLine>
+          {project.latest ? (
+            <motion.span className="work-project-latest" variants={riseIn} custom={TEXT_BEAT_LABEL}>
+              Latest
+            </motion.span>
+          ) : null}
+        </div>
         <h3>
           <RiseLine delay={TEXT_BEAT_TITLE}>{project.title}</RiseLine>
         </h3>

@@ -21,6 +21,7 @@
   --muted: #45474D;
   --line: #E6EAF0;
   --accent: #B0521F; /* optional; remove for monochrome */
+  --olive: #6B7224; /* the Latest pill; 5.2:1 on white */
 
   /* type scale */
   --t-display: clamp(6rem, 12vw, 11rem);
@@ -122,6 +123,7 @@ button {
     --muted: #9A968C;
     --line: #2A2823;
     --accent: #C8643A; /* slightly lighter on dark ground, still ~4.5:1 */
+    --olive: #A3A85A; /* lighter on the dark ground */
   }
 }
 
@@ -132,6 +134,7 @@ button {
   --muted: #9A968C;
   --line: #2A2823;
   --accent: #C8643A;
+  --olive: #A3A85A;
 }
 
 [data-theme="light"] {
@@ -140,6 +143,7 @@ button {
   --muted: #45474D;
   --line: #E6EAF0;
   --accent: #B0521F;
+  --olive: #6B7224;
 }
 
 /* ─── Theme toggle button ───────────────────────────────────────────────────── */
@@ -920,10 +924,10 @@ p {
   display: inline-flex;
 }
 
-/* The label's mask sits straight in the copy column. As a flex box it's as
-   tall as the label; as an inline one it took the body's 27px line height
-   and pushed the label 12px off the image. */
-.work-project-copy > .rise-mask {
+/* The label's mask is a flex item in its row. As a flex box it's as tall as
+   the label; as a block it took the body's 27px line height and pushed the
+   label 12px off the image. */
+.work-project-kicker > .rise-mask {
   display: flex;
 }
 
@@ -951,11 +955,47 @@ p {
   color: var(--muted);
 }
 
+/* The label's row: the label, and on the newest card a Latest pill. Where
+   the two don't fit side by side, the pill takes the next line; the row gap
+   adds back the pill's overhang (below), so it sits 8px under the label. */
+.work-project-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--s1) + 0.28rem) var(--s1);
+}
+
 .work-project-badge::before {
   content: "";
   width: 0.24rem;
   height: 0.24rem;
   background: var(--accent);
+}
+
+/* The label's square and size, in olive on a light olive fill: 10% keeps the
+   text at 4.5:1 on white. The negative margin cancels the padding, so the
+   row stays the label's height and the 16px to the title holds. */
+.work-project-latest {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.28rem 0.6rem;
+  margin-block: -0.28rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--olive) 10%, transparent);
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1;
+  color: var(--olive);
+}
+
+.work-project-latest::before {
+  content: "";
+  width: 0.24rem;
+  height: 0.24rem;
+  background: currentColor;
 }
 
 .work-project-copy h3 {
@@ -998,8 +1038,7 @@ p {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  letter-spacing: 0;
   color: var(--muted);
 }
 
@@ -1017,7 +1056,8 @@ p {
   color: var(--ink);
 }
 
-/* What was designed, small badges, supporting detail. */
+/* What was designed, small badges, supporting detail. In the metrics' group,
+   so 16px under them. */
 .work-project-scope {
   display: flex;
   flex-wrap: wrap;
@@ -1070,15 +1110,11 @@ p {
     height: 1em;
   }
 
-  /* Card 01's metric labels are the longest, 146px each at full tracking,
-     and with a 24–40px gap the pair overran these columns and wrapped. Half
-     the tracking and a 16px gap fit it in 287px. */
+  /* Card 01's metric labels are the longest, 125px each, and with a 24px gap
+     the pair overran the 272px column on 320px phones. A 16px gap fits it in
+     266px. */
   .work-project-meta.work-project-meta--pair {
     column-gap: var(--s2);
-  }
-
-  .work-project-meta-label {
-    letter-spacing: 0.05em;
   }
 }
 
@@ -1087,11 +1123,10 @@ p {
     display: none;
   }
 
-  /* A 272px column at 320px is 15px short even so; a step down in size
-     fits the pair in 267px. */
-  .work-project-meta-label {
-    font-size: 0.64rem;
-    letter-spacing: 0.04em;
+  /* Card 02's label, "Gistly.ai · Product design 0 → 1", runs 279px; with
+     less tracking it fits the 272px column on one line. */
+  .work-project-badge {
+    letter-spacing: 0.05em;
   }
 }
 
@@ -1134,15 +1169,18 @@ p {
 
 /* From 1200px the copy runs only 10–30px past the image's bottom, a near-miss
    that reads as an error. So there the image stretches to the copy's height
-   (a crop of a few percent) and the CTA lands on the image's bottom edge,
-   held there by its auto margin if the copy is ever the shorter one; the
-   padding keeps the 32px group gap. Narrower, the copy runs clearly longer
-   and the crop would get heavy, so cards stay plainly top-aligned. */
+   (a crop of a few percent): the label meets its top edge and the CTA its
+   bottom. Any spare height is shared by the metrics' and the CTA's auto
+   margins, which split it equally, so the two gaps above them always match;
+   the padding keeps each at least the 32px group gap. Narrower, the copy
+   runs clearly longer and the crop would get heavy, so cards stay plainly
+   top-aligned. */
 @media (min-width: 1200px) {
   .work-project-row {
     align-items: stretch;
   }
 
+  .work-project-meta,
   .work-project-cta {
     margin-top: auto;
     padding-top: var(--s4);
