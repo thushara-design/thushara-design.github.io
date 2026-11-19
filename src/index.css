@@ -1069,11 +1069,29 @@ p {
     width: 1em;
     height: 1em;
   }
+
+  /* Card 01's metric labels are the longest, 146px each at full tracking,
+     and with a 24–40px gap the pair overran these columns and wrapped. Half
+     the tracking and a 16px gap fit it in 287px. */
+  .work-project-meta.work-project-meta--pair {
+    column-gap: var(--s2);
+  }
+
+  .work-project-meta-label {
+    letter-spacing: 0.05em;
+  }
 }
 
 @media (max-width: 350px) {
   .work-project-scope li svg {
     display: none;
+  }
+
+  /* A 272px column at 320px is 15px short even so; a step down in size
+     fits the pair in 267px. */
+  .work-project-meta-label {
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
   }
 }
 
