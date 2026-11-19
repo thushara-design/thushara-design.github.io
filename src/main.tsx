@@ -7,6 +7,9 @@ import { ThemeProvider } from "./lib/theme";
 import "./index.css";
 // Side-effect import: begins fetching imagery as soon as the bundle runs.
 import "./lib/warm-assets";
+import { startSmoothScroll } from "./lib/smooth-scroll";
+
+startSmoothScroll();
 
 const root = document.getElementById("root")!;
 

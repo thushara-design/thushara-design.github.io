@@ -1,4 +1,6 @@
 @import url("https://cdn.jsdelivr.net/npm/@fontsource/inter/index.css");
+/* Medium, for the records mock's emphasis (current crumb, active item). */
+@import url("https://cdn.jsdelivr.net/npm/@fontsource/inter/500.css");
 @import url("https://cdn.jsdelivr.net/npm/@fontsource/inter-tight/index.css");
 @import url("https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono/index.css");
 
@@ -12,11 +14,12 @@
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 
-  /* color, 4-token system */
-  --bg: #FAF9F6;
-  --ink: #111111;
-  --muted: #6B6B6B;
-  --line: #E7E7E7;
+  /* color, 4-token system. Light ground, ink, muted and line from Antigravity
+     (antigravity.google): its surface, on-surface, on-surface-variant and grey-50. */
+  --bg: #FFFFFF;
+  --ink: #121317;
+  --muted: #45474D;
+  --line: #E6EAF0;
   --accent: #B0521F; /* optional; remove for monochrome */
 
   /* type scale */
@@ -58,6 +61,8 @@
   --ease: cubic-bezier(.16, 1, .3, 1);
   --dur-hover: 180ms;
   --dur-enter: 560ms;
+  /* A work card's hover: the image zoom and the link's roll move together. */
+  --dur-card: 500ms;
 
   color: var(--ink);
   background: var(--bg);
@@ -78,6 +83,13 @@ html {
   background: var(--bg);
   scroll-behavior: smooth;
   overflow-x: hidden;
+}
+
+/* While Lenis smooths the scroll (lib/smooth-scroll.ts), the browser mustn't
+   smooth it too, or it re-animates each of Lenis's per-frame scrolls and the
+   two fight. Explicit smooth scrolls in code (behavior: "smooth") still are. */
+html.lenis {
+  scroll-behavior: auto;
 }
 
 body {
@@ -123,10 +135,10 @@ button {
 }
 
 [data-theme="light"] {
-  --bg: #FAF9F6;
-  --ink: #111111;
-  --muted: #6B6B6B;
-  --line: #E7E7E7;
+  --bg: #FFFFFF;
+  --ink: #121317;
+  --muted: #45474D;
+  --line: #E6EAF0;
   --accent: #B0521F;
 }
 
@@ -197,7 +209,8 @@ p {
   background: #0E0E0C;
   color: #F5F4EF;
   font-family: var(--font-body);
-  transition: transform 800ms cubic-bezier(0.78, 0, 0.22, 1);
+  /* Matches LIFT_MS in intro-sequence.tsx. */
+  transition: transform 600ms cubic-bezier(0.78, 0, 0.22, 1);
 }
 
 .load-screen.is-lifting {
@@ -492,20 +505,25 @@ p {
 
 /* ── Selected work, alternating editorial rows (Home v2) ── */
 /* No section heading above these any more, so the header spacer + grid gap
-   already provide the clearance, this just adds a little air. */
+   already provide the clearance, this just adds a little air. Capped narrower
+   than the board and centred, so the cards keep a field of page around them. */
 .work-projects {
   grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
-  gap: clamp(72px, 8vw, 112px);
-  margin-top: var(--space-md);
+  gap: clamp(96px, 11vw, 160px);
+  width: 100%;
+  max-width: 67rem;
+  margin: var(--space-lg) auto 0;
 }
 
+/* Top-aligned, so every card's label sits on its image's top edge. Centred,
+   the copy (taller than the image) overhung it at both ends. */
 .work-project-row {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: clamp(32px, 5vw, 80px);
+  align-items: flex-start;
+  gap: clamp(32px, 6vw, 96px);
   padding: 0;
   background: none;
   border: none;
@@ -526,15 +544,32 @@ p {
      + the gap stops fitting — which happened from ~760px to ~1180px and left
      these rows stacked while the featured row, already basis-zero, stayed side
      by side. Stacking is the 760px query's job alone. `min-width` lets them
-     actually shrink to their share. The 1.2 : 1 ratio is the old 440 : 360
-     proportion, kept. */
-  flex: 1.2 1 0;
+     actually shrink to their share. Even halves; wider screens give the
+     image more, below. */
+  flex: 1 1 0;
   min-width: 0;
   overflow: hidden;
   aspect-ratio: 16 / 10;
   border: 1px solid var(--line);
   background: var(--line);
-  border-radius: 24px;
+  border-radius: 12px;
+}
+
+/* From 1200px the image takes 1.25 shares to the copy's 1, so in the 67rem
+   column it is a quarter wider than the copy, which keeps the width it had at
+   even halves in 60rem. Below 1200 the copy needs its half, or the scope tags
+   stop fitting on one line. */
+@media (min-width: 1200px) {
+  .work-project-media {
+    flex-grow: 1.25;
+  }
+}
+
+/* On the white ground the shots carry their own edge; the border only adds a
+   grey ring. Removed outright, not made transparent, or the --line fill would
+   show through it as the same ring. */
+[data-theme="light"] .work-project-media {
+  border: 0;
 }
 
 .work-project-media img {
@@ -543,13 +578,12 @@ p {
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  transition: transform 500ms var(--ease);
+  transition: transform var(--dur-card) var(--ease);
 }
 
 /* Natural-aspect media, show the full image, no crop */
 .work-project-media.is-natural {
   aspect-ratio: auto;
-  align-self: center;
   background: transparent;
 }
 
@@ -558,30 +592,350 @@ p {
 }
 
 .work-project-row:hover .work-project-media img,
-.work-project-row:focus-visible .work-project-media img {
+.work-project-row:focus-visible .work-project-media img,
+.work-project-row:hover .rmock,
+.work-project-row:focus-visible .rmock {
   transform: scale(1.04);
 }
 
 .work-project-number {
   position: absolute;
-  left: 20px;
-  top: 16px;
+  left: 16px;
+  top: 14px;
   z-index: 2;
-  font-family: var(--font-heading);
-  font-weight: 100;
-  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  /* Mono, at label size, so it reads as an index alongside the card's other
+     mono labels rather than as a second headline. */
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: clamp(0.875rem, 1vw, 1rem);
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.04em;
   color: #fff;
 }
 
-.work-project-copy {
+/* ── Records table mock (records-mock.tsx), the 01 card's cover ── */
+/* Pared to a feel: a dark glass window on a flat warm-charcoal field (a
+   trace of the portfolio's --accent in dark grey, so it follows the theme's
+   shade of it), tall rows running off the frame, and a glass column menu
+   floating over them. Sized in em off a font size tied to the frame's width
+   (cqw), so it scales as one piece; borders stay true 1px, so the hairlines
+   stay crisp. */
+.rmock {
+  /* Near-opaque, so the window reads as dark glass rather than taking on the
+     field's colour. */
+  --rm-glass: rgba(16, 17, 20, 0.92);
+  --rm-glass-menu: rgba(36, 37, 41, 0.42);
+  --rm-edge: rgba(255, 255, 255, 0.09);
+  --rm-hair: rgba(255, 255, 255, 0.055);
+  --rm-hover: rgba(255, 255, 255, 0.06);
+  --rm-highlight: rgba(255, 255, 255, 0.07);
+  /* On the deep field a plain dark shadow gives the window its lift. */
+  --rm-shadow: rgba(0, 0, 0, 0.45);
+  /* Three text tones, one job each: content (every cell, the title, menu
+     items), labels (column headers, count, chip), icons. */
+  --rm-text: #eceef0;
+  --rm-text-2: #8a8f98;
+  --rm-text-3: #5f636b;
+  /* One length for the loop, so camera, menu and highlight stay in step. */
+  --rm-loop: 6s;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  transition: transform var(--dur-card) var(--ease);
+}
+
+/* The ground: one flat field, as on a Swiss poster. */
+.rmock-stage {
+  position: absolute;
+  inset: 0;
+  font-family: var(--font-body);
+  /* The frame is 57em wide; the 62em window, set in from the top left, runs
+     off its right and bottom edges, filling it. */
+  font-size: 1.75cqw;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  color: var(--rm-text);
+  /* A warm charcoal: mostly neutral dark grey, with a trace of the accent. */
+  background: color-mix(in srgb, var(--accent) 10%, #1c1c1c);
+}
+
+.rmock svg {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  color: var(--rm-text-3);
+}
+
+/* The window: dark glass, a top-edge highlight, a long soft shadow. No
+   backdrop blur: the window bleeds past the frame, and a blur there samples
+   the page outside the clip, which smeared a white haze into its right edge
+   on the light theme. Over a flat field a blur shows nothing anyway. */
+.rmock-window {
+  position: absolute;
+  top: 5em;
+  left: 7em;
+  width: 62em;
+  background: var(--rm-glass);
+  border: 1px solid var(--rm-edge);
+  border-radius: 1em;
+  box-shadow: inset 0 1px 0 var(--rm-highlight), 0 2em 4em var(--rm-shadow);
+}
+
+.rmock-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  height: 3.4em;
+  padding: 0 1.6em;
+  border-bottom: 1px solid var(--rm-hair);
+}
+
+.rmock-title {
+  font-weight: 500;
+}
+
+.rmock-count {
+  color: var(--rm-text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.rmock-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  margin-left: 1em;
+  padding: 0.3em 0.7em;
+  border: 1px solid var(--rm-edge);
+  border-radius: 999px;
+  color: var(--rm-text-2);
+  font-size: 0.9em;
+}
+
+.rmock-chip svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+
+/* Rows: tall, hairline-ruled, six columns; the table runs off the frame's
+   right edge partway into Disposition, and off its bottom. */
+.rmock-row {
   display: grid;
-  align-content: start;
-  gap: var(--space-sm);
+  grid-template-columns: 13em 11em 10em 5.5em 7em 10em;
+  align-items: center;
+  height: 3em;
+  padding: 0 1.6em;
+  border-bottom: 1px solid var(--rm-hair);
+}
+
+.rmock-head {
+  height: 2.6em;
+  color: var(--rm-text-2);
+}
+
+.rmock-head > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-size: 0.88em;
+}
+
+.rmock-head svg {
+  width: 0.9em;
+  height: 0.9em;
+  color: currentColor;
+}
+
+.rmock-agent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+}
+
+/* Initials avatar, in glass: a translucent tint of the agent's hue with
+   initials in a light shade of it, no ring. Sized in its own (smaller) em,
+   about 1.7 row-em across. */
+.rmock-avatar {
+  display: grid;
+  place-items: center;
+  width: 2.8em;
+  height: 2.8em;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--avatar) 24%, transparent);
+  color: color-mix(in srgb, var(--avatar) 45%, #fff);
+  font-size: 0.6em;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.rmock-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.rmock-status::before {
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: 50%;
+  background: var(--tone);
+  content: "";
+}
+
+.rmock-status.is-green { --tone: #4cb782; }
+.rmock-status.is-red { --tone: #e5534b; }
+.rmock-status.is-amber { --tone: #e9a23b; }
+
+.rmock-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* The column menu, open under Status, in a second layer of glass, thinner
+   than the window's so the rows beneath show through it softly. Its left
+   edge sits so its labels line up with the column's text (window left 7 +
+   Status column 25.6 − menu and item padding 0.95), just under the header
+   (window top 5 + bar 3.4 + header 2.6 + 0.35). */
+.rmock-menu {
+  position: absolute;
+  top: 11.35em;
+  left: 31.65em;
+  display: flex;
+  flex-direction: column;
+  width: 12.5em;
+  padding: 0.35em;
+  background: var(--rm-glass-menu);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  backdrop-filter: blur(8px) saturate(160%);
+  border: 1px solid var(--rm-edge);
+  border-radius: 0.8em;
+  box-shadow: inset 0 1px 0 var(--rm-highlight), 0 1.4em 3em var(--rm-shadow);
+}
+
+.rmock-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  height: 2.2em;
+  padding: 0 0.6em;
+  border-radius: 0.45em;
+}
+
+/* Static state, and what reduced motion keeps: the first item hovered. */
+.rmock-menu-item:first-child {
+  background: var(--rm-hover);
+}
+
+/* ── The loop (--rm-loop): wide, push in, open, step through, pull back ──
+   One timeline, in percent of the loop:
+     0–14    wide shot
+     14–28   the camera pushes in (1.3×)
+     32–36   only once it's in does the menu open
+     37–77   the highlight steps down the four items, 10% each
+     77–89   the camera pulls back, menu still open on its last item
+     89–93   back in the wide shot, the menu fades away
+     93–100  the wide shot holds, as it began, so the loop joins seamlessly
+   The camera scales from the window's top-left corner, so the zoomed shot
+   keeps the wide shot's composition: the same inset corner, the table
+   running off the right and bottom edges. 1.3× is as far as it can go with
+   the Status menu still wholly in frame. The first three items share one
+   10% highlight window, delayed a further 10% of the loop each; the last
+   holds its highlight through the pull-back. Until the card plays its
+   entrance, everything waits on its first frame (`.is-playing`, set by the
+   card), so the loop always opens on the wide shot. The global reduced-
+   motion rule stops all of this, leaving the static state: wide shot, menu
+   open, first item highlighted. */
+.rmock:not(.is-playing) * {
+  animation-play-state: paused;
+}
+
+.rmock-camera {
+  position: absolute;
+  inset: 0;
+  transform-origin: 7em 5em;
+  animation: rmock-camera var(--rm-loop) infinite;
+}
+
+.rmock-menu {
+  transform-origin: 1em 0;
+  animation: rmock-menu var(--rm-loop) infinite;
+}
+
+.rmock-menu-item {
+  animation: rmock-hover var(--rm-loop) infinite;
+}
+
+.rmock-menu-item:nth-child(2) { animation-delay: calc(var(--rm-loop) * 0.1); }
+.rmock-menu-item:nth-child(3) { animation-delay: calc(var(--rm-loop) * 0.2); }
+.rmock-menu-item:nth-child(5) { animation-name: rmock-hover-last; }
+
+@keyframes rmock-camera {
+  0%, 14% { transform: scale(1); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  28%, 77% { transform: scale(1.3); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  89%, 100% { transform: scale(1); }
+}
+
+@keyframes rmock-menu {
+  0%, 32% { opacity: 0; transform: translateY(-0.4em) scale(0.98); }
+  36%, 89% { opacity: 1; transform: none; }
+  93%, 100% { opacity: 0; transform: translateY(-0.4em) scale(0.98); }
+}
+
+@keyframes rmock-hover {
+  0%, 36.99% { background: transparent; }
+  37%, 46.99% { background: var(--rm-hover); }
+  47%, 100% { background: transparent; }
+}
+
+@keyframes rmock-hover-last {
+  0%, 66.99% { background: transparent; }
+  67%, 92.99% { background: var(--rm-hover); }
+  93%, 100% { background: transparent; }
+}
+
+.rmock-menu-rule {
+  height: 1px;
+  margin: 0.3em 0.6em;
+  background: var(--rm-hair);
+}
+
+/* ── Entrance pieces (work-reveal.tsx) ── */
+/* The title rises out of this. The padding gives descenders room inside the
+   clip; the negative margin hands it back, so line height is untouched. */
+.rise-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.rise-line {
+  display: inline-block;
+}
+
+/* The card label keeps its flex, which lines its accent square up with the text. */
+.rise-line.work-project-badge {
+  display: inline-flex;
+}
+
+/* The label's mask sits straight in the copy column. As a flex box it's as
+   tall as the label; as an inline one it took the body's 27px line height
+   and pushed the label 12px off the image. */
+.work-project-copy > .rise-mask {
+  display: flex;
+}
+
+/* One spacing system on every card, set per element because a uniform gap
+   can't show grouping: 16px inside a group, 32px between groups. Groups are
+   label + title + description, then metrics + scope, then the CTA. */
+.work-project-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   flex: 1 1 0;
   min-width: 0;
-  padding-top: 8px;
 }
 
 .work-project-badge {
@@ -605,21 +959,23 @@ p {
 }
 
 .work-project-copy h3 {
-  margin: 0;
+  margin: var(--s2) 0 0;
   max-width: 20ch;
   font-family: var(--font-heading);
   font-weight: 550;
-  font-size: clamp(2rem, 3.6vw, 3.4rem);
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
 }
 
+/* Balanced, so a two-line description never strands its last word. */
 .work-project-copy p {
-  margin: 0;
-  max-width: 52ch;
+  margin: var(--s2) 0 0;
+  max-width: 46ch;
   color: var(--muted);
-  font-size: clamp(1rem, 1.2vw, 1.15rem);
-  line-height: 1.55;
+  font-size: clamp(0.95rem, 1vw, 1.02rem);
+  line-height: 1.65;
+  text-wrap: balance;
 }
 
 .work-project-meta {
@@ -628,7 +984,7 @@ p {
   align-items: baseline;
   gap: 6px 40px;
   width: fit-content;
-  margin-top: 4px;
+  margin-top: var(--s4);
 }
 
 /* Two metrics sit side by side, each value over its own label. Doubled class
@@ -650,7 +1006,7 @@ p {
 .work-project-metric {
   font-family: var(--font-heading);
   font-weight: 550;
-  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  font-size: clamp(1.35rem, 1.8vw, 1.7rem);
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--ink);
@@ -666,12 +1022,15 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 0;
+  margin: var(--s2) 0 0;
   padding: 0;
   list-style: none;
 }
 
 .work-project-scope li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
   padding: 0.3rem 0.62rem;
   border: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
   border-radius: 999px;
@@ -682,84 +1041,101 @@ p {
   color: var(--muted);
 }
 
+/* The badge's icon: a line glyph at the caps' height, in the same muted ink. */
+.work-project-scope li svg {
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
+}
+
+/* The icons cost about 50px across three badges (323px in all), which
+   wrapped them wherever the copy column is narrower than that: phones up to
+   360px, and the first few px of side-by-side rows, where the column starts
+   at 320px (761–771px). A tighter badge (284px) keeps all three on one line
+   there, icons and all; on 320px phones (a 272px column) the icons step
+   aside, which leaves the badges as they fit before. */
+@media (max-width: 480px), (min-width: 761px) and (max-width: 800px) {
+  .work-project-scope {
+    gap: 6px;
+  }
+
+  .work-project-scope li {
+    gap: 0.3em;
+    padding: 0.28rem 0.45rem;
+    letter-spacing: 0.03em;
+  }
+
+  .work-project-scope li svg {
+    width: 1em;
+    height: 1em;
+  }
+}
+
+@media (max-width: 350px) {
+  .work-project-scope li svg {
+    display: none;
+  }
+}
+
+/* Centred, not baseline: the rolls clip, and a clipping box's baseline is its
+   bottom edge, which would sit the text and arrow off one another. */
 .work-project-cta {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 16px;
-  margin-top: 8px;
+  margin-top: var(--s4);
   font-family: var(--font-heading);
   font-weight: 500;
-  font-size: 1.15rem;
+  font-size: 1rem;
   letter-spacing: -0.02em;
   color: var(--ink);
 }
 
-.work-project-arrow {
-  transition: transform var(--dur-hover) var(--ease);
+/* Hover roll (Roll in case-study.tsx), kept nearly invisible: one line tall
+   and clipped, each character's copy is a text-shadow exactly one line below,
+   so lifting the characters by a line swaps the copy in. Timed with the image
+   zoom, and staggered only 6ms a character, so the phrase moves almost as one
+   piece. Under reduced motion the swap is instant, so nothing visibly moves. */
+.roll {
+  display: inline-flex;
+  overflow: hidden;
+  line-height: 1.3;
 }
 
-.work-project-row:hover .work-project-arrow,
-.work-project-row:focus-visible .work-project-arrow {
-  transform: translateX(8px);
+.roll > span {
+  display: inline-block;
+  text-shadow: 0 1.3em currentColor;
+  transition: transform var(--dur-card) var(--ease);
+  transition-delay: calc(var(--i) * 6ms);
 }
 
-/* ── Featured project (01), typography leads; the image is its conclusion ── */
-.work-project-row--featured {
-  flex-direction: row;
-  align-items: center;
-  gap: clamp(32px, 6vw, 80px);
+.work-project-row:hover .roll > span,
+.work-project-row:focus-visible .roll > span {
+  transform: translateY(-1.3em);
 }
 
-/* One connected block; spacing is set per-element rather than a uniform gap.
-   Kept slightly narrow so the left edge reads as a strong vertical axis. */
-.work-project-row--featured .work-project-copy {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0;
-  flex: 1;
-  width: 100%;
-  max-width: 38rem;
-  padding-top: 0;
+/* From 1200px the copy runs only 10–30px past the image's bottom, a near-miss
+   that reads as an error. So there the image stretches to the copy's height
+   (a crop of a few percent) and the CTA lands on the image's bottom edge,
+   held there by its auto margin if the copy is ever the shorter one; the
+   padding keeps the 32px group gap. Narrower, the copy runs clearly longer
+   and the crop would get heavy, so cards stay plainly top-aligned. */
+@media (min-width: 1200px) {
+  .work-project-row {
+    align-items: stretch;
+  }
+
+  .work-project-cta {
+    margin-top: auto;
+    padding-top: var(--s4);
+  }
 }
 
-/* Same size and measure as every other card's title, so no one project outranks the
-   rest; only the spacing differs, to suit this card's stacked layout. */
-.work-project-row--featured .work-project-copy h3 {
-  margin-top: clamp(24px, 2.6vw, 32px);
-}
-
-/* Supporting subhead, clearly subordinate to the title. Widened so it fits on
-   one line where it can; text-wrap: balance evens the two lines otherwise, so
-   the last word is never stranded. */
-.work-project-row--featured .work-project-copy p {
-  max-width: 38rem;
-  margin-top: clamp(16px, 1.8vw, 22px);
-  text-wrap: balance;
-}
-
-/* Proof block, a step down from the subhead, on a fixed two-column grid so the
-   value and its label read as one system. */
-.work-project-row--featured .work-project-meta {
-  grid-template-columns: auto auto;
-  gap: 8px 44px;
-  width: fit-content;
-  margin-top: clamp(36px, 4vw, 48px);
-}
-
-/* Scope reads as a caption of the metrics, not a fourth competing line. */
-.work-project-row--featured .work-project-scope {
-  margin-top: 14px;
-}
-
-/* CTA is the conclusion of everything above it. */
-.work-project-row--featured .work-project-cta {
-  margin-top: clamp(28px, 3.4vw, 40px);
-}
-
-/* Large supporting evidence, uncropped, tucked under the type. */
-.work-project-row--featured .work-project-media {
-  flex: 1.2;
+/* ── Featured project, same frame and spacing as the rest ── */
+/* Its cover is a collage with dark margin on every side, so the 16:10 crop
+   trims evenly from top and bottom instead of all from the bottom. */
+.work-project-row--featured .work-project-media img {
+  object-position: center;
 }
 
 @media (max-width: 760px) {

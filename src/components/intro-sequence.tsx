@@ -6,7 +6,9 @@ const TAGLINE = "I turn complexity\ninto clarity.";
 const ACCENT = "clarity.";
 const SPLIT = TAGLINE.length - ACCENT.length;
 
-const TYPE_START = 0.9;
+// Kept short: the intro is the wait before the work, so every beat of it is
+// delay. Typing starts almost at once.
+const TYPE_START = 0.3;
 const SCHEDULE: Array<[number, number]> = [
   [0.0, 0],
   [0.15, 7],
@@ -19,10 +21,11 @@ const SCHEDULE: Array<[number, number]> = [
 ];
 const TYPE_END = TYPE_START + SCHEDULE[SCHEDULE.length - 1][0];
 
-const CARET_BLINK_MS = 450;
-const CARET_FADE_MS = 250;
+const CARET_BLINK_MS = 250;
+const CARET_FADE_MS = 150;
 const PAUSE_BEFORE_LIFT_MS = CARET_BLINK_MS + CARET_FADE_MS;
-const LIFT_MS = 800;
+// Matches the .load-screen transform transition in index.css.
+const LIFT_MS = 600;
 
 function charsAt(dt: number) {
   const last = SCHEDULE[SCHEDULE.length - 1];
@@ -56,7 +59,11 @@ function formatIST() {
 
 type CaretPhase = "solid" | "blink" | "gone";
 
-export function IntroSequence({ onDone }: { onDone: () => void }) {
+/**
+ * `onLift` fires as the curtain starts to rise, so the work behind it can be
+ * showing as it's uncovered; `onDone` once it has gone.
+ */
+export function IntroSequence({ onDone, onLift }: { onDone: () => void; onLift?: () => void }) {
   const [typed, setTyped] = useState("");
   const [status, setStatus] = useState("INITIALIZING");
   const [caret, setCaret] = useState<CaretPhase>("solid");
@@ -81,6 +88,7 @@ export function IntroSequence({ onDone }: { onDone: () => void }) {
         if (cancelled) return;
         setStatus("READY");
         setLifting(true);
+        onLift?.();
         timers.push(window.setTimeout(onDone, LIFT_MS));
       });
     };
@@ -95,7 +103,7 @@ export function IntroSequence({ onDone }: { onDone: () => void }) {
     if (reduce) {
       setCaret("gone");
       setTyped(TAGLINE);
-      timers.push(window.setTimeout(liftWhenImagesReady, 600));
+      timers.push(window.setTimeout(liftWhenImagesReady, 300));
       return () => {
         cancelled = true;
         timers.forEach((id) => window.clearTimeout(id));
@@ -130,7 +138,7 @@ export function IntroSequence({ onDone }: { onDone: () => void }) {
       cancelAnimationFrame(raf);
       timers.forEach((id) => window.clearTimeout(id));
     };
-  }, [onDone]);
+  }, [onDone, onLift]);
 
   const typedMain = typed.slice(0, SPLIT);
   const typedAccent = typed.length > SPLIT ? typed.slice(SPLIT) : "";

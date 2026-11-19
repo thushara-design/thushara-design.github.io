@@ -1,10 +1,28 @@
-import { useCallback } from "react";
+import { useCallback, useRef, type ComponentType, type CSSProperties } from "react";
 import { useNavigate } from "react-router";
-import { HalfMoon, SunLight } from "iconoir-react";
+import {
+  BadgeCheck,
+  CodeBrackets,
+  DesignNib,
+  Eye,
+  Group,
+  HalfMoon,
+  Page,
+  Play,
+  Search,
+  Sparks,
+  SunLight,
+  Table2Columns,
+  TextSize,
+  WebWindow,
+} from "iconoir-react";
+import { motion, useInView, useReducedMotion } from "motion/react";
 import { Logo } from "../assets/images";
 import gistlyCover from "../assets/gistly-cover.png";
-import recordsCover from "../assets/case-study-records/records-cover.webp";
+import { RecordsMock } from "./records-mock";
 import { SocialRail } from "./social-rail";
+import { RiseLine, riseIn } from "./work-reveal";
+import { useIntroDone } from "../lib/intro";
 import { useTheme } from "../lib/theme";
 
 type Project = {
@@ -12,6 +30,7 @@ type Project = {
   number: string;
   badge: string;
   title: string;
+  // Wraps balanced; a \u00A0 keeps a pair together where balance would split it.
   desc: string;
   metricLabel: string;
   metric: string;
@@ -27,11 +46,32 @@ type Project = {
   // Optional theme-aware pair, light shot shown on dark page, dark shot on light page.
   imageLight?: string;
   imageDark?: string;
+  // Optional: a cover drawn in code instead of a screenshot. Takes the alt
+  // text as its label, and `play` to start any animation with the card's
+  // entrance.
+  mock?: ComponentType<{ label?: string; play?: boolean }>;
   // When true, the media renders at the image's natural aspect (no crop).
   naturalMedia?: boolean;
-  // The lead project, typography-forward, stacked with a large image below.
+  // The lead project. Same frame as the rest; its cover crops from the centre.
   featured?: boolean;
   alt?: string;
+};
+
+// One line icon per scope badge, saying what the tag means. A tag without one
+// shows as text alone.
+const SCOPE_ICONS: Record<string, typeof Eye> = {
+  "Data tables": Table2Columns,
+  Views: Eye,
+  "Front end": CodeBrackets,
+  QA: BadgeCheck,
+  Templates: Page,
+  "AI workflows": Sparks,
+  Hierarchy: TextSize,
+  Animation: Play,
+  Webflow: WebWindow,
+  Research: Search,
+  Prototypes: DesignNib,
+  Testing: Group,
 };
 
 const projects: Project[] = [
@@ -40,22 +80,22 @@ const projects: Project[] = [
     number: "01",
     badge: "Gistly.ai · Records table",
     title: "Data table redesign",
-    desc: "Rebuilding the table QA analysts used to leave for Excel: controls on the columns, values readable in place, and saving that stays out of the way.",
+    desc: "Rebuilding the table QA analysts used to leave for\u00A0Excel: column controls, readable cells, quieter saving.",
     metricLabel: "Share of app users",
     metric: "+74%",
     metric2: "+24%",
     metricLabel2: "View use per visit",
     role: "Product design and front-end build",
     scope: ["Data tables", "Views", "Front end"],
-    image: recordsCover,
-    alt: "Gistly's redesigned records table in a browser window, sidebar collapsed: a list of calls with coloured status and intent badges, agent avatars and a labelled toolbar",
+    mock: RecordsMock,
+    alt: "Gistly's redesigned records table in a dark app window: a list of calls with agent avatars, status, intent and disposition labels, quality scores and a labelled toolbar",
   },
   {
     slug: "gistly",
     number: "02",
-    badge: "Gistly.ai · Product design · 2+ yrs",
+    badge: "Gistly.ai · Product design",
     title: "AI evals for QA teams",
-    desc: "Designing clarity and trust into AI-powered quality assurance, so managers can act on scores they understand.",
+    desc: "Making AI-scored QA clear enough for managers to trust and act on.",
     metricLabel: "Screens shipped",
     metric: "120+",
     metric2: "20+",
@@ -71,7 +111,7 @@ const projects: Project[] = [
     number: "03",
     badge: "Gistly.ai · Homepage",
     title: "Homepage redesign",
-    desc: "Rebuilding the marketing homepage around one job: getting the right visitor to act, and measuring whether it worked.",
+    desc: "The marketing homepage, rebuilt around one job: getting the right visitor to act.",
     metricLabel: "Key-event rate",
     metric: "3.5×",
     metric2: "+47%",
@@ -86,7 +126,7 @@ const projects: Project[] = [
     number: "04",
     badge: "Serenity · Mobile IA",
     title: "Serenity",
-    desc: "A gallery artist-bio app, scan an artwork, learn the artist, save it. Google UX methodology, end to end.",
+    desc: "Scan a gallery artwork, learn the artist, save\u00A0it. Google UX methodology, end to end.",
     metricLabel: "Usability sessions",
     metric: "5",
     role: "UI/UX designer",
@@ -104,6 +144,111 @@ const projects: Project[] = [
 export const projectImages: string[] = projects.flatMap((p) =>
   [p.image, p.imageLight, p.imageDark].filter((s): s is string => Boolean(s)),
 );
+
+/**
+ * Text that rolls on hover: each character slides up out of view while its
+ * copy, a text-shadow one line below, slides into place. `--i` staggers them
+ * left to right; `from` continues the count across separate pieces. Screen
+ * readers get the plain label beside it instead.
+ */
+const Roll = ({ text, from = 0 }: { text: string; from?: number }) => (
+  <span className="roll" aria-hidden="true">
+    {[...text].map((ch, i) => (
+      <span key={i} style={{ "--i": from + i } as CSSProperties}>
+        {ch === " " ? "\u00A0" : ch}
+      </span>
+    ))}
+  </span>
+);
+
+// The text's beats, in seconds after the row starts its entrance, reading top
+// down: the label, then the title, each rising out of its own mask, then
+// everything else together. Late enough that, on load, the text comes in as
+// the intro's 0.6s curtain clears rather than underneath it.
+const TEXT_BEAT_LABEL = 0.2;
+const TEXT_BEAT_TITLE = 0.3;
+const TEXT_BEAT_REST = 0.5;
+
+/**
+ * One project row. Its image shows from the start, so the board is never seen
+ * empty; the text plays its entrance once, when the row's top 40px are in
+ * view and the intro has started lifting, in the beats above. A low trigger,
+ * so the second card's top edge, below the first on load, fills in there and
+ * then rather than waiting until a third of it is scrolled in.
+ */
+const WorkCard = ({
+  project,
+  reversed,
+  mediaSrc,
+  onOpen,
+}: {
+  project: Project;
+  reversed: boolean;
+  mediaSrc?: string;
+  onOpen: (slug: string) => void;
+}) => {
+  const ref = useRef<HTMLButtonElement>(null);
+  const inView = useInView(ref, { once: true, amount: "some", margin: "0px 0px -40px 0px" });
+  const introDone = useIntroDone();
+  const still = useReducedMotion() ?? false;
+  const play = inView && introDone;
+  const Mock = project.mock;
+
+  return (
+    <motion.button
+      ref={ref}
+      type="button"
+      className={`work-project-row${project.featured ? " work-project-row--featured" : ""}${reversed ? " is-reversed" : ""}`}
+      onClick={() => onOpen(project.slug)}
+      initial={still ? false : "hidden"}
+      animate={still || play ? "shown" : "hidden"}
+    >
+      {Mock || mediaSrc ? (
+        <div className={`work-project-media${project.naturalMedia ? " is-natural" : ""}`}>
+          {Mock ? <Mock label={project.alt} play={play} /> : <img src={mediaSrc} alt={project.alt} />}
+          <span className="work-project-number" style={{ color: project.slug === 'serenity' ? '#000' : '' }}>{project.number}</span>
+        </div>
+      ) : null}
+      <div className="work-project-copy">
+        <RiseLine className="work-project-badge" delay={TEXT_BEAT_LABEL}>
+          {project.badge}
+        </RiseLine>
+        <h3>
+          <RiseLine delay={TEXT_BEAT_TITLE}>{project.title}</RiseLine>
+        </h3>
+        <motion.p variants={riseIn} custom={TEXT_BEAT_REST}>{project.desc}</motion.p>
+        <motion.div
+          className={`work-project-meta${project.metric2 ? " work-project-meta--pair" : ""}`}
+          variants={riseIn}
+          custom={TEXT_BEAT_REST}
+        >
+          <span className="work-project-metric">{project.metric}</span>
+          {project.metric2 ? <span className="work-project-metric">{project.metric2}</span> : null}
+          <span className="work-project-meta-label">{project.metricLabel}</span>
+          {project.metricLabel2 ? <span className="work-project-meta-label">{project.metricLabel2}</span> : null}
+        </motion.div>
+        {project.scope ? (
+          <motion.ul className="work-project-scope" variants={riseIn} custom={TEXT_BEAT_REST}>
+            {project.scope.map((tag) => {
+              const Icon = SCOPE_ICONS[tag];
+              return (
+                <li key={tag}>
+                  {Icon ? <Icon aria-hidden="true" strokeWidth={1.6} /> : null}
+                  {tag}
+                </li>
+              );
+            })}
+          </motion.ul>
+        ) : null}
+        <motion.span className="work-project-cta" variants={riseIn} custom={TEXT_BEAT_REST}>
+          <span className="sr-only">View case study</span>
+          <Roll text="View case study" />
+          <Roll text="→" from={15} />
+        </motion.span>
+      </div>
+    </motion.button>
+  );
+};
 
 const CaseStudy = () => {
   const navigate = useNavigate();
@@ -153,40 +298,13 @@ const CaseStudy = () => {
                   : project.imageDark
                 : project.image;
             return (
-            <button
-              key={project.slug}
-              type="button"
-              className={`work-project-row${project.featured ? " work-project-row--featured" : ""}${index % 2 === 1 ? " is-reversed" : ""}`}
-              onClick={() => handleSlugChange(project.slug)}
-            >
-              {mediaSrc ? (
-                <div className={`work-project-media${project.naturalMedia || project.featured ? " is-natural" : ""}`}>
-                  <img src={mediaSrc} alt={project.alt} />
-                  <span className="work-project-number" style={{ color: project.slug === 'serenity' ? '#000' : '' }}>{project.number}</span>
-                </div>
-              ) : null}
-              <div className="work-project-copy">
-                <span className="work-project-badge">{project.badge}</span>
-                <h3>{project.title}</h3>
-                <p>{project.desc}</p>
-                <div className={`work-project-meta${project.metric2 ? " work-project-meta--pair" : ""}`}>
-                  <span className="work-project-metric">{project.metric}</span>
-                  {project.metric2 ? <span className="work-project-metric">{project.metric2}</span> : null}
-                  <span className="work-project-meta-label">{project.metricLabel}</span>
-                  {project.metricLabel2 ? <span className="work-project-meta-label">{project.metricLabel2}</span> : null}
-                </div>
-                {project.scope ? (
-                  <ul className="work-project-scope">
-                    {project.scope.map((tag) => (
-                      <li key={tag}>{tag}</li>
-                    ))}
-                  </ul>
-                ) : null}
-                <span className="work-project-cta">
-                  View case study <span className="work-project-arrow">→</span>
-                </span>
-              </div>
-            </button>
+              <WorkCard
+                key={project.slug}
+                project={project}
+                reversed={index % 2 === 1}
+                mediaSrc={mediaSrc}
+                onOpen={handleSlugChange}
+              />
             );
           })}
         </div>

@@ -3,6 +3,7 @@ import { ArrowRight, Eye, EyeClosed, Lock } from "iconoir-react";
 import { Logo } from "../assets/images";
 import { IntroSequence } from "./intro-sequence";
 import { consumeToken, readGrant, verify, verifySync, writeGrant } from "../lib/access";
+import { IntroDoneContext } from "../lib/intro";
 
 interface PasswordProtectProps {
   onUnlock: () => void;
@@ -169,8 +170,12 @@ export const AuthGate = ({ children }: { children: ReactNode }) => {
   const [entry] = useState(resolveEntry);
   const [isLocked, setIsLocked] = useState(entry.locked);
   const [showIntro, setShowIntro] = useState(entry.intro);
+  // True from the moment the curtain starts rising, not once it's gone, so the
+  // work's entrance plays as it's uncovered instead of after a blank board.
+  const [lifted, setLifted] = useState(!entry.intro);
 
   const handleIntroDone = useCallback(() => setShowIntro(false), []);
+  const handleIntroLift = useCallback(() => setLifted(true), []);
 
   const handleUnlock = useCallback(() => setIsLocked(false), []);
 
@@ -184,11 +189,12 @@ export const AuthGate = ({ children }: { children: ReactNode }) => {
   }
 
   // The intro is a fixed overlay that lifts away, so the work renders behind it
-  // and is already painted the moment it clears.
+  // and is already painted the moment it clears. Entrance animations start as
+  // it begins to lift.
   return (
     <>
-      {showIntro ? <IntroSequence onDone={handleIntroDone} /> : null}
-      {children}
+      {showIntro ? <IntroSequence onDone={handleIntroDone} onLift={handleIntroLift} /> : null}
+      <IntroDoneContext.Provider value={lifted || !showIntro}>{children}</IntroDoneContext.Provider>
     </>
   );
 };
