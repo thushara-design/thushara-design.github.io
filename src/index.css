@@ -632,6 +632,7 @@ p {
   --rm-edge: rgba(255, 255, 255, 0.09);
   --rm-hair: rgba(255, 255, 255, 0.055);
   --rm-hover: rgba(255, 255, 255, 0.06);
+  --rm-press: rgba(255, 255, 255, 0.12);
   --rm-highlight: rgba(255, 255, 255, 0.07);
   /* On the deep field a plain dark shadow gives the window its lift. */
   --rm-shadow: rgba(0, 0, 0, 0.45);
@@ -640,8 +641,9 @@ p {
   --rm-text: #eceef0;
   --rm-text-2: #8a8f98;
   --rm-text-3: #5f636b;
-  /* One length for the loop, so camera, menu and highlight stay in step. */
-  --rm-loop: 6s;
+  /* One length for the loop, so camera, menu, highlight and columns stay in
+     step. */
+  --rm-loop: 7.5s;
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -831,25 +833,32 @@ p {
   background: var(--rm-hover);
 }
 
-/* ── The loop (--rm-loop): wide, push in, open, step through, pull back ──
-   One timeline, in percent of the loop:
-     0–14    wide shot
-     14–28   the camera pushes in (1.3×)
-     32–36   only once it's in does the menu open
-     37–77   the highlight steps down the four items, 10% each
-     77–89   the camera pulls back, menu still open on its last item
-     89–93   back in the wide shot, the menu fades away
-     93–100  the wide shot holds, as it began, so the loop joins seamlessly
+/* ── The loop (--rm-loop): wide, push in, open, hide Status, pull back ──
+   One timeline, in percent of the loop (7.5s):
+     0–10    wide shot
+     10–22   the camera pushes in (1.3×)
+     24–27   only once it's in does the menu open
+     27–45   the highlight steps down the first three items, 6% each
+     45–51   it rests on Hide column
+     51–53   Hide column is pressed: the click
+     53–56   the menu closes
+     56–64   the Status column folds away, its cells fading first, and the
+             columns to its right slide over
+     64–69   the zoomed shot holds on the table without it
+     69–80   the camera pulls back
+     80–87   the wide shot holds, Status still hidden
+     87–94   Status eases back in, so the loop joins on the full table
+     94–100  the wide shot holds, as it began
    The camera scales from the window's top-left corner, so the zoomed shot
    keeps the wide shot's composition: the same inset corner, the table
    running off the right and bottom edges. 1.3× is as far as it can go with
    the Status menu still wholly in frame. The first three items share one
-   10% highlight window, delayed a further 10% of the loop each; the last
-   holds its highlight through the pull-back. Until the card plays its
-   entrance, everything waits on its first frame (`.is-playing`, set by the
-   card), so the loop always opens on the wide shot. The global reduced-
-   motion rule stops all of this, leaving the static state: wide shot, menu
-   open, first item highlighted. */
+   6% highlight window, delayed a further 6% of the loop each. Until the
+   card plays its entrance, everything waits on its first frame
+   (`.is-playing`, set by the card), so the loop always opens on the wide
+   shot. The global reduced-motion rule stops all of this, leaving the
+   static state: wide shot, menu open, first item highlighted, every column
+   in place. */
 .rmock:not(.is-playing) * {
   animation-play-state: paused;
 }
@@ -870,32 +879,64 @@ p {
   animation: rmock-hover var(--rm-loop) infinite;
 }
 
-.rmock-menu-item:nth-child(2) { animation-delay: calc(var(--rm-loop) * 0.1); }
-.rmock-menu-item:nth-child(3) { animation-delay: calc(var(--rm-loop) * 0.2); }
-.rmock-menu-item:nth-child(5) { animation-name: rmock-hover-last; }
+.rmock-menu-item:nth-child(2) { animation-delay: calc(var(--rm-loop) * 0.06); }
+.rmock-menu-item:nth-child(3) { animation-delay: calc(var(--rm-loop) * 0.12); }
+.rmock-menu-item:nth-child(5) { animation-name: rmock-hide-click; }
+
+/* Every row, header included, folds its Status track to nothing and back. */
+.rmock-row {
+  animation: rmock-cols var(--rm-loop) infinite;
+}
+
+/* Status cells clip to their track as it narrows, and fade out ahead of it. */
+.rmock-row > :nth-child(3) {
+  overflow: hidden;
+  animation: rmock-cell var(--rm-loop) infinite;
+}
 
 @keyframes rmock-camera {
-  0%, 14% { transform: scale(1); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
-  28%, 77% { transform: scale(1.3); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
-  89%, 100% { transform: scale(1); }
+  0%, 10% { transform: scale(1); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  22%, 69% { transform: scale(1.3); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  80%, 100% { transform: scale(1); }
 }
 
 @keyframes rmock-menu {
-  0%, 32% { opacity: 0; transform: translateY(-0.4em) scale(0.98); }
-  36%, 89% { opacity: 1; transform: none; }
-  93%, 100% { opacity: 0; transform: translateY(-0.4em) scale(0.98); }
+  0%, 24% { opacity: 0; transform: translateY(-0.4em) scale(0.98); }
+  27%, 53% { opacity: 1; transform: none; }
+  56%, 100% { opacity: 0; transform: translateY(-0.4em) scale(0.98); }
 }
 
 @keyframes rmock-hover {
-  0%, 36.99% { background: transparent; }
-  37%, 46.99% { background: var(--rm-hover); }
-  47%, 100% { background: transparent; }
+  0%, 26.99% { background: transparent; }
+  27%, 32.99% { background: var(--rm-hover); }
+  33%, 100% { background: transparent; }
 }
 
-@keyframes rmock-hover-last {
-  0%, 66.99% { background: transparent; }
-  67%, 92.99% { background: var(--rm-hover); }
-  93%, 100% { background: transparent; }
+/* Hide column: hovered, pressed for a beat, held as the menu closes. */
+@keyframes rmock-hide-click {
+  0%, 44.99% { background: transparent; }
+  45%, 50.99% { background: var(--rm-hover); }
+  51%, 52.99% { background: var(--rm-press); }
+  53%, 55.99% { background: var(--rm-hover); }
+  56%, 100% { background: transparent; }
+}
+
+@keyframes rmock-cols {
+  0%, 56% {
+    grid-template-columns: 13em 11em 10em 5.5em 7em 10em;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  64%, 87% {
+    grid-template-columns: 13em 11em 0em 5.5em 7em 10em;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  94%, 100% { grid-template-columns: 13em 11em 10em 5.5em 7em 10em; }
+}
+
+@keyframes rmock-cell {
+  0%, 56% { opacity: 1; }
+  59%, 91% { opacity: 0; }
+  94%, 100% { opacity: 1; }
 }
 
 .rmock-menu-rule {

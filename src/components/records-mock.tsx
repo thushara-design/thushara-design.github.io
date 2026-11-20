@@ -49,7 +49,8 @@ export const RecordsMock = ({ label, play }: { label?: string; play?: boolean })
   <div className={`rmock${play ? " is-playing" : ""}`} role="img" aria-label={label}>
     <div className="rmock-stage" aria-hidden="true">
       {/* Everything that zooms: the loop opens on the full table, pushes in,
-          opens the Status menu and steps through it, then pulls back out. */}
+          opens the Status menu, clicks Hide column and folds the column away,
+          then pulls back out and lets it return. */}
       <div className="rmock-camera">
         <div className="rmock-window">
           <div className="rmock-bar">
@@ -92,7 +93,7 @@ export const RecordsMock = ({ label, play }: { label?: string; play?: boolean })
         </div>
 
         {/* The column menu, open on Status: the redesign's controls on the columns.
-            It opens and steps down its items on a loop (index.css). */}
+            It opens, steps down its items and clicks the last on a loop (index.css). */}
         <div className="rmock-menu">
           <span className="rmock-menu-item"><ArrowUp />Sort ascending</span>
           <span className="rmock-menu-item"><ArrowDown />Sort descending</span>
