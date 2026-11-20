@@ -1,6 +1,7 @@
-import { useCallback, useRef, type ComponentType, type CSSProperties } from "react";
+import { useCallback, useRef, type ComponentType, type PointerEvent } from "react";
 import { useNavigate } from "react-router";
 import {
+  ArrowUpRight,
   BadgeCheck,
   CodeBrackets,
   DesignNib,
@@ -149,20 +150,14 @@ export const projectImages: string[] = projects.flatMap((p) =>
 );
 
 /**
- * Text that rolls on hover: each character slides up out of view while its
- * copy, a text-shadow one line below, slides into place. `--i` staggers them
- * left to right; `from` continues the count across separate pieces. Screen
- * readers get the plain label beside it instead.
+ * Puts the View circle under the pointer. Written straight onto the card as
+ * two custom properties, so following the cursor never re-renders it.
  */
-const Roll = ({ text, from = 0 }: { text: string; from?: number }) => (
-  <span className="roll" aria-hidden="true">
-    {[...text].map((ch, i) => (
-      <span key={i} style={{ "--i": from + i } as CSSProperties}>
-        {ch === " " ? "\u00A0" : ch}
-      </span>
-    ))}
-  </span>
-);
+const followPointer = (e: PointerEvent<HTMLButtonElement>) => {
+  const box = e.currentTarget.getBoundingClientRect();
+  e.currentTarget.style.setProperty("--view-x", `${e.clientX - box.left}px`);
+  e.currentTarget.style.setProperty("--view-y", `${e.clientY - box.top}px`);
+};
 
 // The text's beats, in seconds after the row starts its entrance, reading top
 // down: the label, then the title, each rising out of its own mask, then
@@ -203,6 +198,8 @@ const WorkCard = ({
       type="button"
       className={`work-project-row${project.featured ? " work-project-row--featured" : ""}${reversed ? " is-reversed" : ""}`}
       onClick={() => onOpen(project.slug)}
+      onPointerEnter={followPointer}
+      onPointerMove={followPointer}
       initial={still ? false : "hidden"}
       animate={still || play ? "shown" : "hidden"}
     >
@@ -212,6 +209,10 @@ const WorkCard = ({
           <span className="work-project-number" style={{ color: project.slug === 'serenity' ? '#000' : '' }}>{project.number}</span>
         </div>
       ) : null}
+      <span className="work-project-view" aria-hidden="true">
+        View
+        <ArrowUpRight strokeWidth={2} />
+      </span>
       <div className="work-project-copy">
         <div className="work-project-kicker">
           <RiseLine className="work-project-badge" delay={TEXT_BEAT_LABEL}>
@@ -250,11 +251,7 @@ const WorkCard = ({
             })}
           </motion.ul>
         ) : null}
-        <motion.span className="work-project-cta" variants={riseIn} custom={TEXT_BEAT_REST}>
-          <span className="sr-only">View case study</span>
-          <Roll text="View case study" />
-          <Roll text="→" from={15} />
-        </motion.span>
+        <span className="sr-only">View case study</span>
       </div>
     </motion.button>
   );
