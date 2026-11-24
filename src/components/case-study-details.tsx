@@ -3,7 +3,7 @@ import { HalfMoon, SunLight } from "iconoir-react";
 import { caseStudiesData } from "../data";
 import { Seo } from "./Seo";
 import { SectionNav } from "./section-nav";
-import { SocialRail } from "./social-rail";
+import { Footer } from "./footer";
 import { useTheme } from "../lib/theme";
 import { Logo } from "../assets/images";
 
@@ -53,7 +53,6 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
         robots={slug === "gistly" ? "noindex,follow" : undefined}
       />
 
-      <SocialRail />
 
       <header className="work-board-header">
         <a href="/" className="work-logo" aria-label="Thushara home">
@@ -114,6 +113,8 @@ const CaseStudyDat = ({ slug }: { slug: string }) => {
           {nextCaseStudy ? <a href={`?ref=${nextCaseStudy.slug}`}>Next / {nextCaseStudy.title}</a> : <span />}
         </nav>
       </section>
+
+      <Footer />
     </main>
   );
 };

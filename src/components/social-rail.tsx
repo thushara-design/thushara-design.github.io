@@ -17,8 +17,9 @@ const aiPrompt =
   "I am evaluating Thushara Varghese for a B2B product design role. Read these for context: Gistly product design case study https://www.thushara.design/case-studies/gistly.html, Gistly homepage redesign case study https://www.thushara.design/case-studies/homepage.html, Serenity mobile case study https://www.thushara.design/case-studies/serenity.html, summary index https://www.thushara.design/llms.txt, Medium https://medium.com/@thusharavarghese, Dribbble https://dribbble.com/thusharadesign. Based on her work, what should a B2B founder or hiring manager understand about how she thinks, what kinds of product problems she is strongest at, and what evidence in her portfolio supports that?";
 
 /**
- * Fixed bottom-left rail, the AI sparkle on top, then social links.
- * Shared by every page so the sparkle is always reachable.
+ * The AI sparkle, then the social links. Rendered by the footer, so every
+ * page has it: on a wide screen a rail fixed to the bottom-left corner, the
+ * sparkle on top, so it's always reachable; narrower, a row in the footer.
  */
 export const SocialRail = () => (
   <aside className="work-social-rail" aria-label="Social and AI links">

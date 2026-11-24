@@ -427,11 +427,6 @@ export const CaseStudy1 = () => {
           The hardest part was not the screens. It was finding the one number, thousands of judgments, that decided whether the feature could work at all, and designing the whole flow around defeating it. In B2B, the best decisions usually come from the second-order consequence of a workflow, not the surface. It also sharpened how I take feedback: keep what holds, reconcile what does not against real constraints, and surface the open questions instead of papering over them.
         </p>
       </CaseRow>
-
-      <footer className="testing-flow-foot">
-        <span>Case study</span>
-        <span>Product design</span>
-      </footer>
     </main>
   );
 };

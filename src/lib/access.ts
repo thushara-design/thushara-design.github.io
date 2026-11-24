@@ -20,8 +20,9 @@ export const PASSWORD_HASH = "020c355824f43c23a61f7fbeb5fde1acdfdf447747b52c670b
 /**
  * One entry per recipient, so a link can be retired without changing the rest.
  *
- * `intro: true` plays the loading sequence before the work appears, for a link
- * whose first impression matters more than getting straight to the projects.
+ * `intro: true` once played the loading screen before the work. The homepage
+ * now opens on its own hero for everyone, so the flag no longer changes
+ * anything; it stays so existing entries keep reading the same.
  */
 export const SHARE_TOKENS: ReadonlyArray<{ label: string; hash: string; intro?: boolean }> = [
   { label: "sample", hash: "fbb2ffb6c270632cda747764557e3d611e14dba611dbc49aa86ba7d02cb43e9c" },
@@ -41,8 +42,6 @@ type Grant = { label: string; exp: number };
 export type Access = { label: string; intro: boolean };
 
 const matchEntry = (hash: string): Access | null => {
-  // Typing the password happens *after* the intro has already played, so it
-  // never replays it.
   if (hash === PASSWORD_HASH) return { label: "password", intro: false };
   const token = SHARE_TOKENS.find((t) => t.hash === hash);
   return token ? { label: token.label, intro: token.intro === true } : null;

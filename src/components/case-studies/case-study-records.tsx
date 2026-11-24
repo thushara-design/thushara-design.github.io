@@ -493,11 +493,6 @@ export const CaseStudyRecords = () => {
           </p>
         ))}
       </CaseRow>
-
-      <footer className="testing-flow-foot">
-        <span>Case study</span>
-        <span>Product design</span>
-      </footer>
     </main>
   );
 };

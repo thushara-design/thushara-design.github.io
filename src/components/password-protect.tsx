@@ -1,13 +1,59 @@
-import React, { useCallback, useState, type ReactNode } from "react";
-import { ArrowRight, Eye, EyeClosed, Lock } from "iconoir-react";
-import { Logo } from "../assets/images";
-import { IntroSequence } from "./intro-sequence";
+import React, { useCallback, useEffect, useState, type ReactNode } from "react";
+import { ArrowRight, Eye, EyeClosed } from "iconoir-react";
+import { IntroLoader } from "./intro-loader";
+import { box, dot, frame, strokes, trace, type Point3, type Shape } from "../lib/iso-drawing";
 import { consumeToken, readGrant, verify, verifySync, writeGrant } from "../lib/access";
-import { IntroDoneContext } from "../lib/intro";
+import { IntroDoneContext, markIntroGone } from "../lib/intro";
 
 interface PasswordProtectProps {
   onUnlock: () => void;
 }
+
+// A padlock in the loading screen's isometric line drawing: a box for the
+// body; the shackle a flat band standing on its top, filled so it hides the
+// edge behind it; and a keyhole on the front face.
+const BODY_W = 56;
+const BODY_D = 22;
+const BODY_H = 44;
+const MID = BODY_D / 2;
+const CENTRE = BODY_W / 2;
+const ARCH_Z = 62;
+const ARCH_R = 18;
+const BAND = 6;
+
+const arch = (r: number, from: number, to: number) =>
+  Array.from({ length: 25 }, (_, i): Point3 => {
+    const t = from + ((to - from) * i) / 24;
+    return [CENTRE + r * Math.cos(t), MID, ARCH_Z + r * Math.sin(t)];
+  });
+
+function shackle(): Shape {
+  const { d, p } = trace(
+    [
+      [CENTRE - ARCH_R, MID, BODY_H],
+      ...arch(ARCH_R, Math.PI, 0),
+      [CENTRE + ARCH_R, MID, BODY_H],
+      [CENTRE + ARCH_R - BAND, MID, BODY_H],
+      ...arch(ARCH_R - BAND, 0, Math.PI),
+      [CENTRE - ARCH_R + BAND, MID, BODY_H],
+    ],
+    true,
+  );
+  return { fill: d, line: d, points: p };
+}
+
+const LOCK: Shape[] = [
+  box(0, 0, 0, BODY_W, BODY_D, BODY_H),
+  shackle(),
+  dot(CENTRE, BODY_D, 26, 4),
+  strokes([
+    [
+      [CENTRE, BODY_D, 22],
+      [CENTRE, BODY_D, 13],
+    ],
+  ]),
+];
+const LOCK_VIEW = frame(LOCK);
 
 export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) => {
   const [password, setPassword] = useState("");
@@ -41,26 +87,20 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
 
   return (
     <div className="load-screen !z-40">
-      <header className="load-head">
-        <Logo className="load-logo !opacity-100 !animate-none" aria-hidden="true" />
-      </header>
+      <div className="gate">
+        <svg className="gate-art" viewBox={LOCK_VIEW} shapeRendering="geometricPrecision" aria-hidden="true">
+          {LOCK.map((s, i) => (
+            <g key={i}>
+              {s.fill ? <path className="gate-fill" d={s.fill} /> : null}
+              <path className="gate-line" d={s.line} />
+            </g>
+          ))}
+        </svg>
+        <h1 className="gate-label">
+          <span>Protected</span> work
+        </h1>
 
-      <div className="load-center">
-        <div className="mb-8 max-w-md">
-          <Lock
-            className="mb-4 text-[#8A867C] !opacity-100 !animate-none"
-            width={21}
-            height={21}
-            strokeWidth={1.2}
-            aria-hidden="true"
-          />
-          <h1 className="mb-2 font-heading text-xl font-medium tracking-tight !opacity-100 !animate-none text-[#F5F4EF]">Protected work</h1>
-          <p className="text-sm text-[#a3a3a3] !opacity-100 !animate-none">
-            Enter the password to view this portfolio.
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="relative w-full max-w-sm">
+        <form onSubmit={handleSubmit} className={`gate-form${error ? " is-wrong" : ""}`}>
           <input
             type={revealed ? "text" : "password"}
             value={password}
@@ -68,11 +108,8 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
               setPassword(e.target.value);
               setError(false);
             }}
-            placeholder="Password"
-            /* Right padding clears both the reveal toggle and the submit arrow. */
-            className={`w-full border-b bg-transparent pb-2 pr-[76px] text-base outline-none transition-colors placeholder:text-[#a3a3a3]/50 ${
-              error ? "border-red-500 text-red-500" : "border-[#333] text-[#F5F4EF] focus:border-[#F5F4EF]"
-            }`}
+            placeholder="Enter password"
+            aria-label="Password"
             autoFocus
             autoCapitalize="none"
             autoCorrect="off"
@@ -80,12 +117,8 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
           />
           <button
             type="button"
+            className="gate-reveal"
             onClick={() => setRevealed((v) => !v)}
-            /* `justify-end` rather than centring: it puts the icon's right edge
-               on the button's, so the arrow lands flush with the end of the
-               underline instead of floating 15px inside it. 36px wide keeps the
-               pair from overlapping while staying a 44px-tall tap target. */
-            className="absolute right-9 top-0 -mt-2 flex h-11 w-9 items-center justify-end text-[#8A867C] transition-colors hover:text-[#F5F4EF]"
             aria-label={revealed ? "Hide password" : "Show password"}
             aria-pressed={revealed}
             title={revealed ? "Hide password" : "Show password"}
@@ -94,57 +127,37 @@ export const PasswordProtect: React.FC<PasswordProtectProps> = ({ onUnlock }) =>
               ? <EyeClosed width={17} height={17} strokeWidth={1.2} />
               : <Eye width={17} height={17} strokeWidth={1.2} />}
           </button>
-          <button
-            type="submit"
-            disabled={loading || !password}
-            className={`absolute right-0 top-0 -mt-2 flex h-11 w-9 items-center justify-end text-[#8A867C] transition-colors hover:text-[#F5F4EF] disabled:opacity-50 ${
-              error ? "text-red-500 hover:text-red-400" : ""
-            }`}
-            aria-label="Submit password"
-          >
+          <button type="submit" className="gate-submit" disabled={loading || !password} aria-label="Submit password">
             <ArrowRight width={17} height={17} strokeWidth={1.2} />
           </button>
-          
-          {error && (
-            <p className="absolute -bottom-8 left-0 font-mono text-[11px] tracking-[0.14em] uppercase text-red-500 animate-fade-in">
-              Incorrect password
-            </p>
-          )}
+
+          {error && <p className="gate-error animate-fade-in">Incorrect password</p>}
         </form>
       </div>
 
-      <div className="load-foot">
-        <span className="font-mono text-[11px] tracking-[0.14em] text-[#8A867C] uppercase">
-          Need access?{" "}
-          <a
-            href="mailto:thusharavarghese9@gmail.com"
-            className="text-[#F5F4EF] underline underline-offset-4 transition-colors hover:text-[#E5533D]"
-          >
-            Email me
-          </a>
-        </span>
-      </div>
+      <p className="load-foot">
+        Need access? <a href="mailto:thusharavarghese9@gmail.com">Email me</a>
+      </p>
     </div>
   );
 };
 
-/** How this visit opens: at the gate, straight into the work, or via the intro. */
+/** How this visit opens: at the gate or straight into the work, and whether
+ *  the loading screen plays first. */
 type Entry = { locked: boolean; intro: boolean };
 
 /**
- * A landing on the front door itself, which is the moment the intro is for: an
- * unlocked visitor reloading the homepage gets the sequence, not a blank wait
- * and not the password screen they already cleared.
- *
- * A hash means the opposite — `/#case-studies` is someone aiming at a section,
- * including the About page's own nav link back to the work. Dropping a curtain
- * over the thing they asked for, and scrolling away from it, is not an
- * entrance. Same reasoning as `?ref=`: pointed at content, so no intro.
+ * A landing on the front door itself, which is what the loading screen is
+ * for. A hash or `?ref=` means someone aiming at a section or a case study,
+ * including the About page's link back to the work: no screen in front of
+ * what they asked for. Nor where motion is turned down, since it's all
+ * motion.
  */
 const onHomepage = () =>
   window.location.pathname === "/" &&
   !window.location.hash &&
-  !new URLSearchParams(window.location.search).get("ref");
+  !new URLSearchParams(window.location.search).get("ref") &&
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /**
  * Resolved once, before first paint, so a valid share link never flashes the
@@ -153,48 +166,69 @@ const onHomepage = () =>
  * unlocked, so a re-opened share link still tidies its own URL.
  */
 function resolveEntry(): Entry {
+  const intro = onHomepage();
   const token = consumeToken();
-  if (readGrant()) return { locked: false, intro: onHomepage() };
-  if (!token) return { locked: true, intro: true };
+  if (readGrant()) return { locked: false, intro };
+  if (!token) return { locked: true, intro };
 
   const match = verifySync(token);
-  if (!match) return { locked: true, intro: true };
+  if (!match) return { locked: true, intro };
 
   writeGrant(match.label);
-  // A deep link opens on the work it points at; only the board gets the intro,
-  // unless the link was minted to lead with it.
-  return { locked: false, intro: match.intro || onHomepage() };
+  return { locked: false, intro };
 }
 
+/**
+ * Lets Clarity load (index.html holds it back), the next time the browser is
+ * idle: its start-up is some 50ms of script and a snapshot of the page, which
+ * stalled the loading screen's first drawing.
+ */
+const startAnalytics = () => {
+  const start = (window as unknown as { startClarity?: () => void }).startClarity;
+  if (!start) return;
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(start, { timeout: 2000 });
+  } else {
+    window.setTimeout(start, 500);
+  }
+};
+
+// The loading screen is a fixed layer that rises away, so whatever's behind it,
+// the gate or the work, is already painted as it clears. The work's own
+// entrance starts as it's uncovered.
 export const AuthGate = ({ children }: { children: ReactNode }) => {
   const [entry] = useState(resolveEntry);
   const [isLocked, setIsLocked] = useState(entry.locked);
   const [showIntro, setShowIntro] = useState(entry.intro);
-  // True from the moment the curtain starts rising, not once it's gone, so the
-  // work's entrance plays as it's uncovered instead of after a blank board.
   const [lifted, setLifted] = useState(!entry.intro);
 
-  const handleIntroDone = useCallback(() => setShowIntro(false), []);
-  const handleIntroLift = useCallback(() => setLifted(true), []);
-
   const handleUnlock = useCallback(() => setIsLocked(false), []);
+  const handleIntroLift = useCallback(() => setLifted(true), []);
+  const handleIntroDone = useCallback(() => setShowIntro(false), []);
+
+  // What waits on the loading screen (the background downloads, analytics)
+  // goes once it has gone, or straight away where none runs.
+  useEffect(() => {
+    if (showIntro) return;
+    markIntroGone();
+    startAnalytics();
+  }, [showIntro]);
+
+  const intro = showIntro ? <IntroLoader onLift={handleIntroLift} onDone={handleIntroDone} /> : null;
 
   if (isLocked) {
     return (
       <div className="relative min-h-screen font-sans text-dark">
-        {showIntro ? <IntroSequence onDone={handleIntroDone} /> : null}
+        {intro}
         <PasswordProtect onUnlock={handleUnlock} />
       </div>
     );
   }
 
-  // The intro is a fixed overlay that lifts away, so the work renders behind it
-  // and is already painted the moment it clears. Entrance animations start as
-  // it begins to lift.
   return (
     <>
-      {showIntro ? <IntroSequence onDone={handleIntroDone} onLift={handleIntroLift} /> : null}
-      <IntroDoneContext.Provider value={lifted || !showIntro}>{children}</IntroDoneContext.Provider>
+      {intro}
+      <IntroDoneContext.Provider value={lifted}>{children}</IntroDoneContext.Provider>
     </>
   );
 };

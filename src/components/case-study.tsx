@@ -1,11 +1,10 @@
-import { useCallback, useRef, type ComponentType, type PointerEvent } from "react";
+import { useCallback, useRef, type ComponentType, type CSSProperties, type PointerEvent } from "react";
 import { useNavigate } from "react-router";
 import {
   ArrowUpRight,
   BadgeCheck,
-  CodeBrackets,
+  Code,
   DesignNib,
-  Eye,
   Group,
   HalfMoon,
   Page,
@@ -19,10 +18,13 @@ import {
 } from "iconoir-react";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { Logo } from "../assets/images";
-import gistlyCover from "../assets/gistly-cover.png";
+import gistlyCover from "../assets/gistly-cover.webp";
 import { RecordsMock } from "./records-mock";
-import { SocialRail } from "./social-rail";
 import { RiseLine, riseIn } from "./work-reveal";
+import { Hero } from "./hero";
+import { DotField } from "./dot-field";
+import { ContactCta } from "./contact-cta";
+import { Footer } from "./footer";
 import { useIntroDone } from "../lib/intro";
 import { useTheme } from "../lib/theme";
 
@@ -62,10 +64,9 @@ type Project = {
 
 // One line icon per scope badge, saying what the tag means. A tag without one
 // shows as text alone.
-const SCOPE_ICONS: Record<string, typeof Eye> = {
+const SCOPE_ICONS: Record<string, typeof Code> = {
   "Data tables": Table2Columns,
-  Views: Eye,
-  "Front end": CodeBrackets,
+  "Front end · Claude Code": Code,
   QA: BadgeCheck,
   Templates: Page,
   "AI workflows": Sparks,
@@ -89,7 +90,7 @@ const projects: Project[] = [
     metric2: "+24%",
     metricLabel2: "View use per visit",
     role: "Product design and front-end build",
-    scope: ["Data tables", "Views", "Front end"],
+    scope: ["Front end · Claude Code", "Data tables"],
     mock: RecordsMock,
     latest: true,
     alt: "Gistly's redesigned records table in a dark app window: a list of calls with agent avatars, status, intent and disposition labels, quality scores and a labelled toolbar",
@@ -122,7 +123,7 @@ const projects: Project[] = [
     metricLabel2: "Engagement time",
     role: "Visual design and build",
     scope: ["Hierarchy", "Animation", "Webflow"],
-    image: "/images/case-study-homepage.png",
+    image: "/images/case-study-homepage.webp",
     alt: "Gistly homepage redesign preview",
   },
   {
@@ -135,7 +136,7 @@ const projects: Project[] = [
     metric: "5",
     role: "UI/UX designer",
     scope: ["Research", "Prototypes", "Testing"],
-    image: "/images/case-study-2.png",
+    image: "/images/case-study-2.webp",
     alt: "Serenity mobile application screens",
   },
 ];
@@ -168,11 +169,12 @@ const TEXT_BEAT_TITLE = 0.3;
 const TEXT_BEAT_REST = 0.5;
 
 /**
- * One project row. Its image shows from the start, so the board is never seen
- * empty; the text plays its entrance once, when the row's top 40px are in
- * view and the intro has started lifting, in the beats above. A low trigger,
- * so the second card's top edge, below the first on load, fills in there and
- * then rather than waiting until a third of it is scrolled in.
+ * One project row. Its cover is held out of sight until the row is in view,
+ * and the row plays its entrance once, when its top 40px are in view and
+ * the loading screen has risen halfway: the cover turns in at once, the way
+ * the hero's lines do (index.css), and the text follows in the beats above. A
+ * low trigger, so a card whose top edge peeks in at the fold fills in there
+ * and then rather than waiting until a third of it is scrolled in.
  */
 const WorkCard = ({
   project,
@@ -188,15 +190,17 @@ const WorkCard = ({
   const ref = useRef<HTMLButtonElement>(null);
   const inView = useInView(ref, { once: true, amount: "some", margin: "0px 0px -40px 0px" });
   const introDone = useIntroDone();
-  const still = useReducedMotion() ?? false;
   const play = inView && introDone;
+  const still = useReducedMotion() ?? false;
   const Mock = project.mock;
 
   return (
     <motion.button
       ref={ref}
       type="button"
-      className={`work-project-row${project.featured ? " work-project-row--featured" : ""}${reversed ? " is-reversed" : ""}`}
+      className={`work-project-row${project.featured ? " work-project-row--featured" : ""}${reversed ? " is-reversed" : ""}${
+        still ? "" : play ? " is-turning" : " is-held"
+      }`}
       onClick={() => onOpen(project.slug)}
       onPointerEnter={followPointer}
       onPointerMove={followPointer}
@@ -206,7 +210,13 @@ const WorkCard = ({
       {Mock || mediaSrc ? (
         <div className={`work-project-media${project.naturalMedia ? " is-natural" : ""}`}>
           {Mock ? <Mock label={project.alt} play={play} /> : <img src={mediaSrc} alt={project.alt} />}
-          <span className="work-project-number" style={{ color: project.slug === 'serenity' ? '#000' : '' }}>{project.number}</span>
+          {/* Turns in like the hero's lines (turn-in.tsx), with the label,
+              once the cover is in under it. */}
+          <span className="work-project-number" style={{ color: project.slug === 'serenity' ? '#000' : '' }}>
+            <span className="turn-word" style={{ "--d": `${TEXT_BEAT_LABEL * 1000}ms` } as CSSProperties}>
+              <span>{project.number}</span>
+            </span>
+          </span>
         </div>
       ) : null}
       <span className="work-project-view" aria-hidden="true">
@@ -269,9 +279,9 @@ const CaseStudy = () => {
   );
 
   return (
-    <section id="case-studies" className="work-board-page">
+    <section className="work-board-page">
+      <DotField />
       <div className="work-board">
-        <SocialRail />
         <header className="work-board-header">
           <a href="/" className="work-logo" aria-label="Thushara home">
             <Logo aria-hidden="true" />
@@ -293,6 +303,8 @@ const CaseStudy = () => {
             </button>
           </nav>
         </header>
+
+        <Hero />
 
         <div className="work-projects">
           {projects.map((project, index) => {
@@ -316,7 +328,9 @@ const CaseStudy = () => {
           })}
         </div>
 
+        <ContactCta />
       </div>
+      <Footer />
     </section>
   );
 };

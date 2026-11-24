@@ -376,11 +376,6 @@ export const CaseStudyHomepage = () => {
       <CaseRow label="What I took from it">
         <p>{took}</p>
       </CaseRow>
-
-      <footer className="testing-flow-foot">
-        <span>Case study</span>
-        <span>Product design</span>
-      </footer>
     </main>
   );
 };

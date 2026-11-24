@@ -2,7 +2,31 @@
 /* Medium, for the records mock's emphasis (current crumb, active item). */
 @import url("https://cdn.jsdelivr.net/npm/@fontsource/inter/500.css");
 @import url("https://cdn.jsdelivr.net/npm/@fontsource/inter-tight/index.css");
+/* A serif italic, for the one accented word in the hero statement
+   ("psychology"), against the grotesk around it. */
+@import url("https://cdn.jsdelivr.net/npm/@fontsource/instrument-serif/400-italic.css");
 @import url("https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono/index.css");
+
+/* Inter Tight's light, for the hero statement, under its own family name:
+   only the regular face of "Inter Tight" is loaded, and adding another face
+   to that family would change which face every heading set at 550 resolves
+   to (the card titles and metrics would turn bolder). */
+@font-face {
+  font-family: "Inter Tight Light";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@fontsource/inter-tight/files/inter-tight-latin-300-normal.woff2") format("woff2");
+}
+
+/* And its semibold, for the greeting, under its own name for the same reason. */
+@font-face {
+  font-family: "Inter Tight Semibold";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@fontsource/inter-tight/files/inter-tight-latin-600-normal.woff2") format("woff2");
+}
 
 @tailwind base;
 @tailwind components;
@@ -57,6 +81,8 @@
   /* Left edge shared by the social rail and the logo, so they line up. */
   --rail-x: clamp(14px, 2vw, 28px);
   --topbar-h: 3.25rem;
+  /* The dot grid's pitch, shared by the homepage and the password screen. */
+  --dots-gap: 32px;
 
   /* motion */
   --ease: cubic-bezier(.16, 1, .3, 1);
@@ -200,176 +226,674 @@ p {
   color: var(--bg);
 }
 
-/* ─── Loading / intro screen ─────────────────────────────────────────────── */
-.load-screen {
+/* ─── Loading screen (intro-loader.tsx) ─────────────────────────────────────── */
+/* One drawing at a time, centred on near-black: it fades in (intro-in, at
+   --in) as its parts draw themselves (intro-draw, over --draw, each on its
+   own --d), its label rises, and after a beat it fades out (intro-out, at
+   --out) as the next is already fading in, so one dissolves into the next.
+   Everything waits, paused, until .is-playing (set once the page behind has
+   painted), so nothing starts mid-load. Fixed over everything; after the last
+   drawing the whole screen rises off the top like a curtain, the way the old
+   typed loading screen did, on a gentler curve: that one waited, then
+   snapped up at over 100px a frame; this one sets off at once, moves under
+   50px a frame at its fastest, and settles softly (its 900ms matches LIFT).
+   Always dark, like the password screen, whichever theme the page is in. */
+.intro {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 100;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: clamp(32px, 5vw, 64px) clamp(24px, 5vw, 72px);
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
   background: #0E0E0C;
-  color: #F5F4EF;
-  font-family: var(--font-body);
-  /* Matches LIFT_MS in intro-sequence.tsx. */
-  transition: transform 600ms cubic-bezier(0.78, 0, 0.22, 1);
+  transition: transform 900ms cubic-bezier(0.5, 0, 0.25, 1);
+  /* On a layer of its own from the start, so the rise runs on the GPU from
+     its first frame, whatever the page behind is busy with. */
+  will-change: transform;
 }
 
-.load-screen.is-lifting {
+/* The drawings take the centre in turn, all three in one cell. */
+.intro-stage {
+  display: grid;
+  place-items: center;
+}
+
+/* Under the drawing's label, the load: a hairline bar that fills in the
+   drawings' own off-white, and the count centred under it, in the labels'
+   type, the number in the off-white and the sign in the grey. Fixed-width
+   figures, so it doesn't jitter as it climbs. */
+.intro-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.intro-bar {
+  display: block;
+  width: 8rem;
+  height: 1px;
+  overflow: hidden;
+  background: #2E2D2A;
+}
+
+.intro-bar span {
+  display: block;
+  height: 100%;
+  background: #DEDDD8;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.intro-count {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: #8A867C;
+}
+
+.intro-count span {
+  color: #F5F4EF;
+}
+
+.intro.is-leaving {
   transform: translateY(-100%);
   pointer-events: none;
 }
 
-.load-head {
+/* Important, because any rule that sets the `animation` shorthand also resets
+   the play state to running, and wins wherever it ties on specificity and
+   comes later. `.intro-panel.is-passing` did: the first two drawings faded in
+   and out from the moment the screen mounted, ahead of their lines, so on a
+   slow start they'd gone before they drew, and only the count showed. */
+.intro:not(.is-playing) * {
+  animation-play-state: paused !important;
+}
+
+/* All three in one cell, so each takes the centre in turn. */
+.intro-panel {
+  grid-area: 1 / 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-}
-
-.load-logo {
-  width: 2.6rem;
-  height: 2.6rem;
-  color: #F5F4EF;
+  gap: var(--space-md);
   opacity: 0;
-  transform-origin: center;
-  animation: load-logo 1.1s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+  animation: intro-in var(--in-for) ease-out var(--in) forwards;
 }
 
-.load-logo .logo-circle {
-  stroke: rgba(245, 244, 239, 0.75);
+.intro-panel.is-passing {
+  animation:
+    intro-in var(--in-for) ease-out var(--in) forwards,
+    intro-out var(--out-for) ease-in-out var(--out) forwards;
 }
 
-.load-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #8A867C;
-  opacity: 0;
-  animation: load-fade 0.4s ease forwards;
-  animation-delay: 0.15s;
+/* One height for all three, so each label lands in the same place. A third
+   smaller than they started, so they sit quietly over the count. */
+.intro-panel svg {
+  width: auto;
+  max-width: 64vw;
+  height: min(24vh, 10rem);
+  overflow: visible;
 }
 
-.load-lede {
-  margin-bottom: 42px;
+/* The ground colour, so a box hides the lines behind it. The password
+   screen's padlock shares the drawings' fill, lines and label. */
+.intro-fill,
+.gate-fill {
+  fill: #0E0E0C;
 }
 
-.load-greet {
-  margin: 0 0 12px;
-  font-family: var(--font-mono);
-  font-size: clamp(12px, 1.2vw, 14px);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #F5F4EF;
-  opacity: 0;
-  animation: load-rise 0.5s ease forwards;
-  animation-delay: 0.25s;
+/* Fine 1px lines at any scale, all one solid near-white (the off-white at 90%
+   over the ground). Not thinner: under a pixel, the slanted lines break into
+   uneven, flickering pixels as they draw. And solid rather than see-through,
+   so where two lines meet or cross they don't double up into bright spots. */
+.intro-line,
+.gate-line {
+  fill: none;
+  stroke: #DEDDD8;
+  stroke-width: 1px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
 }
 
-.load-role {
+/* Each is drawn along its length (--len, its on-screen length, measured in
+   intro-loader.tsx): one dash that long, offset by the same, run back to 0.
+   Hidden until measured. */
+.intro-line {
+  stroke-dasharray: var(--len) var(--len);
+  stroke-dashoffset: var(--len);
+  animation: intro-draw var(--draw, 700ms) cubic-bezier(0.33, 0, 0.2, 1) var(--d) forwards;
+}
+
+.intro-panel svg:not(.is-measured) .intro-line {
+  visibility: hidden;
+}
+
+.intro-label,
+.gate-label {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: clamp(11px, 1.1vw, 14px);
-  letter-spacing: 0.14em;
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #8A867C;
+}
+
+.intro-label {
   opacity: 0;
-  animation: load-rise 0.5s ease forwards;
-  animation-delay: 0.45s;
+  animation: intro-label 500ms var(--ease) var(--d) forwards;
 }
 
-.load-sep {
-  color: #E5533D;
-}
-
-.load-tagline {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-weight: 450;
-  font-size: clamp(44px, 8vw, 104px);
-  line-height: 0.92;
-  letter-spacing: -0.045em;
-  white-space: pre-wrap;
-  min-height: 1.84em;
+.intro-label span,
+.gate-label span {
   color: #F5F4EF;
 }
 
-.load-accent {
-  color: #E5533D;
+/* On a tablet or a desktop the phone's sizes left the loader crowded in the
+   middle of a big screen: the drawing came out the same 170px tall on all of
+   them, 16% of a tablet's width. So the same relationships, opened up by
+   about 1.4: a larger drawing, the gaps a step wider each, the label and
+   count a touch larger and more tracked, and a longer bar. From 768px wide,
+   but only 600px tall or more, so a phone turned sideways keeps its own. */
+@media (min-width: 768px) and (min-height: 600px) {
+  .intro {
+    gap: var(--s6);
+  }
+
+  .intro-panel {
+    gap: var(--s6);
+  }
+
+  .intro-panel svg {
+    height: min(30vh, 14rem);
+  }
+
+  .intro-progress {
+    gap: var(--s3);
+  }
+
+  .intro-bar {
+    width: 11rem;
+  }
+
+  .intro-label,
+  .intro-count {
+    font-size: var(--t-foot);
+    letter-spacing: 0.1em;
+  }
 }
 
-.load-caret {
-  display: inline-block;
-  width: 0.06em;
-  height: 0.82em;
-  background: #E5533D;
-  margin-left: 0.14em;
-  vertical-align: -0.08em;
-  transition: opacity 250ms ease;
+@keyframes intro-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
-.load-caret--solid {
+@keyframes intro-label {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes intro-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes intro-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* ─── Password screen ────────────────────────────────────────────────────── */
+/* Set like the loading screen's drawings, which it follows: plain near-black
+   in both themes, and in the middle a fine line drawing (a padlock) over a
+   mono label, with the password field under them. The way to ask for access
+   sits at the foot. */
+.load-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  justify-items: center;
+  padding: clamp(32px, 5vw, 64px) clamp(24px, 5vw, 72px);
+  overflow-y: auto;
+  background: #0E0E0C;
+  color: #F5F4EF;
+  font-family: var(--font-body);
+}
+
+.gate {
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  width: min(18rem, 100%);
+}
+
+/* Smaller than the loading drawings, since the field sits under it too. */
+.gate-art {
+  width: auto;
+  height: min(22vh, 8rem);
+  overflow: visible;
+}
+
+/* A heading, set as the drawings' label. */
+.gate-label {
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* An underline in the drawings' line colour, brightening as it takes focus.
+   The right padding clears both the reveal toggle and the submit arrow. */
+.gate-form {
+  position: relative;
+  width: 100%;
+}
+
+.gate-form input {
+  width: 100%;
+  padding: 0 76px 8px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(245, 244, 239, 0.2);
+  border-radius: 0;
+  background: transparent;
+  color: #F5F4EF;
+  font: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color var(--dur-hover) var(--ease), color var(--dur-hover) var(--ease);
+}
+
+.gate-form input::placeholder {
+  color: #8A867C;
   opacity: 1;
 }
 
-/* Blink for ~1s once the sentence finishes … */
-.load-caret--blink {
-  animation: load-blink 1s steps(1) infinite;
+.gate-form input:focus {
+  border-bottom-color: rgba(245, 244, 239, 0.7);
 }
 
-/* … then fade out to signal "finished", not "editing". */
-.load-caret--gone {
-  opacity: 0;
+/* Right-aligned icons rather than centred, so the arrow lands flush with the
+   end of the underline. 36px wide keeps the pair from overlapping while
+   staying a 44px-tall tap target. */
+.gate-form button {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 2.25rem;
+  height: 2.75rem;
+  margin-top: -0.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #8A867C;
+  cursor: pointer;
+  transition: color var(--dur-hover) var(--ease);
+}
+
+.gate-form button:hover {
+  color: #F5F4EF;
+}
+
+.gate-form button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.gate-reveal {
+  right: 2.25rem;
+}
+
+.gate-submit {
+  right: 0;
+}
+
+.gate-form.is-wrong input,
+.gate-form.is-wrong .gate-submit {
+  color: #E5533D;
+}
+
+.gate-form.is-wrong input {
+  border-bottom-color: #E5533D;
+}
+
+.gate-error {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  left: 0;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #E5533D;
 }
 
 .load-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
+  grid-row: 3;
+  align-self: end;
+  margin: 0;
   font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.14em;
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #8A867C;
 }
 
-.load-pct {
+.load-foot a {
   color: #F5F4EF;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color var(--dur-hover) var(--ease);
 }
 
-@media (max-width: 480px) {
-  .load-foot {
-    font-size: 11px;
-    letter-spacing: 0.08em;
-  }
+.load-foot a:hover {
+  color: #E5533D;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .load-logo,
-  .load-eyebrow,
-  .load-greet,
-  .load-role {
-    animation: none !important;
-    opacity: 1;
-  }
-  .load-caret--gone {
-    animation: none !important;
-    opacity: 0;
-  }
-  .load-screen {
-    transition: none;
-  }
-}
-
-
+/* The homepage's first screen sits on a FigJam-like dot grid: faint dots on
+   a 32px pitch, swaying slowly like a sheet in zero gravity, with a lens that
+   darkens the dots around a hovering pointer (dot-field.tsx draws both). It
+   fades out towards the fold and sits behind the page's content (the page
+   isolates, so -1 stays above its background). */
 .work-board-page {
+  position: relative;
+  isolation: isolate;
   min-height: 100vh;
   padding: 0;
   overflow: hidden;
   background: var(--bg);
+}
+
+.dot-field {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  height: 100svh;
+  z-index: -1;
+  pointer-events: none;
+  color: var(--ink);
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 95%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 95%);
+}
+
+/* ── Hero (hero.tsx): the homepage's opening, set like a Swiss poster ── */
+/* On the cards' column: the greeting at the top, the statement and the facts
+   box a set step under it, and the Selected work heading last, which
+   the cards run on from. */
+.hero {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 67rem;
+  margin: 0 auto;
+}
+
+/* In the headings' face, at a poster size and in its semibold, so the name
+   leads. Set in lowercase by CSS, so the source (and screen readers) keep the
+   name's capital. */
+.hero-hello {
+  margin: 0;
+  font-family: "Inter Tight Semibold", var(--font-heading);
+  font-size: clamp(2.25rem, 6.2vw, 5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+  color: var(--ink);
+}
+
+/* One line: at 208px it fits even a 320px phone at the label size. */
+.hero-based {
+  margin: var(--s2) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+/* 6rem under the name. On the board's twelve columns, the statement spreads
+   across seven and the paragraph takes the last four, both on one bottom
+   edge, with a column of air between them. */
+.hero-body {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--s3);
+  align-items: end;
+  padding-top: var(--s12);
+}
+
+/* A step under the greeting, so the name leads. Pretty wrapping, so the
+   last line isn't left with a single word. */
+.hero-statement {
+  grid-column: 1 / span 7;
+  margin: 0;
+  font-family: "Inter Tight Light", var(--font-heading);
+  font-size: clamp(1.36rem, 3.32vw, 2.72rem);
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+/* The two things she works on, set back in the ink at 40% opacity. On the
+   light ground that's about 2.6:1, a little under the 3:1 large text asks
+   for: a deliberate trade for the softer look. */
+.hero-accent {
+  color: color-mix(in srgb, var(--ink) 40%, transparent);
+}
+
+/* The accented word, in Instrument Serif's italic: a serif's x-height runs
+   lower than Inter Tight's, so a touch larger to sit level with the line. */
+.hero-statement em {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 1.12em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 0;
+}
+
+/* Two short paragraphs, set like a poster's text column: a lead-in in ink,
+   then the body in the muted tone, at reading size. */
+.hero-about {
+  grid-column: 9 / -1;
+  font-size: var(--t-foot);
+  line-height: 1.55;
+}
+
+.hero-about p {
+  margin: 0;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.hero-about p + p {
+  margin-top: var(--s2);
+}
+
+/* A step more room under it than before, so the ring around it clears the
+   paragraph. Lowercase, like the greeting. */
+.hero-about .hero-about-title {
+  margin-bottom: var(--s2);
+  font-weight: 500;
+  text-transform: lowercase;
+  color: var(--ink);
+}
+
+/* A hand-drawn ring around the lead-in, the way you'd circle a line on a
+   printout: one pen stroke that runs on past where it started and flicks off
+   inside. It stretches to the words, and the line keeps its weight. */
+.hero-circled {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-circle {
+  position: absolute;
+  top: -1em;
+  left: -1.4em;
+  width: calc(100% + 2.8em);
+  height: calc(100% + 1.8em);
+  overflow: visible;
+  pointer-events: none;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The headline entrance (turn-in.tsx), on the homepage hero, the About
+   page's headline and the work cards' numbers (case-study.tsx, one word, its
+   --d set in place). Each word sits in a clip of its line's height,
+   let out a little at the sides and bottom for the italic and the
+   descenders; the word inside starts below it, turned 4deg about the left
+   end of its line (--x back from the word), and rises and turns level on
+   the old logo's curve, so a line surfaces left to right and settles flat.
+   Each line's start is its --d. */
+.turn-word {
+  display: inline-block;
+  clip-path: inset(-0.2em -0.3em -0.22em -0.3em);
+}
+
+.turn-word > span {
+  display: inline-block;
+  transform-origin: calc(0px - var(--x, 0px)) 100%;
+}
+
+.hero.is-held .turn-word > span,
+.about-v3-head.is-held .turn-word > span,
+.work-project-row.is-held .turn-word > span {
+  transform: translateY(140%) rotate(4deg);
+}
+
+.hero.is-turning .turn-word > span,
+.about-v3-head.is-turning .turn-word > span,
+.work-project-row.is-turning .turn-word > span {
+  animation: hero-turn 850ms cubic-bezier(0.2, 0.75, 0.25, 1) var(--d, 0ms) backwards;
+}
+
+@keyframes hero-turn {
+  from {
+    transform: translateY(140%) rotate(4deg);
+  }
+}
+
+/* Then the ring draws itself, one stroke the way it was drawn, dashed to its
+   on-screen length (--len, measured in hero.tsx) only while it draws. */
+.hero.is-held .hero-circle {
+  visibility: hidden;
+}
+
+.hero.is-turning .hero-circle path {
+  animation: hero-ring 800ms cubic-bezier(0.33, 0, 0.2, 1) var(--ring-d, 0ms) backwards;
+}
+
+@keyframes hero-ring {
+  from {
+    stroke-dasharray: var(--len) var(--len);
+    stroke-dashoffset: var(--len);
+  }
+  to {
+    stroke-dasharray: var(--len) var(--len);
+    stroke-dashoffset: 0;
+  }
+}
+
+.hero-foot {
+  display: flex;
+  align-items: center;
+  margin-top: var(--space-xl);
+  padding-top: var(--s2);
+  color: var(--muted);
+}
+
+/* The Case studies link lands here, clear of the fixed bar. */
+.hero-foot h2 {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  scroll-margin-top: calc(var(--topbar-h) + var(--space-md));
+}
+
+/* Narrower, the paragraph takes five columns so its lines don't run short,
+   and the statement gives up one to keep the column of air. */
+@media (max-width: 1100px) {
+  .hero-statement {
+    grid-column: 1 / span 6;
+  }
+
+  .hero-about {
+    grid-column: 8 / -1;
+  }
+}
+
+/* On phones the statement goes full width and stands alone: "A little about
+   my work" would only push the work itself further down. The type is sized
+   to the column (cqi), so it sets the same on every phone and nothing wraps
+   that shouldn't: the greeting runs the full width, and the statement
+   breaks at the same words from 320px to
+   430px. 48px steps between them, so the first card starts higher. */
+@media (max-width: 760px) {
+  .hero {
+    container-type: inline-size;
+  }
+
+  /* "hi, i'm thushara" runs 6.25em, so this fills the column, up to 3.5rem. */
+  .hero-hello {
+    font-size: min(15.8cqi, 3.5rem);
+    white-space: nowrap;
+  }
+
+  .hero-body {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: var(--s6);
+  }
+
+  .hero-statement {
+    grid-column: 1;
+    font-size: clamp(1.25rem, 7.2cqi, 1.75rem);
+    line-height: 1.1;
+  }
+
+  .hero-about {
+    display: none;
+  }
+
+  .hero-foot {
+    margin-top: var(--s6);
+  }
 }
 
 .work-board {
@@ -411,23 +935,52 @@ p {
   background: var(--bg);
 }
 
+/* On the homepage the bar starts out clear, so the dot grid runs up under the
+   logo and links, and fills with the page colour over the first 24px of
+   scrolling, before any content reaches it. On phones the header paints its
+   own background (::before is off), so there it's the header that fills.
+   Without scroll-linked animation the bar is simply solid from the start. */
+@supports (animation-timeline: scroll()) {
+  .work-board-page .work-board-header,
+  .work-board-page .work-board-header::before {
+    animation: bar-fill linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0px var(--s3);
+  }
+}
+
+@keyframes bar-fill {
+  from {
+    background-color: transparent;
+  }
+}
+
 /* Centred on the same x-axis as the social rail's icons: the rail's links are
-   1.75rem boxes, the logo is 1.25rem, so nudge it in by half the difference. */
+   1.75rem boxes, the logo is 1.5rem, so nudge it in by half the difference.
+   Rounded to whole pixels (the rail's inset is in vw), so its edges land on
+   the pixel grid and stay sharp. */
 .work-logo {
   position: fixed;
-  left: calc(var(--rail-x) + 0.25rem);
-  top: calc((var(--topbar-h) - 1.25rem) / 2);
+  left: round(calc(var(--rail-x) + 0.125rem), 1px);
+  top: calc((var(--topbar-h) - 1.5rem) / 2);
   z-index: 20;
   display: grid;
   place-items: center;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
   color: var(--ink);
 }
 
 .work-logo svg {
   width: 100%;
   height: 100%;
+}
+
+/* The ring is drawn 1px wide at the mark's full 41px; scaled down here it
+   would thin to about half a pixel and go soft. Kept at a true 1px, it reads
+   as crisply as it did on the loading screen. */
+.work-logo .logo-circle {
+  vector-effect: non-scaling-stroke;
 }
 
 /* Mirrors the logo/rail on the left, so both ends hug the same edge inset. */
@@ -451,7 +1004,8 @@ p {
 .about-v3-nav a,
 .about-v3-links a,
 .case-detail-nav a,
-.case-detail-pagination a {
+.case-detail-pagination a,
+.contact-cta-link {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -468,7 +1022,8 @@ p {
 .about-v3-nav a::after,
 .about-v3-links a::after,
 .case-detail-nav a::after,
-.case-detail-pagination a::after {
+.case-detail-pagination a::after,
+.contact-cta-link::after {
   position: absolute;
   left: 0;
   bottom: -0.32rem;
@@ -485,7 +1040,8 @@ p {
 .about-v3-nav a:hover::after,
 .about-v3-links a:hover::after,
 .case-detail-nav a:hover::after,
-.case-detail-pagination a:hover::after {
+.case-detail-pagination a:hover::after,
+.contact-cta-link:hover::after {
   transform: scaleX(1);
 }
 
@@ -508,9 +1064,9 @@ p {
 }
 
 /* ── Selected work, alternating editorial rows (Home v2) ── */
-/* No section heading above these any more, so the header spacer + grid gap
-   already provide the clearance, this just adds a little air. Capped narrower
-   than the board and centred, so the cards keep a field of page around them. */
+/* Under the hero's Selected work rule: the board's 32px gap plus 16px, so the
+   first card sits 48px below its heading. Capped at the hero's width and
+   centred, so the cards keep a field of page around them. */
 .work-projects {
   grid-column: 1 / -1;
   display: flex;
@@ -518,11 +1074,12 @@ p {
   gap: clamp(96px, 11vw, 160px);
   width: 100%;
   max-width: 67rem;
-  margin: var(--space-lg) auto 0;
+  margin: var(--s2) auto 0;
 }
 
 /* Top-aligned, so every card's label sits on its image's top edge. Centred,
-   the copy (taller than the image) overhung it at both ends. */
+   the copy (taller than the image) overhung it at both ends. From 1200px,
+   where the image is the taller, it centres instead (below). */
 .work-project-row {
   display: flex;
   flex-wrap: wrap;
@@ -555,25 +1112,45 @@ p {
   overflow: hidden;
   aspect-ratio: 16 / 10;
   border: 1px solid var(--line);
-  background: var(--line);
   border-radius: 12px;
+  transition: border-color 850ms var(--ease);
+  /* Keeps the rounded clip on the shot while it moves; Safari can let a
+     moving child out to square corners without it. */
+  isolation: isolate;
+}
+
+/* The shot carries the frame's rounding itself, so its corners are round
+   while it rises, before the frame's clip reaches them: the radius inside the
+   1px hairline, the frame's own where there's no hairline (light, below). */
+.work-project-media > img,
+.work-project-media > .rmock {
+  border-radius: 11px;
 }
 
 /* From 1200px the image takes 1.25 shares to the copy's 1, so in the 67rem
    column it is a quarter wider than the copy, which keeps the width it had at
    even halves in 60rem. Below 1200 the copy needs its half, or the scope tags
-   stop fitting on one line. */
+   stop fitting on one line. That bigger share makes the image the taller of
+   the two, so here the copy centres on it rather than hanging off its top. */
 @media (min-width: 1200px) {
+  .work-project-row {
+    align-items: center;
+  }
+
   .work-project-media {
     flex-grow: 1.25;
   }
 }
 
 /* On the white ground the shots carry their own edge; the border only adds a
-   grey ring. Removed outright, not made transparent, or the --line fill would
-   show through it as the same ring. */
+   grey ring. */
 [data-theme="light"] .work-project-media {
   border: 0;
+}
+
+[data-theme="light"] .work-project-media > img,
+[data-theme="light"] .work-project-media > .rmock {
+  border-radius: 12px;
 }
 
 .work-project-media img {
@@ -588,7 +1165,6 @@ p {
 /* Natural-aspect media, show the full image, no crop */
 .work-project-media.is-natural {
   aspect-ratio: auto;
-  background: transparent;
 }
 
 .work-project-media.is-natural img {
@@ -600,6 +1176,36 @@ p {
 .work-project-row:hover .rmock,
 .work-project-row:focus-visible .rmock {
   transform: scale(1.04);
+}
+
+/* The cover's entrance, the hero's turn (turn-in.tsx) at a cover's scale:
+   the shot rises out of its frame's lower edge turned 3deg, left side
+   leading, and turns level as it lands, on the same curve. The frame has no
+   fill, and its hairline (dark theme only) fades in with the shot, so it
+   rises out of an unseen edge, as the headline's lines do. Set as `translate`
+   and `rotate`, apart from the `transform` the hover zooms with, so the two
+   never fight. It turns about its centre, so it starts 110% down, far enough
+   for its raised corner to clear the frame. */
+.work-project-row.is-held .work-project-media {
+  border-color: transparent;
+}
+
+.work-project-row.is-held .work-project-media > img,
+.work-project-row.is-held .work-project-media > .rmock {
+  translate: 0 110%;
+  rotate: 3deg;
+}
+
+.work-project-row.is-turning .work-project-media > img,
+.work-project-row.is-turning .work-project-media > .rmock {
+  animation: cover-turn 850ms cubic-bezier(0.2, 0.75, 0.25, 1) backwards;
+}
+
+@keyframes cover-turn {
+  from {
+    translate: 0 110%;
+    rotate: 3deg;
+  }
 }
 
 .work-project-number {
@@ -1491,7 +2097,7 @@ p {
    but wide across the full page. */
 .about-v3-head h1 {
   max-width: none;
-  font-size: clamp(2.25rem, 4.6vw, 4.5rem);
+  font-size: clamp(2.8rem, 5.75vw, 5.625rem);
   line-height: 1.05;
 }
 
@@ -1803,53 +2409,159 @@ p {
   border-radius: 12px;
 }
 
+/* No rule of its own: the footer's hairline just below already closes the
+   page, and a second one a step above it read as a stutter. */
 .case-detail-pagination {
   display: flex;
   justify-content: space-between;
   gap: var(--space-sm);
   margin-top: var(--space-xl);
-  padding-top: var(--space-sm);
-  border-top: 1px solid var(--line);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
-@keyframes load-logo {
-  0% {
-    opacity: 0;
-    transform: rotate(0deg) scale(0.85);
+/* ── Contact (contact-cta.tsx): the homepage's sign-off, after the cards ── */
+/* Straight on the page, stacked: the question on top, the line and the link
+   under it. The cards' width, and a macro step clear of the last one, a
+   larger break than the one between cards. A group step under it too, which
+   with the board's and the footer's own padding puts it about as far above
+   the footer as it sits below the last card, so it reads as its own section
+   rather than the footer's first line. */
+.contact-cta {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  width: 100%;
+  max-width: 67rem;
+  margin: var(--gap-macro) auto var(--gap-group);
+}
+
+/* The hero statement's face and size, so the two read as a pair. */
+.contact-cta-title {
+  margin: 0;
+  font-family: "Inter Tight Light", var(--font-heading);
+  font-size: clamp(1.6rem, 3.9vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* At reading size, not the hero's small print: stacked under the question,
+   that size read as a caption to it. Held to a short measure, so the line
+   doesn't run the page's full width. */
+.contact-cta-side {
+  max-width: 36rem;
+  font-size: var(--t-body);
+  line-height: 1.55;
+}
+
+/* Balanced, so where it takes two lines they're near even, never a last
+   word alone. */
+.contact-cta-side p {
+  margin: 0;
+  color: var(--muted);
+  text-wrap: balance;
+}
+
+/* In ink at the paragraph's size, a step under it; the arrow says it leaves
+   the page, and the accent rule draws in on hover like the nav's. */
+.contact-cta-link {
+  margin-top: var(--s3);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.contact-cta-link svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Narrower, the footer is the next thing under it, the social links now in
+   its row, so the extra step under it goes: the board's bottom padding at
+   48px plus the footer's own 32px puts 80px between the link and the
+   footer's rule, so the colophon stands apart. */
+@media (max-width: 980px) {
+  .contact-cta {
+    margin-bottom: 0;
   }
-  40% {
-    opacity: 1;
-    transform: rotate(0deg) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: rotate(360deg) scale(1);
+
+  .work-board-page .work-board {
+    padding-bottom: var(--s6);
   }
 }
 
-@keyframes load-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* On phones the question shrinks to a third of its size, so the line steps
+   down too, to keep it clearly under the question. The question is sized to
+   the column (cqi), so it stays on one line on every phone, near the full
+   width, and the line sits 16px under it, close enough to read as its
+   caption. A 64px step over it, which with the board's gap makes about 96px
+   from the last card. */
+@media (max-width: 760px) {
+  .contact-cta {
+    container-type: inline-size;
+    gap: var(--s2);
+    margin-top: var(--s8);
+  }
+
+  /* "Have a good problem for me?" runs about 12em. */
+  .contact-cta-title {
+    font-size: min(8.2cqi, 2rem);
+    white-space: nowrap;
+  }
+
+  .contact-cta-side {
+    font-size: var(--t-small);
+  }
 }
 
-@keyframes load-rise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ── Footer (footer.tsx): the colophon at the foot of every page ── */
+/* On the pages' own container, so it lines up with the content above it. */
+.site-foot {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * (var(--gutter) + 48px));
+  margin: var(--s4) auto 0;
+  padding: 0 calc(var(--gutter) + 48px) var(--s4);
 }
 
-@keyframes load-blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+/* The copyright and the line share one baseline, either end of a hairline. */
+.site-foot-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s1) var(--s4);
+  padding-top: var(--s2);
+  border-top: 1px solid var(--line);
+}
+
+/* On the homepage, the cards' width, so it ends where they do. */
+.work-board-page .site-foot-row {
+  max-width: 67rem;
+  margin: 0 auto;
+}
+
+.site-foot-mark {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.5;
+}
+
+.site-foot-note {
+  margin: 0;
+  font-size: var(--t-foot);
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+  opacity: 0.5;
 }
 
 /* Tablets, stack the About intro before the two columns get cramped. */
@@ -1870,8 +2582,12 @@ p {
 }
 
 @media (max-width: 980px) {
+  /* Up under the fixed bar, which the body's top padding otherwise keeps it
+     clear of, so the dot grid runs behind the bar here too. */
   .work-board-page {
     overflow: auto;
+    margin-top: calc(-1 * var(--topbar-h));
+    padding-top: var(--topbar-h);
   }
 
   .work-board {
@@ -1936,21 +2652,61 @@ p {
     font-size: clamp(0.6rem, 2.5vw, 0.72rem);
   }
 
+  /* The social links come into the footer (footer.tsx), 24px under the
+     rule: the icons flush left on the page's edge and the copyright flush
+     right on one line, either end of the rule, and the note under them,
+     16px on. (Centred, the lines' different widths pinched the copyright
+     between the others, and the footer stood off the page's grid.) */
+  .site-foot-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s2) var(--s1);
+    padding-top: var(--s3);
+  }
+
+  .site-foot-mark {
+    grid-row: 1;
+    grid-column: 2;
+    justify-self: end;
+    white-space: nowrap;
+  }
+
+  .site-foot-note {
+    grid-column: 1 / -1;
+  }
+
+  /* No longer fixed, and lying down: as a column it stacks into a 170px
+     tower. Close enough to read as one row. Each icon's box is a quarter rem
+     wider than the icon each side, so the row steps back that much and the
+     first one lines up with the text. */
   .work-social-rail {
     position: static;
-    transform: none;
-    margin-left: 0;
-    order: 4;
-    display: flex;
-    /* The rail is a vertical column while it's fixed to the side; inline at the
-       foot of the page it has to lie down, or it stacks into a 170px tower. */
+    grid-row: 1;
+    grid-column: 1;
     flex-direction: row;
-    flex-wrap: wrap;
-    /* Centred at the foot of the page instead of hugging the left edge. */
-    justify-content: center;
     align-items: center;
-    gap: var(--space-sm);
-    margin-top: var(--space-md);
+    gap: var(--s1);
+    margin-left: -0.25rem;
+  }
+
+  /* In a row, a hover nudge to the side reads as a slip; colour only. */
+  .work-social-rail a:hover {
+    transform: none;
+  }
+
+  /* The sparkle leads the row at the left edge, so its note opens above it
+     and runs to the right, over the rest of the row. */
+  .work-ai-tip {
+    top: auto;
+    bottom: calc(100% + 8px);
+    left: 0;
+    transform: translateY(4px);
+  }
+
+  .work-social-rail a.work-social-ai:hover .work-ai-tip,
+  .work-social-rail a.work-social-ai:focus-visible .work-ai-tip {
+    transform: none;
   }
 
   /* The board's own row gap already separates the header from the work; the
@@ -1989,26 +2745,18 @@ p {
     padding-right: 0;
   }
 
-  /* On a case study the header and rail are siblings of the shell rather than
-     grid items, so they get no inset of their own once they stop being fixed —
-     they sat hard against x=0, with the rail stranded above the logo. Flex
-     makes the page orderable so the rail can drop to the foot like it does on
-     the work board. */
+  /* On a case study the header is a sibling of the shell rather than a grid
+     item, so it gets no inset of its own once it stops being fixed: it sat
+     hard against x=0. The page stacks as a flex column (it once ordered the
+     rail to the foot; the spacing here is set against it). */
   .case-detail-page {
     display: flex;
     flex-direction: column;
   }
 
-  .case-detail-page > .work-board-header,
-  .case-detail-page > .work-social-rail {
+  .case-detail-page > .work-board-header {
     padding-left: var(--gutter);
     padding-right: var(--gutter);
-  }
-
-  .case-detail-page > .work-social-rail {
-    order: 99;
-    margin-top: var(--space-lg);
-    margin-bottom: var(--space-lg);
   }
 
   .case-detail-shell {
@@ -2034,9 +2782,11 @@ p {
 
   /* About page, a statement headline. Scaled up 1.5x on small screens so it
      lands as a statement rather than body copy; the inline portrait is sized in
-     `em`, so it grows with it. */
+     `em`, so it grows with it. Capped at about 72px, so an upright tablet
+     (768-980px) doesn't get a headline larger than a desktop's: at 12vw it
+     reached 92px at 768, past the 83px of a 1440 screen. */
   .about-v3-head h1 {
-    font-size: clamp(3.375rem, 12vw, 5.625rem);
+    font-size: clamp(3.375rem, 9vw, 4.25rem);
   }
 
   /* The page becomes a plain vertical stack; enable `order` so the social rail
@@ -2054,11 +2804,6 @@ p {
     padding-right: var(--gutter);
   }
 
-  .about-v3 .work-social-rail {
-    order: 1;
-    padding: var(--space-lg) var(--gutter) var(--space-sm);
-  }
-
   /* Full-width column → wider, shorter quotes need less reserved height. */
   .tm-viewport {
     min-height: 8rem;
@@ -2066,6 +2811,32 @@ p {
 
   .case-detail-meta {
     grid-template-columns: 1fr;
+  }
+
+  /* Inset like the content now the container's side padding is gone. From
+     here down, not only on small phones: between 480px and 980px it kept the
+     desktop's extra 48px and sat in from everything above it. */
+  .site-foot {
+    width: calc(100% - (var(--gutter) * 2));
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* On phones the footer goes without its rule, and the step over it with it:
+   the space above sets it apart enough (80px under the homepage's sign-off,
+   100px under a case study's pagination). The note comes down to the label
+   size and sits centred under the icons and the copyright, the quietest line
+   on the page. */
+@media (max-width: 760px) {
+  .site-foot-row {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .site-foot-note {
+    font-size: var(--t-label);
+    text-align: center;
   }
 }
 
@@ -2111,7 +2882,6 @@ p {
     flex-direction: column;
     gap: var(--space-xs);
   }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2332,19 +3102,6 @@ a:focus-visible {
   color: var(--accent);
   line-height: 1.3;
   margin: 0 0 var(--space-xs);
-}
-
-.testing-flow-foot {
-  display: flex;
-  justify-content: space-between;
-  margin-top: var(--gap-macro);
-  padding: var(--space-sm) 0;
-  border-top: 1px solid var(--line);
-  font-family: var(--font-mono);
-  font-size: var(--t-label);
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
 /* ─── Tailwind Legacy Mappings for Dark/Light Editorial Theme ───────────────── */
