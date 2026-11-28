@@ -741,7 +741,8 @@ p {
 /* The tintype link in the last paragraph. Links have no underline site-wide,
    and in the muted text it would read as plain words, so it stands in ink with
    a hairline underline that takes the accent on hover. */
-.hero-about a {
+.hero-about a,
+.hero-side a {
   font-weight: 500;
   color: var(--ink);
   text-decoration: underline;
@@ -750,8 +751,15 @@ p {
   transition: text-decoration-color var(--dur-hover) var(--ease);
 }
 
-.hero-about a:hover {
+.hero-about a:hover,
+.hero-side a:hover {
   text-decoration-color: var(--accent);
+}
+
+/* The phone version of the tintype line; the column above carries it on
+   wider screens. */
+.hero-side {
+  display: none;
 }
 
 /* A step more room under it than before, so the ring around it clears the
@@ -905,6 +913,18 @@ p {
 
   .hero-about {
     display: none;
+  }
+
+  /* The column's tintype line, on its own a step under the statement, in the
+     muted body tone at the desktop column's size, so the statement still leads. */
+  .hero-side {
+    display: block;
+    grid-column: 1;
+    margin: var(--s3) 0 0;
+    font-size: var(--t-foot);
+    line-height: 1.55;
+    color: var(--muted);
+    text-wrap: balance;
   }
 
   .hero-foot {

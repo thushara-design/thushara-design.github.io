@@ -145,6 +145,14 @@ export const Hero = () => {
             , a place to explore a brand’s visual direction through 20+ styles from design history.
           </p>
         </motion.div>
+        {/* Phones only, where the column above is hidden: the tintype line on its own, shorter. */}
+        <motion.p className="hero-side" variants={riseIn} custom={0.35}>
+          On the side, I made{" "}
+          <a href="https://tintype.world" target="_blank" rel="noopener noreferrer">
+            tintype
+          </a>
+          , a{" "}playground for brand styles.
+        </motion.p>
       </div>
       <motion.div className="hero-foot" variants={riseIn} custom={0.5}>
         <h2 id="case-studies">Selected work</h2>
