@@ -738,6 +738,22 @@ p {
   margin-top: var(--s2);
 }
 
+/* The tintype link in the last paragraph. Links have no underline site-wide,
+   and in the muted text it would read as plain words, so it stands in ink with
+   a hairline underline that takes the accent on hover. */
+.hero-about a {
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color var(--dur-hover) var(--ease);
+}
+
+.hero-about a:hover {
+  text-decoration-color: var(--accent);
+}
+
 /* A step more room under it than before, so the ring around it clears the
    paragraph. Lowercase, like the greeting. */
 .hero-about .hero-about-title {

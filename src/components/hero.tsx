@@ -62,10 +62,9 @@ function measureRing(svg: SVGSVGElement) {
   path.style.setProperty("--len", `${Math.ceil(length) + 2}px`);
 }
 
-// The two short paragraphs beside the statement.
+// The short paragraph beside the statement; the tintype line follows it in the JSX.
 const ABOUT = [
   "Currently working on automating QA at Gistly, my experience spans user research, untangling workflows, visual design, and building product systems. I also work directly with production code, using AI coding agents for rapid prototyping and front-end implementation.",
-  "I enjoy working with early-stage startups in emerging domains, where I can take ownership, navigate ambiguity, and contribute across the product development process.",
 ];
 
 /**
@@ -138,6 +137,13 @@ export const Hero = () => {
           {ABOUT.map((text) => (
             <p key={text}>{text}</p>
           ))}
+          <p>
+            On the side, I made{" "}
+            <a href="https://tintype.world" target="_blank" rel="noopener noreferrer">
+              tintype
+            </a>
+            , a place to explore a brand’s visual direction through 20+ styles from design history.
+          </p>
         </motion.div>
       </div>
       <motion.div className="hero-foot" variants={riseIn} custom={0.5}>
